@@ -2,13 +2,16 @@ package com.ameshajid.mutualfund.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ameshajid.mutualfund.model.Fund;
 import com.ameshajid.mutualfund.service.FundService;
 
+//adding the cors angular dev handling right now
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class FundController {
