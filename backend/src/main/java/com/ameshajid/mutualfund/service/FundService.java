@@ -1,20 +1,24 @@
 package com.ameshajid.mutualfund.service;
-
+//Allows us to use Array
 import java.util.ArrayList;
+//Allows us to use List
 import java.util.List;
 
+//Tells Spring that this is a service component
 import org.springframework.stereotype.Service;
-
+// This import allows us to use the Fund model class
 import com.ameshajid.mutualfund.model.Fund;
 
+//This class as a service in Spring
 @Service
 public class FundService {
 
+    //returns list of fund objects
     public List<Fund> getAllFunds() {
 
-        //List to hold all the funds we want to return
+        //new empty list
         List<Fund> funds = new ArrayList<>();
-
+        //creates a new fund object + adds to list
         funds.add(new Fund("VSMPX", "Vanguard Total Stock Market Index Fund;Institutional Plus"));
         funds.add(new Fund("FXAIX", "Fidelity 500 Index Fund"));
         funds.add(new Fund("VFIAX", "Vanguard 500 Index Fund;Admiral"));
