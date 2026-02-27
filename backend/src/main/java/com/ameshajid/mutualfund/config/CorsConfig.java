@@ -1,10 +1,14 @@
 package com.ameshajid.mutualfund.config;
+// This import allows us to mark this class as a configuration class in Spring
 import org.springframework.context.annotation.Configuration;
+// This import gives us access to CorsRegistry, which is used to define CORS rules
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+// This import allows us to customize Spring MVC configuration
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //this is so springboot knows this is a conf
 @Configuration
+//Implements WebMvcConfigurer so we can override its methods
 public class CorsConfig implements WebMvcConfigurer {
     @Override
 
