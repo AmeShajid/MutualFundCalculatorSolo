@@ -28,6 +28,7 @@ public class FundController {
     //Allows us to inject fundService automatically
     @Autowired
     public FundController(FundService fundService) {
+
         this.fundService = fundService;
     }
 
@@ -36,6 +37,7 @@ public class FundController {
     @GetMapping
     //returns a list of Fund objects
     public List<Fund> getAllFunds() {
+
         return fundService.getAllFunds();
     }
 }
