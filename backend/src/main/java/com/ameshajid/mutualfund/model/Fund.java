@@ -1,3 +1,6 @@
+/**
+This is just making all of our setters getters objects for funds
+ */
 package com.ameshajid.mutualfund.model;
 
 public class Fund {

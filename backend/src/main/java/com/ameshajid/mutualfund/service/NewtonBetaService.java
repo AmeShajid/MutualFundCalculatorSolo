@@ -1,3 +1,12 @@
+/**
+ NewtonBetaService calls the Newton Analytics API to get the beta value for a stock or mutual fund.
+ Validates inputs
+ Sets default values if needed
+ Builds the API URL
+ Calls the external API using RestTemplate
+ Extracts and returns the beta value
+ This is where your backend connects to an external financial API.
+ */
 package com.ameshajid.mutualfund.service;
 // This import allows to encode URL parameters safely
 import java.net.URLEncoder;

@@ -1,3 +1,8 @@
+/**
+ This class represents the JSON response you receive from the Newton Analytics Beta API.
+ When call Newton’s API to get a stock’s beta, Spring converts the JSON response into this Java object.
+ This class does not contain logic it just holds API response data (status, beta value, etc.).
+ */
 package com.ameshajid.mutualfund.model;
 
 //Json structure returned by Newton API

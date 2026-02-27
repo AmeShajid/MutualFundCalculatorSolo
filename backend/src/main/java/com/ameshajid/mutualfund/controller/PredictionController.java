@@ -1,3 +1,16 @@
+/**
+ This controller creates the POST /api/predict endpoint.
+ It:
+ Takes the user’s input (ticker, principal, years)
+ Validates it (rejects bad input)
+ Calls PredictionService to calculate the prediction
+
+ Returns either:
+ 200 OK with the prediction, or
+ 400 Bad Request if input is invalid, or
+ 503 Service Unavailable if something fails (API/service error)
+ */
+
 package com.ameshajid.mutualfund.controller;
 // This import lets us use ResponseEntity to return status codes
 import org.springframework.http.ResponseEntity;
@@ -77,8 +90,7 @@ public class PredictionController {
                     //sending principal
                     request.getPrincipal(),
                     //sending years
-                    request.getYears()
-            );
+                    request.getYears());
 
             // returns OK response + prediction
             return ResponseEntity.ok(response);

@@ -1,3 +1,9 @@
+/**
+ Configures CORS for backend.
+ It allows Angular frontend (running on http://localhost:4200) to make HTTP requests to Spring Boot backend.
+ Without this the browser would block your frontend from calling your backend.
+ */
+
 package com.ameshajid.mutualfund.config;
 // This import allows us to mark this class as a configuration class in Spring
 import org.springframework.context.annotation.Configuration;

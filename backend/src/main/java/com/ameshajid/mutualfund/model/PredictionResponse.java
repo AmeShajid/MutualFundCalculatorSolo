@@ -1,3 +1,11 @@
+/**
+ This class represents the data backend sends back to the frontend after calculating the prediction.
+ futureValue - the calculated investment value
+ beta - beta used in CAPM
+ expectedReturn - expected market return
+ riskFreeRate - risk-free rate used in calculation
+ This is the final result object that gets converted into JSON and returned to Angular.
+ */
 package com.ameshajid.mutualfund.model;
 //data from backend sent to frontend
 public class PredictionResponse {

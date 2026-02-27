@@ -1,3 +1,8 @@
+/**
+ FundController is responsible for exposing an API endpoint that returns the list of available mutual funds.
+ The frontend calls this controller to populate the dropdown menu with fund options.
+ This controller does not calculate anything it just calls the FundService and returns data.
+ */
 package com.ameshajid.mutualfund.controller;
 // This import allows us to use the Fund model class
 import com.ameshajid.mutualfund.model.Fund;

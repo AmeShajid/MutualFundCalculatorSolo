@@ -1,3 +1,8 @@
+/**
+ FundService provides a hardcoded list of mutual funds.
+ When the frontend asks for available funds (dropdown list), this service builds a list of Fund objects and returns it.
+ There is no database here  the list is manually created in memory.
+ */
 package com.ameshajid.mutualfund.service;
 //Allows us to use Array
 import java.util.ArrayList;

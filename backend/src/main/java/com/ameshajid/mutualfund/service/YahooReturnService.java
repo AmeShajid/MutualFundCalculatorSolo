@@ -1,3 +1,12 @@
+/**
+ YahooReturnService calls the Yahoo Finance API to get 1 year of price data for a stock or fund.
+ Requests monthly closing prices for the last year
+ Finds the first valid closing price
+ Finds the last valid closing price
+ Calculates the percentage return
+ Returns that return value
+ If anything fails it safely returns 0.0.
+ */
 package com.ameshajid.mutualfund.service;
 // This import allows us to work with JSON nodes
 import com.fasterxml.jackson.databind.JsonNode;

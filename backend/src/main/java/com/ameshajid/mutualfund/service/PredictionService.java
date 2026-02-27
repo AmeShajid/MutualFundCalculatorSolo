@@ -1,3 +1,12 @@
+/**
+ PredictionService is the core logic layer.
+ Calls Newton API to get beta
+ Calls Yahoo service to get expected return
+ Calculates the CAPM rate
+ Calculates the future value using continuous compounding
+ Returns all results in a PredictionResponse
+ This is where the actual finance math happens.
+ */
 package com.ameshajid.mutualfund.service;
 // This tells Spring that this class is a service component
 import org.springframework.stereotype.Service;

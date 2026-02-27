@@ -1,3 +1,11 @@
+/**
+ This class represents the data the frontend sends to backend when the user clicks “Calculate”.
+ ticker - the fund symbol
+ principal - initial investment amount
+ years - number of years investing
+ Spring automatically converts incoming JSON into this object.
+ This class only holds data no logic.
+ */
 package com.ameshajid.mutualfund.model;
 
 //When user sends data from frontend
