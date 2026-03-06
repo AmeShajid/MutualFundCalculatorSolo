@@ -1,0 +1,178 @@
+/* Centers the calculator card on the page with a light gray background */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* The white card that contains everything */
+.calculator-card {
+  background: white;
+  border-radius: 8px;
+  /* Subtle shadow to make the card pop off the background */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
+
+/* The dark navy header bar at the top of the card */
+.card-header {
+  background-color: #1a2e4a;
+  padding: 16px 24px;
+}
+
+/* The title text inside the header */
+.card-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* The white body section below the header */
+.card-body {
+  padding: 24px;
+}
+
+/* Red error box shown when something goes wrong */
+.error-box {
+  background-color: #fff0f0;
+  border: 1px solid #ffcccc;
+  color: #cc0000;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Row that holds all form inputs side by side */
+.form-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Each individual input column */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 160px;
+}
+
+/* Label text above each input */
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* Styles shared by both the select dropdown and text inputs */
+.form-group select,
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  height: 40px;
+}
+
+/* Highlight the input when the user clicks on it */
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: #1a6fba;
+}
+
+/* The column that holds the calculate button */
+.button-group {
+  flex: 0 0 auto;
+}
+
+/* The blue calculate button */
+.calculate-btn {
+  background-color: #1a6fba;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  white-space: nowrap;
+}
+
+/* Slightly darker blue when hovering over the button */
+.calculate-btn:hover:not(:disabled) {
+  background-color: #155fa0;
+}
+
+/* Gray out the button while we are waiting for the backend */
+.calculate-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* The results section that appears below the form after calculating */
+.results-section {
+  margin-top: 32px;
+  border-top: 1px solid #eee;
+  padding-top: 24px;
+}
+
+/* The "Prediction Results" heading */
+.results-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a2e4a;
+  margin: 0 0 16px 0;
+}
+
+/* Grid layout for the four result cards */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+/* Individual result card */
+.result-card {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Blue left border on the Future Value card to make it stand out */
+.result-card.highlight {
+  border-left: 4px solid #1a6fba;
+  background-color: #f0f7ff;
+}
+
+/* The small label text inside each result card */
+.result-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* The large number value inside each result card */
+.result-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2e4a;
+}

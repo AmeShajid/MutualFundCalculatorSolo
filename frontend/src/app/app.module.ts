@@ -1,34 +1,39 @@
-//Everything angular needs to run
+// This is the root module that registers everything Angular needs
 import { NgModule } from '@angular/core';
 
-//Lets us use browser-specific features like the DOM
+// BrowserModule gives us basic browser functionality
 import { BrowserModule } from '@angular/platform-browser';
 
-//Lets Angular make HTTP calls to our backend
+// HttpClientModule lets us make HTTP calls to our Spring Boot backend
 import { HttpClientModule } from '@angular/common/http';
 
-//Starting point of app
+// FormsModule gives us ngModel so form inputs sync with TypeScript variables
+import { FormsModule } from '@angular/forms';
+
+// Our root component
 import { AppComponent } from './app.component';
 
-//Tell angular this is an app and whats inside
+// Our new calculator component that we just created
+import { CalculatorComponent } from './components/calculator/calculator.component';
+
+// @NgModule registers all pieces of our Angular app
 @NgModule({
-  //Lists every component
+  // Every component we create must be listed here
   declarations: [
     AppComponent
   ],
-  //lists external stuff we use
+
+  // External modules we want to use throughout the app
   imports: [
-    //Gives us browser functionality
     BrowserModule,
-    //Lets us make GET and POST calls
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    CalculatorComponent
   ],
 
-  //Lists services that are available
   providers: [],
 
-  //Tells Angular which component to load first when the app starts
+  // AppComponent is the first thing Angular loads
   bootstrap: [AppComponent]
 })
-//
 export class AppModule { }

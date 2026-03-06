@@ -1,0 +1,155 @@
+<!-- This is the outer page wrapper that centers everything on the screen -->
+<div class="page-wrapper">
+
+  <!-- This is the main calculator card container -->
+  <div class="calculator-card">
+
+    <!-- This is the dark header bar at the top of the card -->
+    <div class="card-header">
+      <!-- Title text shown in the header -->
+      <h2>Mutual Fund Calculator</h2>
+    </div>
+
+    <!-- This is the white body of the card containing the form -->
+    <div class="card-body">
+
+      <!-- Show this error box only if errorMessage has text in it -->
+      <div class="error-box" *ngIf="errorMessage">
+        <!-- Display the actual error message text -->
+        {{ errorMessage }}
+      </div>
+
+      <!-- The form row holds all three inputs side by side -->
+      <div class="form-row">
+
+        <!-- First column: the fund dropdown -->
+        <div class="form-group">
+          <!-- Label above the dropdown -->
+          <label for="fundSelect">Mutual Fund</label>
+
+          <!-- [(ngModel)] syncs this dropdown with selectedTicker variable -->
+          <!-- When user picks a fund, selectedTicker updates automatically -->
+          <select id="fundSelect" [(ngModel)]="selectedTicker">
+
+            <!-- Default placeholder option shown before user picks anything -->
+            <option value="">Select Fund</option>
+
+            <!-- *ngFor loops through every fund and creates one option each -->
+            <!-- fund.symbol becomes the value we send to the backend -->
+            <!-- fund.name is the readable text the user sees -->
+            <option *ngFor="let fund of funds" [value]="fund.symbol">
+              {{ fund.name }}
+            </option>
+
+          </select>
+        </div>
+
+        <!-- Second column: initial investment input -->
+        <div class="form-group">
+          <!-- Label above the input -->
+          <label for="principalInput">Initial Investment Amount</label>
+
+          <!-- [(ngModel)] syncs this input with our principal variable -->
+          <!-- type="number" only allows numbers to be typed -->
+          <!-- placeholder shows hint text when the input is empty -->
+          <input
+            id="principalInput"
+            type="number"
+            [(ngModel)]="principal"
+            placeholder="$"
+            min="0"
+          />
+        </div>
+
+        <!-- Third column: time horizon input -->
+        <div class="form-group">
+          <!-- Label above the input -->
+          <label for="yearsInput">Time Horizon (in years)</label>
+
+          <!-- [(ngModel)] syncs this input with our years variable -->
+          <input
+            id="yearsInput"
+            type="number"
+            [(ngModel)]="years"
+            placeholder="Years"
+            min="0"
+          />
+        </div>
+
+        <!-- Calculate button column -->
+        <div class="form-group button-group">
+          <!-- Blank label to align button with the inputs -->
+          <label></label>
+
+          <!-- (click) calls onCalculate() when user clicks this button -->
+          <!-- [disabled] grays out the button while we wait for backend -->
+          <button
+            class="calculate-btn"
+            (click)="onCalculate()"
+            [disabled]="isLoading"
+          >
+            <!-- Show different text depending on whether we are loading -->
+            {{ isLoading ? 'Calculating...' : 'Calculate' }}
+          </button>
+        </div>
+
+      </div>
+      <!-- end form-row -->
+
+      <!-- Results section — only shows if we have a result from the backend -->
+      <div class="results-section" *ngIf="result">
+
+        <!-- Results section header -->
+        <h3 class="results-title">Prediction Results</h3>
+
+        <!-- Grid of result cards, one for each value -->
+        <div class="results-grid">
+
+          <!-- Future Value card — the main result -->
+          <div class="result-card highlight">
+            <!-- Label for this result -->
+            <span class="result-label">Projected Future Value</span>
+            <!-- Show futureValue formatted as US currency with 2 decimal places -->
+            <span class="result-value">
+              ${{ result.futureValue | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <!-- Beta value card -->
+          <div class="result-card">
+            <!-- Label for this result -->
+            <span class="result-label">Beta Used</span>
+            <!-- Show beta rounded to 4 decimal places -->
+            <span class="result-value">{{ result.beta | number:'1.4-4' }}</span>
+          </div>
+
+          <!-- Expected Return card -->
+          <div class="result-card">
+            <!-- Label for this result -->
+            <span class="result-label">Expected Return</span>
+            <!-- Multiply by 100 to convert decimal to percentage, show 2 decimal places -->
+            <span class="result-value">{{ result.expectedReturn * 100 | number:'1.2-2' }}%</span>
+          </div>
+
+          <!-- Risk Free Rate card -->
+          <div class="result-card">
+            <!-- Label for this result -->
+            <span class="result-label">Risk Free Rate</span>
+            <!-- Multiply by 100 to convert decimal to percentage -->
+            <span class="result-value">{{ result.riskFreeRate * 100 | number:'1.2-2' }}%</span>
+          </div>
+
+        </div>
+        <!-- end results-grid -->
+
+      </div>
+      <!-- end results-section -->
+
+    </div>
+    <!-- end card-body -->
+
+  </div>
+  <!-- end calculator-card -->
+
+</div>
+<!-- end page-wrapper -->
