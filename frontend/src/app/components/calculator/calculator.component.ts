@@ -116,19 +116,9 @@ export class CalculatorComponent implements OnInit {
     // Show the loading spinner since we're about to call the backend
     this.isLoading = true;
 
-    // Build the request object to send to Spring Boot
-    const request = {
-      // Send the selected fund ticker symbol
-      ticker: this.selectedTicker,
-      // Send the initial investment amount
-      principal: this.principal,
-      // Send the number of years
-      years: this.years
-    };
-
-    // Call the prediction service with our request object
+    // Call the prediction service with our input values as query parameters
     // subscribe() means "when Spring Boot responds, run this function"
-    this.predictionService.predict(request).subscribe({
+    this.predictionService.predict(this.selectedTicker, this.principal, this.years).subscribe({
 
       // next runs when Spring Boot returns a successful prediction
       next: (data: PredictionResponse) => {

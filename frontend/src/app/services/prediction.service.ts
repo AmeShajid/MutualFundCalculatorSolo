@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Import request and response
-import { PredictionRequest } from '../models/prediction-request.model';
+// Import response model
 import { PredictionResponse } from '../models/prediction-response.model';
 
 @Injectable({
@@ -15,12 +14,18 @@ export class PredictionService {
   private baseUrl = 'http://localhost:8080/api';
   constructor(private http: HttpClient) { }
 
-  //Sends POST request to /api/predict with the user's input
+  //Sends GET request to /api/predict with query parameters
   //It returns an Observable that will contain the prediction result
-  predict(request: PredictionRequest): Observable<PredictionResponse> {
+  predict(ticker: string, principal: number, years: number): Observable<PredictionResponse> {
 
-    //http.post sends a POST request with the request object as the body
-    //Spring Boot will receive this as JSON and convert it to PredictionRequest.java
-    return this.http.post<PredictionResponse>(`${this.baseUrl}/predict`, request);
+    //Build query parameters for the GET request
+    const params = new HttpParams()
+      .set('ticker', ticker)
+      .set('principal', principal.toString())
+      .set('years', years.toString());
+
+    //http.get sends a GET request with query params
+    //Spring Boot will extract these from the URL as @RequestParam
+    return this.http.get<PredictionResponse>(`${this.baseUrl}/predict`, { params });
   }
 }
