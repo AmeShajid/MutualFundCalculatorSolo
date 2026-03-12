@@ -31,11 +31,16 @@ public class YahooReturnService {
     //URL for yfinance
     private static final String BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart/";
 
-    //Used to send HTTP
-    private final RestTemplate restTemplate = new RestTemplate();
+    //Used to send HTTP — injected from RestTemplateConfig bean
+    private final RestTemplate restTemplate;
 
     //To parse JSON strings into JSON objects
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    //Constructor allows Spring to inject the shared RestTemplate
+    public YahooReturnService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     //Calculates last 1-year return
     public double getLastYearReturn(String symbol) {
