@@ -12,6 +12,10 @@ package com.ameshajid.mutualfund.service;
 import java.net.URLEncoder;
 // This import provides standard character encoding
 import java.nio.charset.StandardCharsets;
+// This import gives us a logger to record events and errors
+import org.slf4j.Logger;
+// This import creates a logger instance for this class
+import org.slf4j.LoggerFactory;
 // Tells Spring this class is a service component
 import org.springframework.stereotype.Service;
 // This allows us to make HTTP requests to external APIs
@@ -22,6 +26,8 @@ import com.ameshajid.mutualfund.model.NewtonBetaApiResponse;
 //This class as a Spring service
 @Service
 public class NewtonBetaService {
+    //Logger for recording events and errors in this service
+    private static final Logger log = LoggerFactory.getLogger(NewtonBetaService.class);
     //URL for newton analytics
     private static final String BASE_URL = "https://api.newtonanalytics.com/stock-beta/";
     //Used to make HTTP req — injected from RestTemplateConfig bean
@@ -37,8 +43,11 @@ public class NewtonBetaService {
 
         //if ticker is missing, given an error
         if (ticker == null || ticker.trim().isEmpty()) {
+            log.error("Ticker is null or empty");
             throw new IllegalArgumentException("ticker is required");
         }
+
+        log.info("Fetching beta from Newton Analytics for {}", ticker);
 
         //If index is missing, use SNP
         if (index == null || index.trim().isEmpty()) {
@@ -72,8 +81,11 @@ public class NewtonBetaService {
 
         //If response or beta data is missing throw error
         if (response == null || response.getData() == null) {
+            log.error("Newton API returned no beta data for {}", ticker);
             throw new RuntimeException("Newton API returned no beta data");
         }
+
+        log.info("Newton Analytics beta for {}: {}", ticker, response.getData());
 
         //return beta value
         return response.getData();

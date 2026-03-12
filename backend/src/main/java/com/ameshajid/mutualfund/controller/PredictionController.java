@@ -12,6 +12,10 @@
  */
 
 package com.ameshajid.mutualfund.controller;
+// This import gives us a logger to record events and errors
+import org.slf4j.Logger;
+// This import creates a logger instance for this class
+import org.slf4j.LoggerFactory;
 // This import lets us use ResponseEntity to return status codes
 import org.springframework.http.ResponseEntity;
 // This import lets us map a method to handle HTTP GET requests
@@ -33,6 +37,9 @@ import com.ameshajid.mutualfund.service.PredictionService;
 // This sets the base route for this controller to "/api"
 @RequestMapping("/api")
 public class PredictionController {
+
+    //Logger for recording events and errors in this controller
+    private static final Logger log = LoggerFactory.getLogger(PredictionController.class);
 
     //reference to PredictionService which has our logic
     private final PredictionService predictionService;
@@ -96,11 +103,15 @@ public class PredictionController {
                     //sending years
                     years);
 
+            log.info("Prediction for {}: futureValue={}", ticker, response.getFutureValue());
+
             // returns OK response + prediction
             return ResponseEntity.ok(response);
 
             //for any other error
         } catch (Exception e) {
+
+            log.error("Prediction failed for ticker={}, principal={}, years={}", ticker, principal, years, e);
 
             //Service error
             return ResponseEntity.status(503).body(new ErrorResponse(

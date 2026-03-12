@@ -12,6 +12,10 @@ package com.ameshajid.mutualfund.service;
 import com.fasterxml.jackson.databind.JsonNode;
 // This import allows us to convert raw JSON text into a tree structure
 import com.fasterxml.jackson.databind.ObjectMapper;
+// This import gives us a logger to record events and errors
+import org.slf4j.Logger;
+// This import creates a logger instance for this class
+import org.slf4j.LoggerFactory;
 // This tells Spring this class is a service component
 import org.springframework.stereotype.Service;
 // This allows us to make HTTP requests to external APIs
@@ -28,6 +32,8 @@ import org.springframework.http.ResponseEntity;
 //This class as a Spring service
 @Service
 public class YahooReturnService {
+    //Logger for recording events and errors in this service
+    private static final Logger log = LoggerFactory.getLogger(YahooReturnService.class);
     //URL for yfinance
     private static final String BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart/";
 
@@ -47,8 +53,11 @@ public class YahooReturnService {
 
         // If the symbol is missing throw an error
         if (symbol == null || symbol.trim().isEmpty()) {
+            log.error("Symbol is null or empty");
             throw new IllegalArgumentException("Symbol is required");
         }
+
+        log.info("Fetching 1-year return from Yahoo Finance for {}", symbol);
 
         //Make yahoo URL for 1 year with monthly intervals
         String url = BASE_URL + symbol.trim() + "?range=1y&interval=1mo";
@@ -118,6 +127,7 @@ public class YahooReturnService {
 
             //If value is invalid
             if (firstClose == null || lastClose == null || firstClose == 0.0) {
+                log.error("Invalid closing prices for {}: firstClose={}, lastClose={}", symbol, firstClose, lastClose);
                 throw new RuntimeException("Could not find valid closing prices for " + symbol);
             }
 
@@ -127,11 +137,14 @@ public class YahooReturnService {
             //get return rate
             double returnRate = priceDifference / firstClose;
 
+            log.info("Yahoo Finance return for {}: {}%", symbol, String.format("%.2f", returnRate * 100));
+
             // return the calculated return rate
             return returnRate;
 
             //if any error happens, propagate it so the controller can return a proper error
         } catch (Exception e) {
+            log.error("Failed to fetch return data from Yahoo Finance for {}", symbol, e);
             throw new RuntimeException("Failed to fetch return data from Yahoo Finance for " + symbol + ": " + e.getMessage(), e);
         }
     }
