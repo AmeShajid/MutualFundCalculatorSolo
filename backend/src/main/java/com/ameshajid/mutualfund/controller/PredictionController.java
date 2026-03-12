@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 // These imports allow us to use List and ArrayList
 import java.util.List;
-import java.util.ArrayList;
 // These imports allow us to use CompletableFuture for parallel execution
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
