@@ -15,7 +15,7 @@
   /* Subtle shadow to make the card pop off the background */
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   overflow: hidden;
 }
 
@@ -73,8 +73,7 @@
   margin-bottom: 6px;
 }
 
-/* Styles shared by both the select dropdown and text inputs */
-.form-group select,
+/* Styles shared by text inputs */
 .form-group input {
   padding: 10px 12px;
   border: 1px solid #ccc;
@@ -86,7 +85,6 @@
 }
 
 /* Highlight the input when the user clicks on it */
-.form-group select:focus,
 .form-group input:focus {
   outline: none;
   border-color: #1a6fba;
@@ -122,6 +120,149 @@
   cursor: not-allowed;
 }
 
+/* ==================== MULTI-SELECT DROPDOWN ==================== */
+
+/* Container for the custom multi-select dropdown — positioned relative so the panel can be absolute */
+.multi-select-container {
+  position: relative;
+}
+
+/* The button that opens/closes the dropdown */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  height: 40px;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* Highlight the dropdown button when focused */
+.dropdown-toggle:hover {
+  border-color: #1a6fba;
+}
+
+/* The label text inside the dropdown button */
+.dropdown-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/* The small arrow icon on the right side of the dropdown button */
+.dropdown-arrow {
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+}
+
+/* The dropdown panel that appears below the button with checkboxes */
+.dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Each item (row) inside the dropdown panel */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  gap: 8px;
+}
+
+/* Highlight item on hover */
+.dropdown-item:hover:not(.disabled) {
+  background-color: #f0f7ff;
+}
+
+/* Style for selected items */
+.dropdown-item.selected {
+  background-color: #e8f0fe;
+}
+
+/* Style for disabled items (max reached) */
+.dropdown-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* The fund name text inside each dropdown item */
+.dropdown-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Checkbox styling inside dropdown */
+.dropdown-item input[type="checkbox"] {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.dropdown-item.disabled input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+/* ==================== SELECTED FUND CHIPS ==================== */
+
+/* Container for the selected fund chips shown below the form */
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Individual chip showing a selected fund ticker */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: #e8f0fe;
+  border: 1px solid #b8d4f0;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1a2e4a;
+}
+
+/* The X button to remove a chip */
+.chip-remove {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  line-height: 1;
+}
+
+.chip-remove:hover {
+  color: #cc0000;
+}
+
+/* ==================== WARNING BOX ==================== */
+
 /* Yellow warning box shown when CAPM may not be reliable for this fund type */
 .warning-box {
   background-color: #fff8e6;
@@ -129,10 +270,12 @@
   color: #856404;
   padding: 12px 16px;
   border-radius: 4px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  margin-top: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
+
+/* ==================== RESULTS SECTION ==================== */
 
 /* The results section that appears below the form after calculating */
 .results-section {
@@ -149,42 +292,126 @@
   margin: 0 0 16px 0;
 }
 
-/* Grid layout for the four result cards */
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+/* ==================== COMPARISON TABLE ==================== */
+
+/* Wrapper allows horizontal scrolling on small screens */
+.table-wrapper {
+  overflow-x: auto;
 }
 
-/* Individual result card */
-.result-card {
+/* The comparison table */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+/* Table header cells */
+.comparison-table thead th {
+  background-color: #1a2e4a;
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Table body rows */
+.comparison-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s;
+}
+
+/* Hover effect on table rows */
+.comparison-table tbody tr:hover {
   background-color: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
-/* Blue left border on the Future Value card to make it stand out */
-.result-card.highlight {
-  border-left: 4px solid #1a6fba;
+/* Highlight row for the best performer (highest future value) */
+.comparison-table tbody tr.highlight-row {
   background-color: #f0f7ff;
 }
 
-/* The small label text inside each result card */
-.result-label {
-  font-size: 12px;
-  color: #666;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.comparison-table tbody tr.highlight-row td:first-child {
+  border-left: 4px solid #1a6fba;
 }
 
-/* The large number value inside each result card */
-.result-value {
-  font-size: 22px;
-  font-weight: 700;
+/* Error row styling */
+.comparison-table tbody tr.error-row {
+  background-color: #fff8f8;
+}
+
+/* Fund name cell — shows name and ticker stacked */
+.fund-name-cell {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* The fund's full name */
+.fund-name {
+  font-weight: 600;
   color: #1a2e4a;
+  font-size: 13px;
+}
+
+/* The fund's ticker symbol shown below the name */
+.fund-ticker {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+}
+
+/* Standard value cells */
+.value-cell {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Status cell */
+.status-cell {
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
+/* Error cell that spans across value columns */
+.error-cell {
+  padding: 12px 16px;
+  color: #cc0000;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ==================== STATUS BADGES ==================== */
+
+/* Green success badge */
+.success-badge {
+  color: #28a745;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Yellow warning badge */
+.warning-badge {
+  color: #856404;
+  background-color: #fff8e6;
+  border: 1px solid #ffe0a3;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: help;
+}
+
+/* Red error badge */
+.error-badge {
+  color: #cc0000;
+  font-size: 12px;
+  font-weight: 600;
 }

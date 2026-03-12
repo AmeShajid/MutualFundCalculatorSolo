@@ -19,29 +19,45 @@
         {{ errorMessage }}
       </div>
 
-      <!-- The form row holds all three inputs side by side -->
+      <!-- The form row holds all inputs side by side -->
       <div class="form-row">
 
-        <!-- First column: the fund dropdown -->
-        <div class="form-group">
+        <!-- First column: the multi-select fund dropdown -->
+        <div class="form-group multi-select-container">
           <!-- Label above the dropdown -->
-          <label for="fundSelect">Mutual Fund</label>
+          <label>Mutual Fund (max {{ maxSelections }})</label>
 
-          <!-- [(ngModel)] syncs this dropdown with selectedTicker variable -->
-          <!-- When user picks a fund, selectedTicker updates automatically -->
-          <select id="fundSelect" [(ngModel)]="selectedTicker">
+          <!-- Custom dropdown button that shows selection state -->
+          <button
+            class="dropdown-toggle"
+            type="button"
+            (click)="toggleDropdown()"
+          >
+            <span class="dropdown-label">{{ getDropdownLabel() }}</span>
+            <span class="dropdown-arrow">&#9662;</span>
+          </button>
 
-            <!-- Default placeholder option shown before user picks anything -->
-            <option value="">Select Fund</option>
-
-            <!-- *ngFor loops through every fund and creates one option each -->
-            <!-- fund.symbol becomes the value we send to the backend -->
-            <!-- fund.name is the readable text the user sees -->
-            <option *ngFor="let fund of funds" [value]="fund.symbol">
-              {{ fund.name }}
-            </option>
-
-          </select>
+          <!-- Dropdown panel with checkboxes — only visible when open -->
+          <div class="dropdown-panel" *ngIf="dropdownOpen">
+            <div
+              class="dropdown-item"
+              *ngFor="let fund of funds"
+              (click)="!isDisabled(fund.symbol) && toggleFund(fund.symbol)"
+              [class.disabled]="isDisabled(fund.symbol)"
+              [class.selected]="isSelected(fund.symbol)"
+            >
+              <!-- Checkbox for each fund -->
+              <input
+                type="checkbox"
+                [checked]="isSelected(fund.symbol)"
+                [disabled]="isDisabled(fund.symbol)"
+                (click)="$event.stopPropagation()"
+                (change)="toggleFund(fund.symbol)"
+              />
+              <!-- Fund name label -->
+              <span class="dropdown-item-label">{{ fund.name }}</span>
+            </div>
+          </div>
         </div>
 
         <!-- Second column: initial investment input -->
@@ -50,8 +66,6 @@
           <label for="principalInput">Initial Investment Amount</label>
 
           <!-- [(ngModel)] syncs this input with our principal variable -->
-          <!-- type="number" only allows numbers to be typed -->
-          <!-- placeholder shows hint text when the input is empty -->
           <input
             id="principalInput"
             type="number"
@@ -96,56 +110,79 @@
       </div>
       <!-- end form-row -->
 
-      <!-- Results section — only shows if we have a result from the backend -->
-      <div class="results-section" *ngIf="result">
+      <!-- Selected funds chips — shows which funds are selected below the form -->
+      <div class="selected-chips" *ngIf="selectedTickers.length > 0">
+        <span class="chip" *ngFor="let ticker of selectedTickers">
+          {{ ticker }}
+          <!-- X button to remove this fund from selection -->
+          <span class="chip-remove" (click)="toggleFund(ticker)">&times;</span>
+        </span>
+      </div>
 
-        <!-- Show warning box if backend flagged this fund type -->
-        <div class="warning-box" *ngIf="result.warning">
-          {{ result.warning }}
-        </div>
+      <!-- Results section — only shows if we have comparison results -->
+      <div class="results-section" *ngIf="comparisonResult">
 
         <!-- Results section header -->
         <h3 class="results-title">Prediction Results</h3>
 
-        <!-- Grid of result cards, one for each value -->
-        <div class="results-grid">
+        <!-- Comparison table -->
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Fund</th>
+                <th>Future Value</th>
+                <th>Beta</th>
+                <th>Expected Return</th>
+                <th>Risk Free Rate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- One row per fund result -->
+              <tr
+                *ngFor="let result of comparisonResult.results"
+                [class.highlight-row]="result.prediction && result.prediction.futureValue === getHighestFutureValue() && comparisonResult.results.length > 1"
+                [class.error-row]="result.error"
+              >
+                <!-- Fund name column -->
+                <td class="fund-name-cell">
+                  <span class="fund-name">{{ result.fundName }}</span>
+                  <span class="fund-ticker">{{ result.ticker }}</span>
+                </td>
 
-          <!-- Future Value card — the main result -->
-          <div class="result-card highlight">
-            <!-- Label for this result -->
-            <span class="result-label">Projected Future Value</span>
-            <!-- Show futureValue formatted as US currency with 2 decimal places -->
-            <span class="result-value">
-              ${{ result.futureValue | number:'1.2-2' }}
-            </span>
-          </div>
+                <!-- If prediction succeeded, show the values -->
+                <ng-container *ngIf="result.prediction">
+                  <td class="value-cell">${{ result.prediction.futureValue | number:'1.2-2' }}</td>
+                  <td class="value-cell">{{ result.prediction.beta | number:'1.4-4' }}</td>
+                  <td class="value-cell">{{ result.prediction.expectedReturn * 100 | number:'1.2-2' }}%</td>
+                  <td class="value-cell">{{ result.prediction.riskFreeRate * 100 | number:'1.2-2' }}%</td>
+                  <td class="status-cell">
+                    <!-- Show warning icon if this fund has a warning -->
+                    <span class="warning-badge" *ngIf="result.prediction.warning" [title]="result.prediction.warning">&#9888; Warning</span>
+                    <!-- Show success if no warning -->
+                    <span class="success-badge" *ngIf="!result.prediction.warning">&#10003; OK</span>
+                  </td>
+                </ng-container>
 
-          <!-- Beta value card -->
-          <div class="result-card">
-            <!-- Label for this result -->
-            <span class="result-label">Beta Used</span>
-            <!-- Show beta rounded to 4 decimal places -->
-            <span class="result-value">{{ result.beta | number:'1.4-4' }}</span>
-          </div>
-
-          <!-- Expected Return card -->
-          <div class="result-card">
-            <!-- Label for this result -->
-            <span class="result-label">Expected Return</span>
-            <!-- Multiply by 100 to convert decimal to percentage, show 2 decimal places -->
-            <span class="result-value">{{ result.expectedReturn * 100 | number:'1.2-2' }}%</span>
-          </div>
-
-          <!-- Risk Free Rate card -->
-          <div class="result-card">
-            <!-- Label for this result -->
-            <span class="result-label">Risk Free Rate</span>
-            <!-- Multiply by 100 to convert decimal to percentage -->
-            <span class="result-value">{{ result.riskFreeRate * 100 | number:'1.2-2' }}%</span>
-          </div>
-
+                <!-- If prediction failed, show error across columns -->
+                <ng-container *ngIf="result.error">
+                  <td colspan="4" class="error-cell">{{ result.error }}</td>
+                  <td class="status-cell">
+                    <span class="error-badge">&#10007; Failed</span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <!-- end results-grid -->
+
+        <!-- Show warning details below the table for any funds with warnings -->
+        <div *ngFor="let result of comparisonResult.results">
+          <div class="warning-box" *ngIf="result.prediction && result.prediction.warning">
+            <strong>{{ result.ticker }}:</strong> {{ result.prediction.warning }}
+          </div>
+        </div>
 
       </div>
       <!-- end results-section -->
