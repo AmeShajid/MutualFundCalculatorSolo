@@ -1,5 +1,5 @@
 // Component decorator lets us define this class as an Angular component
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -11,7 +11,7 @@ import { PredictionService } from '../../services/prediction.service';
 
 // Import our interfaces so TypeScript knows the shape of our data
 import { Fund } from '../../models/fund.model';
-import { PredictionResponse } from '../../models/prediction-response.model';
+import { ComparisonResponse } from '../../models/comparison-response.model';
 
 // @Component tells Angular this is a component and configures it
 @Component({
@@ -34,8 +34,8 @@ export class CalculatorComponent implements OnInit {
   // This array will hold all the funds loaded from the backend dropdown
   funds: Fund[] = [];
 
-  // This holds the ticker symbol the user selects from the dropdown
-  selectedTicker: string = '';
+  // This array holds the ticker symbols the user has selected
+  selectedTickers: string[] = [];
 
   // This holds the initial investment amount the user types in
   principal: number = 0;
@@ -43,15 +43,21 @@ export class CalculatorComponent implements OnInit {
   // This holds the number of years the user types in
   years: number = 0;
 
-  // This holds the prediction result returned from Spring Boot
+  // This holds the comparison result returned from Spring Boot
   // It starts as null because we have no result yet
-  result: PredictionResponse | null = null;
+  comparisonResult: ComparisonResponse | null = null;
 
   // This tracks whether we are currently waiting for the backend to respond
   isLoading: boolean = false;
 
   // This holds any error message we want to show the user
   errorMessage: string = '';
+
+  // Controls whether the multi-select dropdown is open or closed
+  dropdownOpen: boolean = false;
+
+  // Maximum number of funds that can be selected for comparison
+  maxSelections: number = 5;
 
   // Angular injects both services automatically via the constructor
   constructor(
@@ -83,6 +89,55 @@ export class CalculatorComponent implements OnInit {
     });
   }
 
+  // Toggles the multi-select dropdown open/closed
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  // Checks if a fund is currently selected
+  isSelected(symbol: string): boolean {
+    return this.selectedTickers.includes(symbol);
+  }
+
+  // Checks if a fund's checkbox should be disabled (max reached and not already selected)
+  isDisabled(symbol: string): boolean {
+    return this.selectedTickers.length >= this.maxSelections && !this.isSelected(symbol);
+  }
+
+  // Toggles a fund's selection on/off when its checkbox is clicked
+  toggleFund(symbol: string): void {
+    if (this.isSelected(symbol)) {
+      // Remove the fund from selections
+      this.selectedTickers = this.selectedTickers.filter(t => t !== symbol);
+    } else if (this.selectedTickers.length < this.maxSelections) {
+      // Add the fund to selections
+      this.selectedTickers.push(symbol);
+    }
+  }
+
+  // Returns display text for the dropdown button
+  getDropdownLabel(): string {
+    if (this.selectedTickers.length === 0) {
+      return 'Select Funds';
+    } else if (this.selectedTickers.length === 1) {
+      // Show the fund name for single selection
+      const fund = this.funds.find(f => f.symbol === this.selectedTickers[0]);
+      return fund ? fund.name : this.selectedTickers[0];
+    } else {
+      return this.selectedTickers.length + ' funds selected';
+    }
+  }
+
+  // Closes the dropdown when the user clicks outside of it
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    // Check if the click was outside the dropdown container
+    if (!target.closest('.multi-select-container')) {
+      this.dropdownOpen = false;
+    }
+  }
+
   // This method runs when the user clicks the Calculate button
   onCalculate(): void {
 
@@ -90,12 +145,12 @@ export class CalculatorComponent implements OnInit {
     this.errorMessage = '';
 
     // Clear any previous result so old data doesn't show while loading
-    this.result = null;
+    this.comparisonResult = null;
 
-    // Validate that the user actually selected a fund from the dropdown
-    if (!this.selectedTicker) {
+    // Validate that the user selected at least one fund
+    if (this.selectedTickers.length === 0) {
       // Show an error and stop — do not call the backend
-      this.errorMessage = 'Please select a mutual fund.';
+      this.errorMessage = 'Please select at least one mutual fund.';
       return;
     }
 
@@ -116,14 +171,14 @@ export class CalculatorComponent implements OnInit {
     // Show the loading spinner since we're about to call the backend
     this.isLoading = true;
 
-    // Call the prediction service with our input values as query parameters
+    // Call the comparison endpoint with all selected tickers
     // subscribe() means "when Spring Boot responds, run this function"
-    this.predictionService.predict(this.selectedTicker, this.principal, this.years).subscribe({
+    this.predictionService.compare(this.selectedTickers, this.principal, this.years).subscribe({
 
-      // next runs when Spring Boot returns a successful prediction
-      next: (data: PredictionResponse) => {
+      // next runs when Spring Boot returns results
+      next: (data: ComparisonResponse) => {
         // Store the result so the HTML can display it
-        this.result = data;
+        this.comparisonResult = data;
         // Hide the loading spinner since we have our result
         this.isLoading = false;
       },
@@ -136,5 +191,17 @@ export class CalculatorComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  // Returns the highest future value among successful results for highlighting
+  getHighestFutureValue(): number {
+    if (!this.comparisonResult) return 0;
+    let highest = 0;
+    for (const result of this.comparisonResult.results) {
+      if (result.prediction && result.prediction.futureValue > highest) {
+        highest = result.prediction.futureValue;
+      }
+    }
+    return highest;
   }
 }
