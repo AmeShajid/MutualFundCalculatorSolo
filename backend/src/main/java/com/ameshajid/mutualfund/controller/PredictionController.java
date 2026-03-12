@@ -14,16 +14,14 @@
 package com.ameshajid.mutualfund.controller;
 // This import lets us use ResponseEntity to return status codes
 import org.springframework.http.ResponseEntity;
-// This import lets us map a method to handle HTTP POST requests
-import org.springframework.web.bind.annotation.PostMapping;
-// This import lets Spring convert incoming JSON into a Java object
-import org.springframework.web.bind.annotation.RequestBody;
+// This import lets us map a method to handle HTTP GET requests
+import org.springframework.web.bind.annotation.GetMapping;
+// This import lets Spring extract query parameters from the URL
+import org.springframework.web.bind.annotation.RequestParam;
 // This import lets us define a base URL path for this controller
 import org.springframework.web.bind.annotation.RequestMapping;
 // This import tells Spring this class is a REST API controller that returns JSON
 import org.springframework.web.bind.annotation.RestController;
-// This import brings in the PredictionRequest class (the input from the frontend)
-import com.ameshajid.mutualfund.model.PredictionRequest;
 // This import brings in the PredictionResponse class (the result we send back)
 import com.ameshajid.mutualfund.model.PredictionResponse;
 // This import brings in the service class that does the actual prediction logic
@@ -45,15 +43,21 @@ public class PredictionController {
         this.predictionService = predictionService;
     }
 
-    // This maps this method to POST requests at "/api/predict"
-    @PostMapping("/predict")
+    // This maps this method to GET requests at "/api/predict"
+    @GetMapping("/predict")
     //Method for handling prediction req and returns success or error
-    public ResponseEntity<?> predict(@RequestBody PredictionRequest request) {
+    public ResponseEntity<?> predict(
+            // Extract ticker from query parameter
+            @RequestParam String ticker,
+            // Extract principal from query parameter
+            @RequestParam double principal,
+            // Extract years from query parameter
+            @RequestParam double years) {
 
         //Using try block for errors
         try {
             //check if the ticker is empty
-            if (request.getTicker() == null || request.getTicker().trim().isEmpty()) {
+            if (ticker == null || ticker.trim().isEmpty()) {
                 //returning error
                 return ResponseEntity.badRequest().body(new ErrorResponse(
                         //error type
@@ -63,7 +67,7 @@ public class PredictionController {
             }
 
             //check if principal greater than 0
-            if (request.getPrincipal() <= 0) {
+            if (principal <= 0) {
                 //returning error
                 return ResponseEntity.badRequest().body(new ErrorResponse(
                         //error type
@@ -73,7 +77,7 @@ public class PredictionController {
             }
 
             //checks if years are valid
-            if (request.getYears() <= 0) {
+            if (years <= 0) {
 
                 //returning error
                 return ResponseEntity.badRequest().body(new ErrorResponse(
@@ -86,11 +90,11 @@ public class PredictionController {
             //calculating prediction
             PredictionResponse response = predictionService.predict(
                     //sending ticker
-                    request.getTicker(),
+                    ticker,
                     //sending principal
-                    request.getPrincipal(),
+                    principal,
                     //sending years
-                    request.getYears());
+                    years);
 
             // returns OK response + prediction
             return ResponseEntity.ok(response);
