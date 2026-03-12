@@ -77,12 +77,19 @@ public class NewtonBetaService {
         String url = BASE_URL + "?ticker=" + tickerEncoded + "&index=" + indexEncoded + "&interval=" + intervalEncoded + "&observations=" + observations;
 
         //Make HTTP req + map json into NewtonBeta
-        NewtonBetaApiResponse response = restTemplate.getForObject(url, NewtonBetaApiResponse.class);
+        NewtonBetaApiResponse response;
+        try {
+            response = restTemplate.getForObject(url, NewtonBetaApiResponse.class);
+        } catch (Exception e) {
+            //Wrap any API or parsing errors in a user-friendly message
+            log.error("Newton API call failed for {}", ticker, e);
+            throw new RuntimeException("Beta data is not available for " + ticker);
+        }
 
         //If response or beta data is missing throw error
         if (response == null || response.getData() == null) {
             log.error("Newton API returned no beta data for {}", ticker);
-            throw new RuntimeException("Newton API returned no beta data");
+            throw new RuntimeException("Beta data is not available for " + ticker);
         }
 
         log.info("Newton Analytics beta for {}: {}", ticker, response.getData());
