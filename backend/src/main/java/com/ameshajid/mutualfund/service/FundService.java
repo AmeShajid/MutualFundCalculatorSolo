@@ -59,4 +59,15 @@ public class FundService {
     public List<Fund> getAllFunds() {
         return funds;
     }
+
+    //Looks up a fund name by ticker symbol
+    //Returns the ticker itself if the fund is not in our list
+    public String getFundName(String ticker) {
+        for (Fund fund : funds) {
+            if (fund.getSymbol().equalsIgnoreCase(ticker)) {
+                return fund.getName();
+            }
+        }
+        return ticker;
+    }
 }
