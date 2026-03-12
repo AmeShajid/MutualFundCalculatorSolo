@@ -12,4 +12,7 @@ export interface PredictionResponse {
 
   //risk free rate
   riskFreeRate: number;
+
+  //optional warning message when CAPM may not be reliable
+  warning?: string;
 }

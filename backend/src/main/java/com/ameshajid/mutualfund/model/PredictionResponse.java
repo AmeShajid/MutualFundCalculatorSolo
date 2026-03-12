@@ -17,6 +17,8 @@ public class PredictionResponse {
     private double expectedReturn;
     //Storing risk-free rate
     private double riskFreeRate;
+    //Storing optional warning message when CAPM may not be reliable
+    private String warning;
 
     public PredictionResponse() {
     }
@@ -67,5 +69,15 @@ public class PredictionResponse {
     //setter updates risk-free rate
     public void setRiskFreeRate(double riskFreeRate) {
         this.riskFreeRate = riskFreeRate;
+    }
+
+    //getter returns warning message (null if no warning)
+    public String getWarning() {
+        return warning;
+    }
+
+    //setter updates warning message
+    public void setWarning(String warning) {
+        this.warning = warning;
     }
 }

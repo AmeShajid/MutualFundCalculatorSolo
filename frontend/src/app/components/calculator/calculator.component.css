@@ -122,6 +122,18 @@
   cursor: not-allowed;
 }
 
+/* Yellow warning box shown when CAPM may not be reliable for this fund type */
+.warning-box {
+  background-color: #fff8e6;
+  border: 1px solid #ffe0a3;
+  color: #856404;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 /* The results section that appears below the form after calculating */
 .results-section {
   margin-top: 32px;

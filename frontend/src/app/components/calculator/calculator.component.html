@@ -99,6 +99,11 @@
       <!-- Results section — only shows if we have a result from the backend -->
       <div class="results-section" *ngIf="result">
 
+        <!-- Show warning box if backend flagged this fund type -->
+        <div class="warning-box" *ngIf="result.warning">
+          {{ result.warning }}
+        </div>
+
         <!-- Results section header -->
         <h3 class="results-title">Prediction Results</h3>
 
