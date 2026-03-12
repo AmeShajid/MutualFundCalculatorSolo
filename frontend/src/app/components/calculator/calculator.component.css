@@ -16,7 +16,7 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1100px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* The dark navy header bar at the top of the card */
@@ -55,6 +55,8 @@
   gap: 16px;
   align-items: flex-end;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 10;
 }
 
 /* Each individual input column */
