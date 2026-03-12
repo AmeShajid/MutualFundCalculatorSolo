@@ -24,8 +24,14 @@ import com.ameshajid.mutualfund.model.NewtonBetaApiResponse;
 public class NewtonBetaService {
     //URL for newton analytics
     private static final String BASE_URL = "https://api.newtonanalytics.com/stock-beta/";
-    //Used to make HTTP req
-    private final RestTemplate restTemplate = new RestTemplate();
+    //Used to make HTTP req — injected from RestTemplateConfig bean
+    private final RestTemplate restTemplate;
+
+    //Constructor allows Spring to inject the shared RestTemplate
+    public NewtonBetaService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     //gets beta value for any stock
     public double getBeta(String ticker, String index, String interval, int observations) {
 
