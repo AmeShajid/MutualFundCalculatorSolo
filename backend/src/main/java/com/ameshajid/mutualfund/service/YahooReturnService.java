@@ -40,9 +40,9 @@ public class YahooReturnService {
     //Calculates last 1-year return
     public double getLastYearReturn(String symbol) {
 
-        // If the symbol is missing return 0
+        // If the symbol is missing throw an error
         if (symbol == null || symbol.trim().isEmpty()) {
-            return 0.0;
+            throw new IllegalArgumentException("Symbol is required");
         }
 
         //Make yahoo URL for 1 year with monthly intervals
@@ -67,9 +67,9 @@ public class YahooReturnService {
             // Extract just the body text (the raw JSON string) from the response
             String json = response.getBody();
 
-            // If Yahoo returned nothing, we cannot calculate anything so return 0
+            // If Yahoo returned nothing, we cannot calculate anything so throw error
             if (json == null) {
-                return 0.0;
+                throw new RuntimeException("Yahoo Finance returned no data for " + symbol);
             }
 
             //Convert json string to json node tree
@@ -113,7 +113,7 @@ public class YahooReturnService {
 
             //If value is invalid
             if (firstClose == null || lastClose == null || firstClose == 0.0) {
-                return 0.0;
+                throw new RuntimeException("Could not find valid closing prices for " + symbol);
             }
 
             //get difference
@@ -125,9 +125,9 @@ public class YahooReturnService {
             // return the calculated return rate
             return returnRate;
 
-            //if any error happens
+            //if any error happens, propagate it so the controller can return a proper error
         } catch (Exception e) {
-            return 0.0;
+            throw new RuntimeException("Failed to fetch return data from Yahoo Finance for " + symbol + ": " + e.getMessage(), e);
         }
     }
 }
