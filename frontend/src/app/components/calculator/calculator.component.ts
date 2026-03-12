@@ -1,5 +1,7 @@
 // Component decorator lets us define this class as an Angular component
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 // Import our service that fetches the fund list from Spring Boot
 import { FundService } from '../../services/fund.service';
@@ -20,7 +22,10 @@ import { PredictionResponse } from '../../models/prediction-response.model';
   templateUrl: './calculator.component.html',
 
   // styleUrls points to the CSS file for this component's styles
-  styleUrls: ['./calculator.component.css']
+  styleUrls: ['./calculator.component.css'],
+
+  // Import CommonModule for *ngIf/*ngFor and FormsModule for [(ngModel)]
+  imports: [CommonModule, FormsModule]
 })
 
 // OnInit means this class has an ngOnInit method that runs on page load
