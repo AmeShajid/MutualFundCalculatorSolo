@@ -18,38 +18,45 @@ import com.ameshajid.mutualfund.model.Fund;
 @Service
 public class FundService {
 
-    //returns list of fund objects
-    public List<Fund> getAllFunds() {
+    //Fund list is built once and reused for every request
+    private final List<Fund> funds;
 
-        //new empty list
-        List<Fund> funds = new ArrayList<>();
+    //Constructor initializes the fund list once when the application starts
+    public FundService() {
+        List<Fund> list = new ArrayList<>();
         //creates a new fund object + adds to list
-        funds.add(new Fund("VSMPX", "Vanguard Total Stock Market Index Fund;Institutional Plus"));
-        funds.add(new Fund("FXAIX", "Fidelity 500 Index Fund"));
-        funds.add(new Fund("VFIAX", "Vanguard 500 Index Fund;Admiral"));
-        funds.add(new Fund("VTSAX", "Vanguard Total Stock Market Index Fund;Admiral"));
-        funds.add(new Fund("SPAXX", "Fidelity Government Money Market Fund"));
-        funds.add(new Fund("VMFXX", "Vanguard Federal Money Market Fund;Investor"));
-        funds.add(new Fund("VGTSX", "Vanguard Total International Stock Index Fund;Investor"));
-        funds.add(new Fund("SWVXX", "Schwab Prime Advantage Money Market Fund;Inv"));
-        funds.add(new Fund("FDRXX", "Fidelity Government Cash Reserves"));
-        funds.add(new Fund("FGTXX", "Goldman Sachs FS Government Fund;Institutional"));
-        funds.add(new Fund("OGVXX", "JPMorgan US Government Money Market Fund;Capital"));
-        funds.add(new Fund("FCTDX", "Fidelity Strategic Advisers Fidelity US Total Stk"));
-        funds.add(new Fund("VIIIX", "Vanguard Institutional Index Fund;Inst Plus"));
-        funds.add(new Fund("FRGXX", "Fidelity Instl Government Portfolio;Institutional"));
-        funds.add(new Fund("VTBNX", "Vanguard Total Bond Market II Index Fund;Institutional"));
-        funds.add(new Fund("MVRXX", "Morgan Stanley Inst Liq Government Port;Institutional"));
-        funds.add(new Fund("TFDXX", "BlackRock Liquidity FedFund;Institutional"));
-        funds.add(new Fund("GVMXX", "State Street US Government Money Market Fund;Prem"));
-        funds.add(new Fund("AGTHX", "American Funds Growth Fund of America;A"));
-        funds.add(new Fund("VTBIX", "Vanguard Total Bond Market II Index Fund;Investor"));
-        funds.add(new Fund("CJTXX", "JPMorgan 100% US Treasury Securities Money Market Fund;Capital"));
-        funds.add(new Fund("TTTXX", "BlackRock Liquidity Treasury Trust Fund;Institutional"));
-        funds.add(new Fund("FCNTX", "Fidelity Contrafund"));
-        funds.add(new Fund("SNAXX", "Schwab Prime Advantage Money Market Fund;Ultra"));
-        funds.add(new Fund("PIMIX", "PIMCO Income Fund;Institutional"));
+        list.add(new Fund("VSMPX", "Vanguard Total Stock Market Index Fund;Institutional Plus"));
+        list.add(new Fund("FXAIX", "Fidelity 500 Index Fund"));
+        list.add(new Fund("VFIAX", "Vanguard 500 Index Fund;Admiral"));
+        list.add(new Fund("VTSAX", "Vanguard Total Stock Market Index Fund;Admiral"));
+        list.add(new Fund("SPAXX", "Fidelity Government Money Market Fund"));
+        list.add(new Fund("VMFXX", "Vanguard Federal Money Market Fund;Investor"));
+        list.add(new Fund("VGTSX", "Vanguard Total International Stock Index Fund;Investor"));
+        list.add(new Fund("SWVXX", "Schwab Prime Advantage Money Market Fund;Inv"));
+        list.add(new Fund("FDRXX", "Fidelity Government Cash Reserves"));
+        list.add(new Fund("FGTXX", "Goldman Sachs FS Government Fund;Institutional"));
+        list.add(new Fund("OGVXX", "JPMorgan US Government Money Market Fund;Capital"));
+        list.add(new Fund("FCTDX", "Fidelity Strategic Advisers Fidelity US Total Stk"));
+        list.add(new Fund("VIIIX", "Vanguard Institutional Index Fund;Inst Plus"));
+        list.add(new Fund("FRGXX", "Fidelity Instl Government Portfolio;Institutional"));
+        list.add(new Fund("VTBNX", "Vanguard Total Bond Market II Index Fund;Institutional"));
+        list.add(new Fund("MVRXX", "Morgan Stanley Inst Liq Government Port;Institutional"));
+        list.add(new Fund("TFDXX", "BlackRock Liquidity FedFund;Institutional"));
+        list.add(new Fund("GVMXX", "State Street US Government Money Market Fund;Prem"));
+        list.add(new Fund("AGTHX", "American Funds Growth Fund of America;A"));
+        list.add(new Fund("VTBIX", "Vanguard Total Bond Market II Index Fund;Investor"));
+        list.add(new Fund("CJTXX", "JPMorgan 100% US Treasury Securities Money Market Fund;Capital"));
+        list.add(new Fund("TTTXX", "BlackRock Liquidity Treasury Trust Fund;Institutional"));
+        list.add(new Fund("FCNTX", "Fidelity Contrafund"));
+        list.add(new Fund("SNAXX", "Schwab Prime Advantage Money Market Fund;Ultra"));
+        list.add(new Fund("PIMIX", "PIMCO Income Fund;Institutional"));
 
+        //Store as unmodifiable so it can't be accidentally changed
+        this.funds = List.copyOf(list);
+    }
+
+    //returns the pre-built list of fund objects
+    public List<Fund> getAllFunds() {
         return funds;
     }
 }
