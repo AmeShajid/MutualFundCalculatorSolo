@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -7,6 +8,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [
+        CalculatorComponent
+      ]
     }).compileComponents();
   });
 
@@ -22,10 +26,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('frontend');
   });
 
-  it('should render title', () => {
+  it('should render the calculator component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, frontend');
+    expect(compiled.querySelector('app-calculator')).toBeTruthy();
   });
 });

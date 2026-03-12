@@ -18,18 +18,18 @@ public class Fund {
         this.name = name;
     }
 
-    // Setter for symbol
+    // Getter for symbol
     public String getSymbol() {
 
         return symbol;
     }
-    // Setter for symbol
+    // Getter for name
     public String getName() {
 
         return name;
     }
 
-    // Getter for name
+    // Setter for symbol
     public void setSymbol(String symbol) {
 
         this.symbol = symbol;
