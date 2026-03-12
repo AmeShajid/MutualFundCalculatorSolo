@@ -42,6 +42,18 @@ public class PredictionService {
         double futureValue = principal * Math.exp(capmRate * years);
 
         //return all packaged into PredictionResponse
-        return new PredictionResponse(futureValue, beta, expectedReturn, RISK_FREE_RATE);
+        PredictionResponse response = new PredictionResponse(futureValue, beta, expectedReturn, RISK_FREE_RATE);
+
+        //Check if this fund has near-zero beta and return (likely a money market fund)
+        //CAPM is not reliable for these funds because they earn yield through interest/dividends
+        //rather than price appreciation, which is what Yahoo Finance tracks
+        if (Math.abs(beta) < 0.01 && Math.abs(expectedReturn) < 0.01) {
+            response.setWarning("This fund appears to be a money market or stable-value fund. "
+                    + "CAPM is not reliable for this fund type because it earns returns through "
+                    + "interest/dividends rather than price movement. The projection shown only "
+                    + "reflects the risk-free rate and may not be accurate.");
+        }
+
+        return response;
     }
 }
