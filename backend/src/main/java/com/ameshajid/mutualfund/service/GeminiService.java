@@ -114,6 +114,58 @@ public class GeminiService {
     }
 
     /**
+     Sends a multi-turn chat request to Gemini with conversation history.
+     Returns the AI's text reply.
+     */
+    public String chat(List<Map<String, String>> conversationHistory, String systemPrompt) {
+
+        log.info("Sending chat request to Gemini with {} messages", conversationHistory.size());
+
+        try {
+            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // Build multi-turn contents array from conversation history
+            List<Map<String, Object>> contents = new ArrayList<>();
+            for (Map<String, String> msg : conversationHistory) {
+                String role = msg.get("role");
+                String text = msg.get("content");
+                contents.add(Map.of(
+                        "role", role,
+                        "parts", List.of(Map.of("text", text))
+                ));
+            }
+
+            Map<String, Object> requestBody = Map.of(
+                    "contents", contents,
+                    "systemInstruction", Map.of(
+                            "parts", List.of(Map.of("text", systemPrompt))
+                    ),
+                    "generationConfig", Map.of(
+                            "temperature", 0.4
+                    )
+            );
+
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+            String responseJson = restTemplate.postForObject(url, request, String.class);
+
+            JsonNode root = objectMapper.readTree(responseJson);
+            String content = root.path("candidates").get(0)
+                    .path("content").path("parts").get(0)
+                    .path("text").asText();
+
+            log.info("Received chat response from Gemini");
+            return content.trim();
+
+        } catch (Exception e) {
+            log.error("Gemini chat API call failed: {}", e.getMessage(), e);
+            throw new RuntimeException("AI chat failed: " + e.getMessage());
+        }
+    }
+
+    /**
      Builds a detailed prompt with all the prediction data for the AI to analyze.
      */
     private String buildPrompt(List<ComparisonResult> predictions, String riskTolerance,

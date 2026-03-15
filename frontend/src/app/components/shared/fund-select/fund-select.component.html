@@ -1,0 +1,41 @@
+<div class="form-group multi-select-container">
+  <label>Select Fund (max {{ maxSelections }})</label>
+
+  <input
+    class="dropdown-search-input"
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Search by name or ticker..."
+    (focus)="dropdownOpen = true"
+    (click)="$event.stopPropagation()"
+  />
+
+  <div class="dropdown-panel" *ngIf="dropdownOpen">
+    <div
+      class="dropdown-item"
+      *ngFor="let fund of filteredFunds"
+      (click)="!isDisabled(fund.symbol) && toggleFund(fund.symbol)"
+      [class.disabled]="isDisabled(fund.symbol)"
+      [class.selected]="isSelected(fund.symbol)"
+    >
+      <input
+        type="checkbox"
+        [checked]="isSelected(fund.symbol)"
+        [disabled]="isDisabled(fund.symbol)"
+        (click)="$event.stopPropagation()"
+        (change)="toggleFund(fund.symbol)"
+      />
+      <span class="dropdown-item-label">{{ fund.name }}</span>
+    </div>
+    <div class="dropdown-no-results" *ngIf="filteredFunds.length === 0">
+      No funds match your search.
+    </div>
+  </div>
+</div>
+
+<div class="selected-chips" *ngIf="selectedTickers.length > 0">
+  <span class="chip" *ngFor="let ticker of selectedTickers">
+    {{ ticker }}
+    <span class="chip-remove" (click)="toggleFund(ticker)">&times;</span>
+  </span>
+</div>

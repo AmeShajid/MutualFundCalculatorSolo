@@ -19,6 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import com.ameshajid.mutualfund.model.PortfolioRequest;
+import com.ameshajid.mutualfund.model.PortfolioChatRequest;
+import com.ameshajid.mutualfund.model.PortfolioChatResponse;
 import com.ameshajid.mutualfund.model.ComparisonResult;
 import com.ameshajid.mutualfund.model.PredictionResponse;
 import com.ameshajid.mutualfund.model.PortfolioRecommendation;
@@ -146,6 +148,40 @@ public class PortfolioController {
 
         } catch (Exception e) {
             log.error("Portfolio optimization failed", e);
+            return ResponseEntity.status(503).body(new PredictionController.ErrorResponse(
+                    "Service error", e.getMessage()));
+        }
+    }
+
+    /**
+     Handles follow-up chat questions about the portfolio recommendation.
+     */
+    @PostMapping("/chat")
+    public ResponseEntity<?> chat(@RequestBody PortfolioChatRequest request) {
+
+        if (request.getConversationHistory() == null || request.getConversationHistory().isEmpty()) {
+            return ResponseEntity.badRequest().body(new PredictionController.ErrorResponse(
+                    "Invalid input", "Conversation history is required"));
+        }
+
+        log.info("Portfolio chat request with {} messages", request.getConversationHistory().size());
+
+        try {
+            String systemPrompt = String.format(
+                    "You are a CAPM-based portfolio advisor. The user is investing $%.2f over %.0f years " +
+                    "with %s risk tolerance in these funds: %s. " +
+                    "Answer follow-up questions about the portfolio you recommended. " +
+                    "Be concise and helpful. Do not use markdown formatting.",
+                    request.getPrincipal(), request.getYears(),
+                    request.getRiskTolerance(),
+                    String.join(", ", request.getTickers())
+            );
+
+            String reply = geminiService.chat(request.getConversationHistory(), systemPrompt);
+            return ResponseEntity.ok(new PortfolioChatResponse(reply));
+
+        } catch (Exception e) {
+            log.error("Portfolio chat failed", e);
             return ResponseEntity.status(503).body(new PredictionController.ErrorResponse(
                     "Service error", e.getMessage()));
         }

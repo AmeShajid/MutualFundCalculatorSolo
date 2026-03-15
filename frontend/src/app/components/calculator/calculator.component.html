@@ -1,80 +1,27 @@
-<!-- This is the outer page wrapper that centers everything on the screen -->
 <div class="page-wrapper">
 
-  <!-- This is the main calculator card container -->
   <div class="calculator-card">
 
-    <!-- This is the dark header bar at the top of the card -->
     <div class="card-header">
-      <!-- Title text shown in the header -->
       <h2>Investment Calculator</h2>
     </div>
 
-    <!-- This is the white body of the card containing the form -->
     <div class="card-body">
 
-      <!-- Show this error box only if errorMessage has text in it -->
       <div class="error-box" *ngIf="errorMessage">
-        <!-- Display the actual error message text -->
         {{ errorMessage }}
       </div>
 
-      <!-- The form row holds all inputs side by side -->
       <div class="form-row">
 
-        <!-- First column: the multi-select fund dropdown -->
-        <div class="form-group multi-select-container">
-          <!-- Label above the dropdown -->
-          <label>Select Fund (max {{ maxSelections }})</label>
+        <app-fund-select
+          [funds]="funds"
+          [(selectedTickers)]="selectedTickers"
+          [maxSelections]="maxSelections"
+        ></app-fund-select>
 
-          <!-- Custom dropdown button that shows selection state -->
-          <button
-            class="dropdown-toggle"
-            type="button"
-            (click)="toggleDropdown()"
-          >
-            <span class="dropdown-label">{{ getDropdownLabel() }}</span>
-            <span class="dropdown-arrow">&#9662;</span>
-          </button>
-
-          <!-- Dropdown panel with checkboxes — only visible when open -->
-          <div class="dropdown-panel" *ngIf="dropdownOpen">
-            <!-- Search input to filter funds by name or ticker -->
-            <div class="dropdown-search">
-              <input type="text" [(ngModel)]="searchText"
-                placeholder="Search by name or ticker..." (click)="$event.stopPropagation()" />
-            </div>
-            <div
-              class="dropdown-item"
-              *ngFor="let fund of filteredFunds"
-              (click)="!isDisabled(fund.symbol) && toggleFund(fund.symbol)"
-              [class.disabled]="isDisabled(fund.symbol)"
-              [class.selected]="isSelected(fund.symbol)"
-            >
-              <!-- Checkbox for each fund -->
-              <input
-                type="checkbox"
-                [checked]="isSelected(fund.symbol)"
-                [disabled]="isDisabled(fund.symbol)"
-                (click)="$event.stopPropagation()"
-                (change)="toggleFund(fund.symbol)"
-              />
-              <!-- Fund name label -->
-              <span class="dropdown-item-label">{{ fund.name }}</span>
-            </div>
-            <!-- No results message -->
-            <div class="dropdown-no-results" *ngIf="filteredFunds.length === 0">
-              No funds match your search.
-            </div>
-          </div>
-        </div>
-
-        <!-- Second column: initial investment input -->
         <div class="form-group">
-          <!-- Label above the input -->
           <label for="principalInput">Initial Investment Amount</label>
-
-          <!-- [(ngModel)] syncs this input with our principal variable -->
           <input
             id="principalInput"
             type="number"
@@ -84,12 +31,8 @@
           />
         </div>
 
-        <!-- Third column: time horizon input -->
         <div class="form-group">
-          <!-- Label above the input -->
           <label for="yearsInput">Time Horizon (in years)</label>
-
-          <!-- [(ngModel)] syncs this input with our years variable -->
           <input
             id="yearsInput"
             type="number"
@@ -99,42 +42,23 @@
           />
         </div>
 
-        <!-- Calculate button column -->
         <div class="form-group button-group">
-          <!-- Blank label to align button with the inputs -->
           <label></label>
-
-          <!-- (click) calls onCalculate() when user clicks this button -->
-          <!-- [disabled] grays out the button while we wait for backend -->
           <button
             class="calculate-btn"
             (click)="onCalculate()"
             [disabled]="isLoading"
           >
-            <!-- Show different text depending on whether we are loading -->
             {{ isLoading ? 'Calculating...' : 'Calculate' }}
           </button>
         </div>
 
       </div>
-      <!-- end form-row -->
 
-      <!-- Selected funds chips — shows which funds are selected below the form -->
-      <div class="selected-chips" *ngIf="selectedTickers.length > 0">
-        <span class="chip" *ngFor="let ticker of selectedTickers">
-          {{ ticker }}
-          <!-- X button to remove this fund from selection -->
-          <span class="chip-remove" (click)="toggleFund(ticker)">&times;</span>
-        </span>
-      </div>
-
-      <!-- Results section — only shows if we have comparison results -->
       <div class="results-section" *ngIf="comparisonResult">
 
-        <!-- Results section header -->
         <h3 class="results-title">Prediction Results</h3>
 
-        <!-- Comparison table -->
         <div class="table-wrapper">
           <table class="comparison-table">
             <thead>
@@ -148,33 +72,27 @@
               </tr>
             </thead>
             <tbody>
-              <!-- One row per fund result -->
               <tr
                 *ngFor="let result of comparisonResult.results"
                 [class.highlight-row]="result.prediction && result.prediction.futureValue === getHighestFutureValue() && comparisonResult.results.length > 1"
                 [class.error-row]="result.error"
               >
-                <!-- Fund name column -->
                 <td class="fund-name-cell">
                   <span class="fund-name">{{ result.fundName }}</span>
                   <span class="fund-ticker">{{ result.ticker }}</span>
                 </td>
 
-                <!-- If prediction succeeded, show the values -->
                 <ng-container *ngIf="result.prediction">
                   <td class="value-cell">${{ result.prediction.futureValue | number:'1.2-2' }}</td>
                   <td class="value-cell">{{ result.prediction.beta | number:'1.4-4' }}</td>
                   <td class="value-cell">{{ result.prediction.expectedReturn * 100 | number:'1.2-2' }}%</td>
                   <td class="value-cell">{{ result.prediction.riskFreeRate * 100 | number:'1.2-2' }}%</td>
                   <td class="status-cell">
-                    <!-- Show warning icon if this fund has a warning -->
                     <span class="warning-badge" *ngIf="result.prediction.warning" [title]="result.prediction.warning">&#9888; Warning</span>
-                    <!-- Show success if no warning -->
                     <span class="success-badge" *ngIf="!result.prediction.warning">&#10003; OK</span>
                   </td>
                 </ng-container>
 
-                <!-- If prediction failed, show error across columns -->
                 <ng-container *ngIf="result.error">
                   <td colspan="4" class="error-cell">{{ result.error }}</td>
                   <td class="status-cell">
@@ -186,7 +104,6 @@
           </table>
         </div>
 
-        <!-- Show warning details below the table for any funds with warnings -->
         <div *ngFor="let result of comparisonResult.results">
           <div class="warning-box" *ngIf="result.prediction && result.prediction.warning">
             <strong>{{ result.ticker }}:</strong> {{ result.prediction.warning }}
@@ -194,33 +111,26 @@
         </div>
 
       </div>
-      <!-- end results-section -->
 
     </div>
-    <!-- end card-body -->
 
   </div>
-  <!-- end calculator-card -->
 
   <!-- AI Portfolio Optimizer card -->
   <div class="optimizer-card">
 
-    <!-- Header for the optimizer card -->
     <div class="card-header optimizer-header">
       <h2>AI Portfolio Optimizer</h2>
     </div>
 
     <div class="card-body">
 
-      <!-- Show portfolio error if there is one -->
       <div class="error-box" *ngIf="portfolioError">
         {{ portfolioError }}
       </div>
 
-      <!-- Optimizer controls row -->
       <div class="optimizer-row">
 
-        <!-- Risk tolerance dropdown -->
         <div class="form-group">
           <label for="riskSelect">Risk Tolerance</label>
           <select id="riskSelect" [(ngModel)]="riskTolerance">
@@ -230,7 +140,6 @@
           </select>
         </div>
 
-        <!-- Optimize button -->
         <div class="form-group button-group">
           <label></label>
           <button
@@ -244,22 +153,18 @@
 
       </div>
 
-      <!-- Info text -->
       <p class="optimizer-info">
         Uses the funds, amount, and years from the calculator above. The AI will analyze your CAPM predictions and suggest an optimal allocation based on your risk tolerance.
       </p>
 
-      <!-- Loading state -->
       <div class="loading-box" *ngIf="isPortfolioLoading">
         Analyzing your portfolio with AI... This may take a few seconds.
       </div>
 
-      <!-- Portfolio results section -->
       <div class="results-section" *ngIf="portfolioResult">
 
         <h3 class="results-title">AI-Recommended Allocation</h3>
 
-        <!-- Allocation table -->
         <div class="table-wrapper">
           <table class="comparison-table">
             <thead>
@@ -274,54 +179,41 @@
             </thead>
             <tbody>
               <tr *ngFor="let alloc of portfolioResult.allocations">
-                <!-- Fund name column -->
                 <td class="fund-name-cell">
                   <span class="fund-name">{{ alloc.fundName }}</span>
                   <span class="fund-ticker">{{ alloc.ticker }}</span>
                 </td>
-                <!-- Allocation percentage -->
                 <td class="value-cell allocation-cell">
                   <span class="allocation-bar" [style.width.%]="alloc.allocationPercentage"></span>
                   {{ alloc.allocationPercentage | number:'1.1-1' }}%
                 </td>
-                <!-- Dollar amount allocated -->
                 <td class="value-cell">${{ alloc.allocatedAmount | number:'1.2-2' }}</td>
-                <!-- Projected future value -->
                 <td class="value-cell">${{ alloc.projectedValue | number:'1.2-2' }}</td>
-                <!-- Beta -->
                 <td class="value-cell">{{ alloc.beta | number:'1.4-4' }}</td>
-                <!-- Expected return -->
                 <td class="value-cell">{{ alloc.expectedReturn * 100 | number:'1.2-2' }}%</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- AI Reasoning box -->
         <div class="reasoning-box">
           <h4>AI Reasoning</h4>
           <p>{{ portfolioResult.reasoning }}</p>
         </div>
 
-        <!-- Risk Assessment box -->
         <div class="risk-box">
           <h4>Risk Assessment</h4>
           <p>{{ portfolioResult.riskAssessment }}</p>
         </div>
 
-        <!-- Disclaimer -->
         <div class="disclaimer-box">
           <p>{{ portfolioResult.disclaimer }}</p>
         </div>
 
       </div>
-      <!-- end results-section -->
 
     </div>
-    <!-- end card-body -->
 
   </div>
-  <!-- end optimizer-card -->
 
 </div>
-<!-- end page-wrapper -->

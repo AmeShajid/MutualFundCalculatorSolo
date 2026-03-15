@@ -1,0 +1,116 @@
+/* Container for the custom multi-select dropdown */
+.multi-select-container {
+  position: relative;
+}
+
+/* Search input that serves as the dropdown trigger */
+.dropdown-search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.dropdown-search-input:focus {
+  outline: none;
+  border-color: var(--color-blue);
+}
+
+/* Dropdown panel */
+.dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  gap: 8px;
+}
+
+.dropdown-item:hover:not(.disabled) {
+  background-color: #f0f7ff;
+}
+
+.dropdown-item.selected {
+  background-color: var(--color-blue-light);
+}
+
+.dropdown-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-item input[type="checkbox"] {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.dropdown-item.disabled input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+/* Selected fund chips */
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--color-blue-light);
+  border: 1px solid var(--color-blue-border);
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.chip-remove {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  line-height: 1;
+}
+
+.chip-remove:hover {
+  color: var(--color-error);
+}

@@ -1,20 +1,6 @@
-:host {
-  --color-navy: #1a2e4a;
-  --color-blue: #1a6fba;
-  --color-blue-hover: #155fa0;
-  --color-green: #28a745;
-  --color-green-hover: #218838;
-  --color-green-dark: #1a4a2e;
-  --color-error: #cc0000;
-  --color-warning: #856404;
-  --color-bg: #f0f2f5;
-  --color-blue-light: #e8f0fe;
-  --color-blue-border: #b8d4f0;
-}
-
-/* Centers the cards on the page with a light gray background, stacked vertically */
+/* Centers the cards on the page, stacked vertically */
 .page-wrapper {
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   background-color: var(--color-bg);
   display: flex;
   flex-direction: column;
@@ -28,41 +14,10 @@
 .calculator-card {
   background: white;
   border-radius: 8px;
-  /* Subtle shadow to make the card pop off the background */
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1100px;
   overflow: visible;
-}
-
-/* The dark navy header bar at the top of the card */
-.card-header {
-  background-color: var(--color-navy);
-  padding: 16px 24px;
-}
-
-/* The title text inside the header */
-.card-header h2 {
-  color: white;
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-/* The white body section below the header */
-.card-body {
-  padding: 24px;
-}
-
-/* Red error box shown when something goes wrong */
-.error-box {
-  background-color: #fff0f0;
-  border: 1px solid #ffcccc;
-  color: var(--color-error);
-  padding: 12px 16px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  font-size: 14px;
 }
 
 /* Row that holds all form inputs side by side */
@@ -73,39 +28,6 @@
   flex-wrap: wrap;
   position: relative;
   z-index: 10;
-}
-
-/* Each individual input column */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 160px;
-}
-
-/* Label text above each input */
-.form-group label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-/* Styles shared by text inputs */
-.form-group input {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #333;
-  background-color: white;
-  height: 40px;
-}
-
-/* Highlight the input when the user clicks on it */
-.form-group input:focus {
-  outline: none;
-  border-color: var(--color-blue);
 }
 
 /* The column that holds the calculate button */
@@ -127,194 +49,16 @@
   white-space: nowrap;
 }
 
-/* Slightly darker blue when hovering over the button */
 .calculate-btn:hover:not(:disabled) {
   background-color: var(--color-blue-hover);
 }
 
-/* Gray out the button while we are waiting for the backend */
 .calculate-btn:disabled {
   background-color: #999;
   cursor: not-allowed;
 }
 
-/* ==================== MULTI-SELECT DROPDOWN ==================== */
-
-/* Container for the custom multi-select dropdown — positioned relative so the panel can be absolute */
-.multi-select-container {
-  position: relative;
-}
-
-/* The button that opens/closes the dropdown */
-.dropdown-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #333;
-  background-color: white;
-  height: 40px;
-  cursor: pointer;
-  text-align: left;
-}
-
-/* Highlight the dropdown button when focused */
-.dropdown-toggle:hover {
-  border-color: var(--color-blue);
-}
-
-/* The label text inside the dropdown button */
-.dropdown-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
-/* The small arrow icon on the right side of the dropdown button */
-.dropdown-arrow {
-  font-size: 12px;
-  color: #666;
-  margin-left: 8px;
-}
-
-/* The dropdown panel that appears below the button with checkboxes */
-.dropdown-panel {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  max-height: 300px;
-  overflow-y: auto;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  z-index: 100;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Search input container at the top of the dropdown */
-.dropdown-search {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 8px;
-  z-index: 1;
-}
-
-.dropdown-search input {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 13px;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.dropdown-search input:focus {
-  outline: none;
-  border-color: var(--color-blue);
-}
-
-/* No results message */
-.dropdown-no-results {
-  padding: 16px;
-  text-align: center;
-  color: #999;
-  font-size: 13px;
-}
-
-/* Each item (row) inside the dropdown panel */
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 13px;
-  color: #333;
-  gap: 8px;
-}
-
-/* Highlight item on hover */
-.dropdown-item:hover:not(.disabled) {
-  background-color: #f0f7ff;
-}
-
-/* Style for selected items */
-.dropdown-item.selected {
-  background-color: var(--color-blue-light);
-}
-
-/* Style for disabled items (max reached) */
-.dropdown-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* The fund name text inside each dropdown item */
-.dropdown-item-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Checkbox styling inside dropdown */
-.dropdown-item input[type="checkbox"] {
-  flex-shrink: 0;
-  cursor: pointer;
-}
-
-.dropdown-item.disabled input[type="checkbox"] {
-  cursor: not-allowed;
-}
-
-/* ==================== SELECTED FUND CHIPS ==================== */
-
-/* Container for the selected fund chips shown below the form */
-.selected-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-/* Individual chip showing a selected fund ticker */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background-color: var(--color-blue-light);
-  border: 1px solid var(--color-blue-border);
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--color-navy);
-}
-
-/* The X button to remove a chip */
-.chip-remove {
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  color: #666;
-  line-height: 1;
-}
-
-.chip-remove:hover {
-  color: var(--color-error);
-}
-
-/* ==================== WARNING BOX ==================== */
-
-/* Yellow warning box shown when CAPM may not be reliable for this fund type */
+/* Yellow warning box */
 .warning-box {
   background-color: #fff8e6;
   border: 1px solid #ffe0a3;
@@ -326,16 +70,13 @@
   line-height: 1.5;
 }
 
-/* ==================== RESULTS SECTION ==================== */
-
-/* The results section that appears below the form after calculating */
+/* Results section */
 .results-section {
   margin-top: 32px;
   border-top: 1px solid #eee;
   padding-top: 24px;
 }
 
-/* The "Prediction Results" heading */
 .results-title {
   font-size: 16px;
   font-weight: 600;
@@ -343,133 +84,8 @@
   margin: 0 0 16px 0;
 }
 
-/* ==================== COMPARISON TABLE ==================== */
-
-/* Wrapper allows horizontal scrolling on small screens */
-.table-wrapper {
-  overflow-x: auto;
-}
-
-/* The comparison table */
-.comparison-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-/* Table header cells */
-.comparison-table thead th {
-  background-color: var(--color-navy);
-  color: white;
-  padding: 12px 16px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-/* Table body rows */
-.comparison-table tbody tr {
-  border-bottom: 1px solid #e0e0e0;
-  transition: background-color 0.2s;
-}
-
-/* Hover effect on table rows */
-.comparison-table tbody tr:hover {
-  background-color: #f8f9fa;
-}
-
-/* Highlight row for the best performer (highest future value) */
-.comparison-table tbody tr.highlight-row {
-  background-color: #f0f7ff;
-}
-
-.comparison-table tbody tr.highlight-row td:first-child {
-  border-left: 4px solid var(--color-blue);
-}
-
-/* Error row styling */
-.comparison-table tbody tr.error-row {
-  background-color: #fff8f8;
-}
-
-/* Fund name cell — shows name and ticker stacked */
-.fund-name-cell {
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* The fund's full name */
-.fund-name {
-  font-weight: 600;
-  color: var(--color-navy);
-  font-size: 13px;
-}
-
-/* The fund's ticker symbol shown below the name */
-.fund-ticker {
-  font-size: 11px;
-  color: #888;
-  font-weight: 500;
-}
-
-/* Standard value cells */
-.value-cell {
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #333;
-  white-space: nowrap;
-}
-
-/* Status cell */
-.status-cell {
-  padding: 12px 16px;
-  white-space: nowrap;
-}
-
-/* Error cell that spans across value columns */
-.error-cell {
-  padding: 12px 16px;
-  color: var(--color-error);
-  font-size: 13px;
-  font-style: italic;
-}
-
-/* ==================== STATUS BADGES ==================== */
-
-/* Green success badge */
-.success-badge {
-  color: var(--color-green);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-/* Yellow warning badge */
-.warning-badge {
-  color: var(--color-warning);
-  background-color: #fff8e6;
-  border: 1px solid #ffe0a3;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: help;
-}
-
-/* Red error badge */
-.error-badge {
-  color: var(--color-error);
-  font-size: 12px;
-  font-weight: 600;
-}
-
 /* ==================== AI PORTFOLIO OPTIMIZER ==================== */
 
-/* The optimizer card reuses calculator-card styling */
 .optimizer-card {
   background: white;
   border-radius: 8px;
@@ -479,12 +95,10 @@
   overflow: visible;
 }
 
-/* Green-tinted header for the optimizer card to distinguish from the calculator */
 .optimizer-header {
   background-color: var(--color-green-dark);
 }
 
-/* Row that holds the risk dropdown and optimize button side by side */
 .optimizer-row {
   display: flex;
   gap: 16px;
@@ -492,7 +106,6 @@
   flex-wrap: wrap;
 }
 
-/* Info text below the optimizer controls */
 .optimizer-info {
   font-size: 13px;
   color: #777;
@@ -500,25 +113,6 @@
   margin-bottom: 0;
 }
 
-/* Select dropdown styling to match existing inputs */
-select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #333;
-  background-color: white;
-  height: 40px;
-  cursor: pointer;
-  width: 100%;
-}
-
-select:focus {
-  outline: none;
-  border-color: var(--color-blue);
-}
-
-/* Green optimize button to distinguish from blue Calculate */
 .optimize-btn {
   background-color: var(--color-green);
   color: white;
@@ -541,19 +135,6 @@ select:focus {
   cursor: not-allowed;
 }
 
-/* Loading indicator box */
-.loading-box {
-  background-color: var(--color-blue-light);
-  border: 1px solid var(--color-blue-border);
-  color: var(--color-navy);
-  padding: 16px;
-  border-radius: 4px;
-  margin-top: 20px;
-  font-size: 14px;
-  text-align: center;
-}
-
-/* Allocation percentage cell with visual bar */
 .allocation-cell {
   position: relative;
 }
@@ -567,7 +148,6 @@ select:focus {
   border-right: 2px solid var(--color-green);
 }
 
-/* AI reasoning box */
 .reasoning-box {
   background-color: #f0f7ff;
   border: 1px solid var(--color-blue-border);
@@ -590,7 +170,6 @@ select:focus {
   margin: 0;
 }
 
-/* Risk assessment box */
 .risk-box {
   background-color: #fff8e6;
   border: 1px solid #ffe0a3;
@@ -613,7 +192,6 @@ select:focus {
   margin: 0;
 }
 
-/* Disclaimer box */
 .disclaimer-box {
   background-color: #f8f8f8;
   border: 1px solid #ddd;

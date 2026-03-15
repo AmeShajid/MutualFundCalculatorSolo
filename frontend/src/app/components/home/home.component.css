@@ -1,0 +1,131 @@
+.home-wrapper {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  gap: 40px;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  max-width: 700px;
+  padding: 40px 20px;
+}
+
+.hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0 0 16px 0;
+}
+
+.hero-description {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.7;
+  margin: 0 0 32px 0;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--color-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-blue-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-green);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-green-hover);
+}
+
+/* Info Cards */
+.info-cards {
+  display: flex;
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.info-card {
+  flex: 1;
+  min-width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 28px 24px;
+}
+
+.info-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0 0 12px 0;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Formula Section */
+.formula-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+
+.formula-section h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0 0 20px 0;
+}
+
+.formula {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-blue);
+  margin-bottom: 20px;
+  font-family: 'Georgia', serif;
+}
+
+.formula-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  font-size: 13px;
+  color: #666;
+}
