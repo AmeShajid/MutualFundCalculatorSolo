@@ -1,0 +1,105 @@
+<div class="sidebar-inner">
+  <span class="section-label">BUILD PORTFOLIO</span>
+
+  <!-- Search -->
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        placeholder="Search funds..."
+        (focus)="onSearchFocus()"
+      />
+    </div>
+
+    <div class="dropdown" *ngIf="showDropdown && availableFunds.length > 0">
+      <div
+        class="dropdown-row"
+        *ngFor="let fund of availableFunds"
+        (click)="onAddFund(fund)"
+      >
+        <div class="dropdown-info">
+          <span class="dropdown-ticker">{{ fund.symbol }}</span>
+          <span class="dropdown-name">{{ fund.name }}</span>
+        </div>
+        <button class="add-btn" [disabled]="selectedFunds.length >= 5">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected Funds -->
+  <span class="section-label">SELECTED FUNDS</span>
+  <div class="selected-funds">
+    <div class="empty-state" *ngIf="selectedFunds.length === 0">
+      <span>Add funds above to get started</span>
+    </div>
+    <div class="fund-row" *ngFor="let fund of selectedFunds">
+      <span class="fund-color-dot" [style.background-color]="fund.color"></span>
+      <div class="fund-info">
+        <span class="fund-ticker">{{ fund.symbol }}</span>
+        <span class="fund-name">{{ fund.name }}</span>
+      </div>
+      <button class="remove-btn" (click)="onRemoveFund(fund.symbol)">&times;</button>
+    </div>
+  </div>
+
+  <!-- Risk Tolerance -->
+  <span class="section-label">RISK TOLERANCE</span>
+  <div class="risk-toggles">
+    <button
+      class="risk-btn"
+      [class.active]="riskTolerance === 'conservative'"
+      (click)="onRiskChange('conservative')"
+    >Conservative</button>
+    <button
+      class="risk-btn"
+      [class.active]="riskTolerance === 'moderate'"
+      (click)="onRiskChange('moderate')"
+    >Moderate</button>
+    <button
+      class="risk-btn"
+      [class.active]="riskTolerance === 'aggressive'"
+      (click)="onRiskChange('aggressive')"
+    >Aggressive</button>
+  </div>
+
+  <!-- Investment Amount -->
+  <div class="input-group">
+    <label for="principalInput">Investment Amount</label>
+    <input
+      id="principalInput"
+      type="number"
+      [ngModel]="principal"
+      (ngModelChange)="onPrincipalChange($event)"
+      placeholder="$10,000"
+      min="0"
+    />
+  </div>
+
+  <!-- Time Horizon -->
+  <div class="input-group">
+    <label for="yearsInput">Time Horizon (years)</label>
+    <input
+      id="yearsInput"
+      type="number"
+      [ngModel]="years"
+      (ngModelChange)="onYearsChange($event)"
+      placeholder="10"
+      min="1"
+    />
+  </div>
+
+  <!-- Generate Button -->
+  <button
+    class="generate-btn"
+    (click)="onGenerate()"
+    [disabled]="selectedFunds.length < 2 || isGenerating"
+  >
+    <span class="spinner" *ngIf="isGenerating"></span>
+    {{ isGenerating ? 'Generating...' : 'Generate Portfolio' }}
+  </button>
+</div>

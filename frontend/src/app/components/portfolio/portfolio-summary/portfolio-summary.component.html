@@ -1,0 +1,48 @@
+<div class="summary-bar">
+  <ng-container *ngIf="!recommendation">
+    <div class="summary-empty">
+      <span class="empty-value">$0.00</span>
+      <span class="empty-hint">Configure your portfolio and click Generate to see projections</span>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="recommendation">
+    <div class="summary-main">
+      <div class="primary-value">
+        <span class="value-label">Projected Value</span>
+        <span class="value-amount">${{ totalProjected | number:'1.2-2' }}</span>
+      </div>
+      <div class="gain-info">
+        <span class="gain-amount" [class.positive]="totalGain >= 0">
+          {{ totalGain >= 0 ? '+' : '' }}${{ totalGain | number:'1.2-2' }}
+        </span>
+        <span class="gain-percent" [class.positive]="returnPercent >= 0">
+          ({{ returnPercent | number:'1.1-1' }}%)
+        </span>
+      </div>
+    </div>
+
+    <div class="stat-chips">
+      <div class="stat-chip">
+        <span class="chip-label">Invested</span>
+        <span class="chip-value">${{ principal | number:'1.0-0' }}</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-label">Gain</span>
+        <span class="chip-value positive">${{ totalGain | number:'1.0-0' }}</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-label">Return</span>
+        <span class="chip-value positive">{{ returnPercent | number:'1.1-1' }}%</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-label">Horizon</span>
+        <span class="chip-value">{{ years }}yr</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-label">Risk</span>
+        <span class="chip-value risk-value">{{ recommendation.riskTolerance }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

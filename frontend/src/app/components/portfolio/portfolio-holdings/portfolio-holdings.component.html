@@ -1,0 +1,41 @@
+<div class="holdings-panel">
+  <ng-container *ngIf="!recommendation">
+    <div class="holdings-empty">
+      <svg class="briefcase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+        <path d="M2 12h20"/>
+      </svg>
+      <span>Your holdings will appear after generating a portfolio</span>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="recommendation">
+    <span class="section-label">HOLDINGS</span>
+
+    <div class="holdings-list">
+      <div class="holding-row" *ngFor="let alloc of recommendation.allocations">
+        <div class="color-bar" [style.background-color]="getColor(alloc.ticker)"></div>
+        <div class="holding-info">
+          <div class="holding-header">
+            <span class="holding-ticker">{{ alloc.ticker }}</span>
+            <span class="holding-name">{{ alloc.fundName }}</span>
+          </div>
+          <div class="holding-values">
+            <span class="holding-alloc">{{ alloc.allocationPercentage | number:'1.1-1' }}%</span>
+            <span class="holding-amount">${{ alloc.allocatedAmount | number:'1.2-2' }}</span>
+            <span class="holding-projected">${{ alloc.projectedValue | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <div class="total-label">Total Portfolio</div>
+      <div class="total-values">
+        <span class="total-principal">${{ recommendation.principal | number:'1.2-2' }}</span>
+        <span class="total-projected">${{ totalProjected | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>
