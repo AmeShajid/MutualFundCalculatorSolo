@@ -7,7 +7,7 @@
     <!-- This is the dark header bar at the top of the card -->
     <div class="card-header">
       <!-- Title text shown in the header -->
-      <h2>Mutual Fund Calculator</h2>
+      <h2>Investment Calculator</h2>
     </div>
 
     <!-- This is the white body of the card containing the form -->
@@ -25,7 +25,7 @@
         <!-- First column: the multi-select fund dropdown -->
         <div class="form-group multi-select-container">
           <!-- Label above the dropdown -->
-          <label>Mutual Fund (max {{ maxSelections }})</label>
+          <label>Select Fund (max {{ maxSelections }})</label>
 
           <!-- Custom dropdown button that shows selection state -->
           <button
@@ -39,9 +39,14 @@
 
           <!-- Dropdown panel with checkboxes — only visible when open -->
           <div class="dropdown-panel" *ngIf="dropdownOpen">
+            <!-- Search input to filter funds by name or ticker -->
+            <div class="dropdown-search">
+              <input type="text" [(ngModel)]="searchText"
+                placeholder="Search by name or ticker..." (click)="$event.stopPropagation()" />
+            </div>
             <div
               class="dropdown-item"
-              *ngFor="let fund of funds"
+              *ngFor="let fund of filteredFunds"
               (click)="!isDisabled(fund.symbol) && toggleFund(fund.symbol)"
               [class.disabled]="isDisabled(fund.symbol)"
               [class.selected]="isSelected(fund.symbol)"
@@ -56,6 +61,10 @@
               />
               <!-- Fund name label -->
               <span class="dropdown-item-label">{{ fund.name }}</span>
+            </div>
+            <!-- No results message -->
+            <div class="dropdown-no-results" *ngIf="filteredFunds.length === 0">
+              No funds match your search.
             </div>
           </div>
         </div>

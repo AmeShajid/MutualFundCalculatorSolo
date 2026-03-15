@@ -65,6 +65,9 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   // Controls whether the multi-select dropdown is open or closed
   dropdownOpen: boolean = false;
 
+  // Search text for filtering the fund dropdown
+  searchText: string = '';
+
   // Maximum number of funds that can be selected for comparison
   maxSelections: number = 5;
 
@@ -118,9 +121,23 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Returns funds filtered by the search text (matches name or symbol)
+  get filteredFunds(): Fund[] {
+    if (!this.searchText) {
+      return this.funds;
+    }
+    const search = this.searchText.toLowerCase();
+    return this.funds.filter(f =>
+      f.name.toLowerCase().includes(search) || f.symbol.toLowerCase().includes(search)
+    );
+  }
+
   // Toggles the multi-select dropdown open/closed
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
+    if (!this.dropdownOpen) {
+      this.searchText = '';
+    }
   }
 
   // Checks if a fund is currently selected
@@ -164,6 +181,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     // Check if the click was outside the dropdown container
     if (!target.closest('.multi-select-container')) {
       this.dropdownOpen = false;
+      this.searchText = '';
     }
   }
 

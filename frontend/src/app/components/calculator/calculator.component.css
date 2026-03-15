@@ -188,7 +188,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  max-height: 250px;
+  max-height: 300px;
   overflow-y: auto;
   background-color: white;
   border: 1px solid #ccc;
@@ -196,6 +196,39 @@
   border-radius: 0 0 4px 4px;
   z-index: 100;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Search input container at the top of the dropdown */
+.dropdown-search {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px;
+  z-index: 1;
+}
+
+.dropdown-search input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.dropdown-search input:focus {
+  outline: none;
+  border-color: var(--color-blue);
+}
+
+/* No results message */
+.dropdown-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
 }
 
 /* Each item (row) inside the dropdown panel */

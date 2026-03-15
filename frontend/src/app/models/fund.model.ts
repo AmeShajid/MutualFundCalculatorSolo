@@ -5,4 +5,7 @@ export interface Fund {
 
   //The full ticker name
   name: string;
+
+  //Fund type: MUTUAL_FUND or ETF
+  type: string;
 }

@@ -51,6 +51,18 @@ public class FundService {
         list.add(new Fund("SNAXX", "Schwab Prime Advantage Money Market Fund;Ultra"));
         list.add(new Fund("PIMIX", "PIMCO Income Fund;Institutional"));
 
+        // ETFs
+        list.add(new Fund("SPY", "SPDR S&P 500 ETF Trust", "ETF"));
+        list.add(new Fund("QQQ", "Invesco QQQ Trust", "ETF"));
+        list.add(new Fund("VTI", "Vanguard Total Stock Market ETF", "ETF"));
+        list.add(new Fund("VOO", "Vanguard S&P 500 ETF", "ETF"));
+        list.add(new Fund("IVV", "iShares Core S&P 500 ETF", "ETF"));
+        list.add(new Fund("ARKK", "ARK Innovation ETF", "ETF"));
+        list.add(new Fund("VGT", "Vanguard Information Technology ETF", "ETF"));
+        list.add(new Fund("SCHD", "Schwab US Dividend Equity ETF", "ETF"));
+        list.add(new Fund("BND", "Vanguard Total Bond Market ETF", "ETF"));
+        list.add(new Fund("GLD", "SPDR Gold Shares", "ETF"));
+
         //Store as unmodifiable so it can't be accidentally changed
         this.funds = List.copyOf(list);
     }
