@@ -6,18 +6,18 @@ import { FormsModule } from '@angular/forms';
 
 import { FundService } from '../../services/fund.service';
 import { PredictionService } from '../../services/prediction.service';
-import { PortfolioService } from '../../services/portfolio.service';
 import { Fund } from '../../models/fund.model';
 import { ComparisonResponse } from '../../models/comparison-response.model';
-import { PortfolioRecommendation } from '../../models/portfolio-recommendation.model';
 import { FundSelectComponent } from '../shared/fund-select/fund-select.component';
+import { ResultsTableComponent } from './results-table/results-table.component';
+import { OptimizerComponent } from './optimizer/optimizer.component';
 
 @Component({
   selector: 'app-calculator',
   standalone: true,
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.css'],
-  imports: [CommonModule, FormsModule, FundSelectComponent]
+  imports: [CommonModule, FormsModule, FundSelectComponent, ResultsTableComponent, OptimizerComponent]
 })
 export class CalculatorComponent implements OnInit, OnDestroy {
 
@@ -32,15 +32,9 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   maxSelections: number = 5;
 
-  riskTolerance: string = 'moderate';
-  portfolioResult: PortfolioRecommendation | null = null;
-  isPortfolioLoading: boolean = false;
-  portfolioError: string = '';
-
   constructor(
     private fundService: FundService,
-    private predictionService: PredictionService,
-    private portfolioService: PortfolioService
+    private predictionService: PredictionService
   ) {}
 
   ngOnInit(): void {
@@ -59,35 +53,22 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private validateInputs(errorTarget: 'calculate' | 'portfolio'): boolean {
-    const setError = (msg: string) => {
-      if (errorTarget === 'calculate') {
-        this.errorMessage = msg;
-      } else {
-        this.portfolioError = msg;
-      }
-    };
-
-    if (this.selectedTickers.length === 0) {
-      setError('Please select at least one mutual fund.');
-      return false;
-    }
-    if (this.principal <= 0) {
-      setError('Please enter an initial investment amount greater than 0.');
-      return false;
-    }
-    if (this.years <= 0) {
-      setError('Please enter a time horizon greater than 0 years.');
-      return false;
-    }
-    return true;
-  }
-
   onCalculate(): void {
     this.errorMessage = '';
     this.comparisonResult = null;
 
-    if (!this.validateInputs('calculate')) return;
+    if (this.selectedTickers.length === 0) {
+      this.errorMessage = 'Please select at least one mutual fund.';
+      return;
+    }
+    if (this.principal <= 0) {
+      this.errorMessage = 'Please enter an initial investment amount greater than 0.';
+      return;
+    }
+    if (this.years <= 0) {
+      this.errorMessage = 'Please enter a time horizon greater than 0 years.';
+      return;
+    }
 
     this.isLoading = true;
 
@@ -114,31 +95,5 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       }
     }
     return highest;
-  }
-
-  onOptimize(): void {
-    this.portfolioError = '';
-    this.portfolioResult = null;
-
-    if (!this.validateInputs('portfolio')) return;
-
-    this.isPortfolioLoading = true;
-
-    this.portfolioService.optimize({
-      tickers: this.selectedTickers,
-      riskTolerance: this.riskTolerance,
-      principal: this.principal,
-      years: this.years
-    }).pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data: PortfolioRecommendation) => {
-          this.portfolioResult = data;
-          this.isPortfolioLoading = false;
-        },
-        error: (err) => {
-          this.portfolioError = err.error?.message || 'Portfolio optimization failed. Please try again.';
-          this.isPortfolioLoading = false;
-        }
-      });
   }
 }

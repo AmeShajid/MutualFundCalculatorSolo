@@ -55,165 +55,19 @@
 
       </div>
 
-      <div class="results-section" *ngIf="comparisonResult">
-
-        <h3 class="results-title">Prediction Results</h3>
-
-        <div class="table-wrapper">
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th>Fund</th>
-                <th>Future Value</th>
-                <th>Beta</th>
-                <th>Expected Return</th>
-                <th>Risk Free Rate</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let result of comparisonResult.results"
-                [class.highlight-row]="result.prediction && result.prediction.futureValue === getHighestFutureValue() && comparisonResult.results.length > 1"
-                [class.error-row]="result.error"
-              >
-                <td class="fund-name-cell">
-                  <span class="fund-name">{{ result.fundName }}</span>
-                  <span class="fund-ticker">{{ result.ticker }}</span>
-                </td>
-
-                <ng-container *ngIf="result.prediction">
-                  <td class="value-cell">${{ result.prediction.futureValue | number:'1.2-2' }}</td>
-                  <td class="value-cell">{{ result.prediction.beta | number:'1.4-4' }}</td>
-                  <td class="value-cell">{{ result.prediction.expectedReturn * 100 | number:'1.2-2' }}%</td>
-                  <td class="value-cell">{{ result.prediction.riskFreeRate * 100 | number:'1.2-2' }}%</td>
-                  <td class="status-cell">
-                    <span class="warning-badge" *ngIf="result.prediction.warning" [title]="result.prediction.warning">&#9888; Warning</span>
-                    <span class="success-badge" *ngIf="!result.prediction.warning">&#10003; OK</span>
-                  </td>
-                </ng-container>
-
-                <ng-container *ngIf="result.error">
-                  <td colspan="4" class="error-cell">{{ result.error }}</td>
-                  <td class="status-cell">
-                    <span class="error-badge">&#10007; Failed</span>
-                  </td>
-                </ng-container>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div *ngFor="let result of comparisonResult.results">
-          <div class="warning-box" *ngIf="result.prediction && result.prediction.warning">
-            <strong>{{ result.ticker }}:</strong> {{ result.prediction.warning }}
-          </div>
-        </div>
-
-      </div>
+      <app-results-table
+        [comparisonResult]="comparisonResult"
+        [highlightValue]="getHighestFutureValue()"
+      ></app-results-table>
 
     </div>
 
   </div>
 
-  <!-- AI Portfolio Optimizer card -->
-  <div class="optimizer-card">
-
-    <div class="card-header optimizer-header">
-      <h2>AI Portfolio Optimizer</h2>
-    </div>
-
-    <div class="card-body">
-
-      <div class="error-box" *ngIf="portfolioError">
-        {{ portfolioError }}
-      </div>
-
-      <div class="optimizer-row">
-
-        <div class="form-group">
-          <label for="riskSelect">Risk Tolerance</label>
-          <select id="riskSelect" [(ngModel)]="riskTolerance">
-            <option value="conservative">Conservative</option>
-            <option value="moderate">Moderate</option>
-            <option value="aggressive">Aggressive</option>
-          </select>
-        </div>
-
-        <div class="form-group button-group">
-          <label></label>
-          <button
-            class="optimize-btn"
-            (click)="onOptimize()"
-            [disabled]="isPortfolioLoading"
-          >
-            {{ isPortfolioLoading ? 'Optimizing...' : 'Optimize Portfolio' }}
-          </button>
-        </div>
-
-      </div>
-
-      <p class="optimizer-info">
-        Uses the funds, amount, and years from the calculator above. The AI will analyze your CAPM predictions and suggest an optimal allocation based on your risk tolerance.
-      </p>
-
-      <div class="loading-box" *ngIf="isPortfolioLoading">
-        Analyzing your portfolio with AI... This may take a few seconds.
-      </div>
-
-      <div class="results-section" *ngIf="portfolioResult">
-
-        <h3 class="results-title">AI-Recommended Allocation</h3>
-
-        <div class="table-wrapper">
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th>Fund</th>
-                <th>Allocation</th>
-                <th>Amount</th>
-                <th>Projected Value</th>
-                <th>Beta</th>
-                <th>Expected Return</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let alloc of portfolioResult.allocations">
-                <td class="fund-name-cell">
-                  <span class="fund-name">{{ alloc.fundName }}</span>
-                  <span class="fund-ticker">{{ alloc.ticker }}</span>
-                </td>
-                <td class="value-cell allocation-cell">
-                  <span class="allocation-bar" [style.width.%]="alloc.allocationPercentage"></span>
-                  {{ alloc.allocationPercentage | number:'1.1-1' }}%
-                </td>
-                <td class="value-cell">${{ alloc.allocatedAmount | number:'1.2-2' }}</td>
-                <td class="value-cell">${{ alloc.projectedValue | number:'1.2-2' }}</td>
-                <td class="value-cell">{{ alloc.beta | number:'1.4-4' }}</td>
-                <td class="value-cell">{{ alloc.expectedReturn * 100 | number:'1.2-2' }}%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="reasoning-box">
-          <h4>AI Reasoning</h4>
-          <p>{{ portfolioResult.reasoning }}</p>
-        </div>
-
-        <div class="risk-box">
-          <h4>Risk Assessment</h4>
-          <p>{{ portfolioResult.riskAssessment }}</p>
-        </div>
-
-        <div class="disclaimer-box">
-          <p>{{ portfolioResult.disclaimer }}</p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
+  <app-optimizer
+    [selectedTickers]="selectedTickers"
+    [principal]="principal"
+    [years]="years"
+  ></app-optimizer>
 
 </div>

@@ -1,0 +1,33 @@
+.formula-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+
+.formula-section h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0 0 20px 0;
+}
+
+.formula {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-blue);
+  margin-bottom: 20px;
+  font-family: 'Georgia', serif;
+}
+
+.formula-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  font-size: 13px;
+  color: #666;
+}

@@ -1,0 +1,56 @@
+<div class="results-section" *ngIf="comparisonResult">
+
+  <h3 class="results-title">Prediction Results</h3>
+
+  <div class="table-wrapper">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Fund</th>
+          <th>Future Value</th>
+          <th>Beta</th>
+          <th>Expected Return</th>
+          <th>Risk Free Rate</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let result of comparisonResult.results"
+          [class.highlight-row]="result.prediction && result.prediction.futureValue === highlightValue && comparisonResult.results.length > 1"
+          [class.error-row]="result.error"
+        >
+          <td class="fund-name-cell">
+            <span class="fund-name">{{ result.fundName }}</span>
+            <span class="fund-ticker">{{ result.ticker }}</span>
+          </td>
+
+          <ng-container *ngIf="result.prediction">
+            <td class="value-cell">${{ result.prediction.futureValue | number:'1.2-2' }}</td>
+            <td class="value-cell">{{ result.prediction.beta | number:'1.4-4' }}</td>
+            <td class="value-cell">{{ result.prediction.expectedReturn * 100 | number:'1.2-2' }}%</td>
+            <td class="value-cell">{{ result.prediction.riskFreeRate * 100 | number:'1.2-2' }}%</td>
+            <td class="status-cell">
+              <span class="warning-badge" *ngIf="result.prediction.warning" [title]="result.prediction.warning">&#9888; Warning</span>
+              <span class="success-badge" *ngIf="!result.prediction.warning">&#10003; OK</span>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="result.error">
+            <td colspan="4" class="error-cell">{{ result.error }}</td>
+            <td class="status-cell">
+              <span class="error-badge">&#10007; Failed</span>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngFor="let result of comparisonResult.results">
+    <div class="warning-box" *ngIf="result.prediction && result.prediction.warning">
+      <strong>{{ result.ticker }}:</strong> {{ result.prediction.warning }}
+    </div>
+  </div>
+
+</div>
