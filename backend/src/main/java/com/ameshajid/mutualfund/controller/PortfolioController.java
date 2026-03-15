@@ -1,7 +1,7 @@
 /**
  PortfolioController handles the AI portfolio optimization endpoint.
  POST /api/portfolio/optimize - takes selected funds and risk tolerance,
- runs CAPM predictions in parallel, then sends data to OpenAI for allocation advice.
+ runs CAPM predictions in parallel, then sends data to Gemini for allocation advice.
  */
 package com.ameshajid.mutualfund.controller;
 
@@ -24,7 +24,7 @@ import com.ameshajid.mutualfund.model.PredictionResponse;
 import com.ameshajid.mutualfund.model.PortfolioRecommendation;
 import com.ameshajid.mutualfund.service.PredictionService;
 import com.ameshajid.mutualfund.service.FundService;
-import com.ameshajid.mutualfund.service.OpenAIService;
+import com.ameshajid.mutualfund.service.GeminiService;
 
 @RestController
 @RequestMapping("/api/portfolio")
@@ -38,8 +38,8 @@ public class PortfolioController {
     //Service that looks up fund names by ticker symbol
     private final FundService fundService;
 
-    //Service that calls OpenAI GPT-4 for portfolio recommendations
-    private final OpenAIService openAIService;
+    //Service that calls Gemini for portfolio recommendations
+    private final GeminiService geminiService;
 
     //Thread pool for running predictions in parallel
     private final ExecutorService executorService;
@@ -48,15 +48,15 @@ public class PortfolioController {
     private static final List<String> VALID_RISK_TOLERANCES = List.of("conservative", "moderate", "aggressive");
 
     public PortfolioController(PredictionService predictionService, FundService fundService,
-                               OpenAIService openAIService, ExecutorService executorService) {
+                               GeminiService geminiService, ExecutorService executorService) {
         this.predictionService = predictionService;
         this.fundService = fundService;
-        this.openAIService = openAIService;
+        this.geminiService = geminiService;
         this.executorService = executorService;
     }
 
     /**
-     Optimizes a portfolio by running CAPM predictions then asking GPT-4 for allocation advice.
+     Optimizes a portfolio by running CAPM predictions then asking Gemini for allocation advice.
      */
     @PostMapping("/optimize")
     public ResponseEntity<?> optimize(@RequestBody PortfolioRequest request) {
@@ -136,8 +136,8 @@ public class PortfolioController {
                         "Service error", "All fund predictions failed. Cannot optimize portfolio."));
             }
 
-            //Send predictions to OpenAI for portfolio optimization
-            PortfolioRecommendation recommendation = openAIService.getRecommendation(
+            //Send predictions to Gemini for portfolio optimization
+            PortfolioRecommendation recommendation = geminiService.getRecommendation(
                     results, riskTolerance, request.getPrincipal(), request.getYears());
 
             log.info("Portfolio optimization completed with {} allocations", recommendation.getAllocations().size());

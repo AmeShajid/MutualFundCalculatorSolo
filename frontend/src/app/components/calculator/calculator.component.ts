@@ -1,5 +1,7 @@
 // Component decorator lets us define this class as an Angular component
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -33,7 +35,10 @@ import { PortfolioRecommendation } from '../../models/portfolio-recommendation.m
 })
 
 // OnInit means this class has an ngOnInit method that runs on page load
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent implements OnInit, OnDestroy {
+
+  // Subject used to clean up subscriptions when the component is destroyed
+  private destroy$ = new Subject<void>();
 
   // This array will hold all the funds loaded from the backend dropdown
   funds: Fund[] = [];
@@ -91,7 +96,7 @@ export class CalculatorComponent implements OnInit {
 
     // Call our fund service to get the list of funds from Spring Boot
     // subscribe() means "when the data arrives, run this function"
-    this.fundService.getFunds().subscribe({
+    this.fundService.getFunds().pipe(takeUntil(this.destroy$)).subscribe({
 
       // next runs when data arrives successfully
       next: (data: Fund[]) => {
@@ -105,6 +110,12 @@ export class CalculatorComponent implements OnInit {
         this.errorMessage = 'Could not load funds. Make sure the backend is running.';
       }
     });
+  }
+
+  // ngOnDestroy runs when Angular removes this component — clean up subscriptions
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Toggles the multi-select dropdown open/closed
@@ -156,6 +167,32 @@ export class CalculatorComponent implements OnInit {
     }
   }
 
+  // Validates that funds are selected and principal/years are positive
+  // Sets the error message on the given target ('calculate' or 'portfolio') and returns false if invalid
+  private validateInputs(errorTarget: 'calculate' | 'portfolio'): boolean {
+    const setError = (msg: string) => {
+      if (errorTarget === 'calculate') {
+        this.errorMessage = msg;
+      } else {
+        this.portfolioError = msg;
+      }
+    };
+
+    if (this.selectedTickers.length === 0) {
+      setError('Please select at least one mutual fund.');
+      return false;
+    }
+    if (this.principal <= 0) {
+      setError('Please enter an initial investment amount greater than 0.');
+      return false;
+    }
+    if (this.years <= 0) {
+      setError('Please enter a time horizon greater than 0 years.');
+      return false;
+    }
+    return true;
+  }
+
   // This method runs when the user clicks the Calculate button
   onCalculate(): void {
 
@@ -165,33 +202,15 @@ export class CalculatorComponent implements OnInit {
     // Clear any previous result so old data doesn't show while loading
     this.comparisonResult = null;
 
-    // Validate that the user selected at least one fund
-    if (this.selectedTickers.length === 0) {
-      // Show an error and stop — do not call the backend
-      this.errorMessage = 'Please select at least one mutual fund.';
-      return;
-    }
-
-    // Validate that the principal is a positive number
-    if (this.principal <= 0) {
-      // Show an error and stop — do not call the backend
-      this.errorMessage = 'Please enter an initial investment amount greater than 0.';
-      return;
-    }
-
-    // Validate that the years value is a positive number
-    if (this.years <= 0) {
-      // Show an error and stop — do not call the backend
-      this.errorMessage = 'Please enter a time horizon greater than 0 years.';
-      return;
-    }
+    if (!this.validateInputs('calculate')) return;
 
     // Show the loading spinner since we're about to call the backend
     this.isLoading = true;
 
     // Call the comparison endpoint with all selected tickers
-    // subscribe() means "when Spring Boot responds, run this function"
-    this.predictionService.compare(this.selectedTickers, this.principal, this.years).subscribe({
+    this.predictionService.compare(this.selectedTickers, this.principal, this.years)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
 
       // next runs when Spring Boot returns results
       next: (data: ComparisonResponse) => {
@@ -230,23 +249,7 @@ export class CalculatorComponent implements OnInit {
     this.portfolioError = '';
     this.portfolioResult = null;
 
-    // Validate that the user selected at least one fund
-    if (this.selectedTickers.length === 0) {
-      this.portfolioError = 'Please select at least one mutual fund.';
-      return;
-    }
-
-    // Validate that the principal is a positive number
-    if (this.principal <= 0) {
-      this.portfolioError = 'Please enter an initial investment amount greater than 0.';
-      return;
-    }
-
-    // Validate that the years value is a positive number
-    if (this.years <= 0) {
-      this.portfolioError = 'Please enter a time horizon greater than 0 years.';
-      return;
-    }
+    if (!this.validateInputs('portfolio')) return;
 
     // Show the loading state
     this.isPortfolioLoading = true;
@@ -257,7 +260,8 @@ export class CalculatorComponent implements OnInit {
       riskTolerance: this.riskTolerance,
       principal: this.principal,
       years: this.years
-    }).subscribe({
+    }).pipe(takeUntil(this.destroy$))
+      .subscribe({
 
       // next runs when the AI returns its recommendation
       next: (data: PortfolioRecommendation) => {

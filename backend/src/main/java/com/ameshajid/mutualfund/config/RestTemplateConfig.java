@@ -42,18 +42,18 @@ public class RestTemplateConfig {
         return new RestTemplate(factory);
     }
 
-    //Creates a separate RestTemplate for OpenAI API calls with longer read timeout
-    //GPT-4 responses can take up to 30 seconds so we need a longer timeout
+    //Creates a separate RestTemplate for Gemini API calls with longer read timeout
+    //Gemini responses can take up to 30 seconds so we need a longer timeout
     @Bean
-    @Qualifier("openAiRestTemplate")
-    public RestTemplate openAiRestTemplate() {
+    @Qualifier("geminiRestTemplate")
+    public RestTemplate geminiRestTemplate() {
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
 
         //Wait up to 5 seconds to establish a connection
         factory.setConnectTimeout(5000);
 
-        //Wait up to 30 seconds for GPT-4 to respond
+        //Wait up to 30 seconds for Gemini to respond
         factory.setReadTimeout(30000);
 
         return new RestTemplate(factory);

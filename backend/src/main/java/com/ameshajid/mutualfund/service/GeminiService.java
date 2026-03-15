@@ -1,5 +1,5 @@
 /**
- OpenAIService calls the Google Gemini API to get portfolio allocation recommendations.
+ GeminiService calls the Google Gemini API to get portfolio allocation recommendations.
  It builds a structured prompt with actual CAPM prediction data and parses the AI's JSON response.
  */
 package com.ameshajid.mutualfund.service;
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class OpenAIService {
+public class GeminiService {
 
-    private static final Logger log = LoggerFactory.getLogger(OpenAIService.class);
+    private static final Logger log = LoggerFactory.getLogger(GeminiService.class);
 
     //RestTemplate with longer timeout for Gemini API calls
     private final RestTemplate restTemplate;
@@ -38,8 +38,8 @@ public class OpenAIService {
     //Jackson ObjectMapper for parsing JSON responses
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public OpenAIService(
-            @Qualifier("openAiRestTemplate") RestTemplate restTemplate,
+    public GeminiService(
+            @Qualifier("geminiRestTemplate") RestTemplate restTemplate,
             @Value("${gemini.api.key}") String apiKey) {
         this.restTemplate = restTemplate;
         this.apiKey = apiKey;
