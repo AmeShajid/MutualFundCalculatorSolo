@@ -193,5 +193,121 @@
   </div>
   <!-- end calculator-card -->
 
+  <!-- AI Portfolio Optimizer card -->
+  <div class="optimizer-card">
+
+    <!-- Header for the optimizer card -->
+    <div class="card-header optimizer-header">
+      <h2>AI Portfolio Optimizer</h2>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Show portfolio error if there is one -->
+      <div class="error-box" *ngIf="portfolioError">
+        {{ portfolioError }}
+      </div>
+
+      <!-- Optimizer controls row -->
+      <div class="optimizer-row">
+
+        <!-- Risk tolerance dropdown -->
+        <div class="form-group">
+          <label for="riskSelect">Risk Tolerance</label>
+          <select id="riskSelect" [(ngModel)]="riskTolerance">
+            <option value="conservative">Conservative</option>
+            <option value="moderate">Moderate</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
+        </div>
+
+        <!-- Optimize button -->
+        <div class="form-group button-group">
+          <label></label>
+          <button
+            class="optimize-btn"
+            (click)="onOptimize()"
+            [disabled]="isPortfolioLoading"
+          >
+            {{ isPortfolioLoading ? 'Optimizing...' : 'Optimize Portfolio' }}
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Info text -->
+      <p class="optimizer-info">
+        Uses the funds, amount, and years from the calculator above. The AI will analyze your CAPM predictions and suggest an optimal allocation based on your risk tolerance.
+      </p>
+
+      <!-- Loading state -->
+      <div class="loading-box" *ngIf="isPortfolioLoading">
+        Analyzing your portfolio with AI... This may take a few seconds.
+      </div>
+
+      <!-- Portfolio results section -->
+      <div class="results-section" *ngIf="portfolioResult">
+
+        <h3 class="results-title">AI-Recommended Allocation</h3>
+
+        <!-- Allocation table -->
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Fund</th>
+                <th>Allocation</th>
+                <th>Amount</th>
+                <th>Projected Value</th>
+                <th>Beta</th>
+                <th>Expected Return</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let alloc of portfolioResult.allocations">
+                <!-- Fund name column -->
+                <td class="fund-name-cell">
+                  <span class="fund-name">{{ alloc.fundName }}</span>
+                  <span class="fund-ticker">{{ alloc.ticker }}</span>
+                </td>
+                <!-- Allocation percentage -->
+                <td class="value-cell allocation-cell">
+                  <span class="allocation-bar" [style.width.%]="alloc.allocationPercentage"></span>
+                  {{ alloc.allocationPercentage | number:'1.1-1' }}%
+                </td>
+                <!-- Dollar amount allocated -->
+                <td class="value-cell">${{ alloc.allocatedAmount | number:'1.2-2' }}</td>
+                <!-- Projected future value -->
+                <td class="value-cell">${{ alloc.projectedValue | number:'1.2-2' }}</td>
+                <!-- Beta -->
+                <td class="value-cell">{{ alloc.beta | number:'1.4-4' }}</td>
+                <!-- Expected return -->
+                <td class="value-cell">{{ alloc.expectedReturn * 100 | number:'1.2-2' }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- AI Reasoning box -->
+        <div class="reasoning-box">
+          <h4>AI Reasoning</h4>
+          <p>{{ portfolioResult.reasoning }}</p>
+        </div>
+
+        <!-- Risk Assessment box -->
+        <div class="risk-box">
+          <h4>Risk Assessment</h4>
+          <p>{{ portfolioResult.riskAssessment }}</p>
+        </div>
+
+      </div>
+      <!-- end results-section -->
+
+    </div>
+    <!-- end card-body -->
+
+  </div>
+  <!-- end optimizer-card -->
+
 </div>
 <!-- end page-wrapper -->

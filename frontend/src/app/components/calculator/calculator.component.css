@@ -1,11 +1,13 @@
-/* Centers the calculator card on the page with a light gray background */
+/* Centers the cards on the page with a light gray background, stacked vertically */
 .page-wrapper {
   min-height: 100vh;
   background-color: #f0f2f5;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 40px 20px;
+  gap: 24px;
 }
 
 /* The white card that contains everything */
@@ -416,4 +418,150 @@
   color: #cc0000;
   font-size: 12px;
   font-weight: 600;
+}
+
+/* ==================== AI PORTFOLIO OPTIMIZER ==================== */
+
+/* The optimizer card reuses calculator-card styling */
+.optimizer-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1100px;
+  overflow: visible;
+}
+
+/* Green-tinted header for the optimizer card to distinguish from the calculator */
+.optimizer-header {
+  background-color: #1a4a2e;
+}
+
+/* Row that holds the risk dropdown and optimize button side by side */
+.optimizer-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Info text below the optimizer controls */
+.optimizer-info {
+  font-size: 13px;
+  color: #777;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+/* Select dropdown styling to match existing inputs */
+select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  height: 40px;
+  cursor: pointer;
+  width: 100%;
+}
+
+select:focus {
+  outline: none;
+  border-color: #1a6fba;
+}
+
+/* Green optimize button to distinguish from blue Calculate */
+.optimize-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.optimize-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.optimize-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Loading indicator box */
+.loading-box {
+  background-color: #e8f0fe;
+  border: 1px solid #b8d4f0;
+  color: #1a2e4a;
+  padding: 16px;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Allocation percentage cell with visual bar */
+.allocation-cell {
+  position: relative;
+}
+
+.allocation-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(40, 167, 69, 0.1);
+  border-right: 2px solid #28a745;
+}
+
+/* AI reasoning box */
+.reasoning-box {
+  background-color: #f0f7ff;
+  border: 1px solid #b8d4f0;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.reasoning-box h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2e4a;
+  margin: 0 0 8px 0;
+}
+
+.reasoning-box p {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Risk assessment box */
+.risk-box {
+  background-color: #fff8e6;
+  border: 1px solid #ffe0a3;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.risk-box h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #856404;
+  margin: 0 0 8px 0;
+}
+
+.risk-box p {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
 }

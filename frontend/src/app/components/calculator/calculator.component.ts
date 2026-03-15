@@ -9,9 +9,13 @@ import { FundService } from '../../services/fund.service';
 // Import our service that sends prediction requests to Spring Boot
 import { PredictionService } from '../../services/prediction.service';
 
+// Import our service that sends portfolio optimization requests to Spring Boot
+import { PortfolioService } from '../../services/portfolio.service';
+
 // Import our interfaces so TypeScript knows the shape of our data
 import { Fund } from '../../models/fund.model';
 import { ComparisonResponse } from '../../models/comparison-response.model';
+import { PortfolioRecommendation } from '../../models/portfolio-recommendation.model';
 
 // @Component tells Angular this is a component and configures it
 @Component({
@@ -59,12 +63,26 @@ export class CalculatorComponent implements OnInit {
   // Maximum number of funds that can be selected for comparison
   maxSelections: number = 5;
 
+  // Risk tolerance level selected by the user for portfolio optimization
+  riskTolerance: string = 'moderate';
+
+  // Holds the AI portfolio recommendation result
+  portfolioResult: PortfolioRecommendation | null = null;
+
+  // Tracks whether we are waiting for the AI portfolio optimizer to respond
+  isPortfolioLoading: boolean = false;
+
+  // Holds any error from the portfolio optimizer
+  portfolioError: string = '';
+
   // Angular injects both services automatically via the constructor
   constructor(
     // fundService will be used to load the dropdown list
     private fundService: FundService,
     // predictionService will be used when the user clicks Calculate
-    private predictionService: PredictionService
+    private predictionService: PredictionService,
+    // portfolioService will be used when the user clicks Optimize Portfolio
+    private portfolioService: PortfolioService
   ) {}
 
   // ngOnInit runs automatically when the component first loads
@@ -203,5 +221,55 @@ export class CalculatorComponent implements OnInit {
       }
     }
     return highest;
+  }
+
+  // This method runs when the user clicks the Optimize Portfolio button
+  onOptimize(): void {
+
+    // Clear previous portfolio results and errors
+    this.portfolioError = '';
+    this.portfolioResult = null;
+
+    // Validate that the user selected at least one fund
+    if (this.selectedTickers.length === 0) {
+      this.portfolioError = 'Please select at least one mutual fund.';
+      return;
+    }
+
+    // Validate that the principal is a positive number
+    if (this.principal <= 0) {
+      this.portfolioError = 'Please enter an initial investment amount greater than 0.';
+      return;
+    }
+
+    // Validate that the years value is a positive number
+    if (this.years <= 0) {
+      this.portfolioError = 'Please enter a time horizon greater than 0 years.';
+      return;
+    }
+
+    // Show the loading state
+    this.isPortfolioLoading = true;
+
+    // Call the portfolio optimizer endpoint
+    this.portfolioService.optimize({
+      tickers: this.selectedTickers,
+      riskTolerance: this.riskTolerance,
+      principal: this.principal,
+      years: this.years
+    }).subscribe({
+
+      // next runs when the AI returns its recommendation
+      next: (data: PortfolioRecommendation) => {
+        this.portfolioResult = data;
+        this.isPortfolioLoading = false;
+      },
+
+      // error runs if the optimization fails
+      error: (err) => {
+        this.portfolioError = err.error?.message || 'Portfolio optimization failed. Please try again.';
+        this.isPortfolioLoading = false;
+      }
+    });
   }
 }
