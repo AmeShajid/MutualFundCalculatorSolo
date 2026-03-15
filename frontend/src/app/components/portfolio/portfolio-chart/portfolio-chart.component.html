@@ -1,5 +1,5 @@
 <div class="chart-container">
-  <svg viewBox="0 0 800 400" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 800 410" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient [attr.id]="gradientId" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#1a6fba" stop-opacity="0.25"/>
@@ -37,7 +37,7 @@
       <!-- Break-even line -->
       <line [attr.x1]="xMin" [attr.y1]="breakEvenY" [attr.x2]="xMax" [attr.y2]="breakEvenY"
             stroke="#e85d3a" stroke-dasharray="6,4" stroke-opacity="0.6"/>
-      <text [attr.x]="xMax + 4" [attr.y]="breakEvenY + 4"
+      <text [attr.x]="xMin + 4" [attr.y]="breakEvenY - 6"
             fill="#e85d3a" font-size="10" font-family="'SF Mono', 'Fira Code', monospace">
         {{ breakEvenLabel }}
       </text>
@@ -59,8 +59,8 @@
 
       <!-- Endpoint -->
       <circle [attr.cx]="endpointX" [attr.cy]="endpointY" r="5" fill="#1a6fba"/>
-      <text [attr.x]="endpointX" [attr.y]="endpointY - 12" text-anchor="middle"
-            fill="#1a6fba" font-size="13" font-weight="700"
+      <text [attr.x]="endpointX - 8" [attr.y]="endpointY - 14" text-anchor="end"
+            fill="#1a6fba" font-size="14" font-weight="700"
             font-family="'SF Mono', 'Fira Code', monospace">
         {{ endpointLabel }}
       </text>

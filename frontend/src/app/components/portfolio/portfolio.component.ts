@@ -44,8 +44,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   principal: number = 10000;
   years: number = 10;
 
-  pageState: 'empty' | 'generated' = 'empty';
-  sidebarOpen: boolean = true;
   recommendation: PortfolioRecommendation | null = null;
 
   messages: ChatMessage[] = [];
@@ -89,10 +87,9 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.selectedFunds = this.selectedFunds.filter(f => f.symbol !== symbol);
     this.rebuildColorMap();
 
-    if (this.pageState === 'generated') {
-      this.pageState = 'empty';
+    // Reset results if a fund is removed after generating
+    if (this.recommendation) {
       this.recommendation = null;
-      this.sidebarOpen = true;
       this.messages = [];
     }
   }
@@ -126,18 +123,12 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     }).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: PortfolioRecommendation) => {
         this.recommendation = data;
-        this.pageState = 'generated';
-        this.sidebarOpen = false;
         this.isGenerating = false;
       },
       error: () => {
         this.isGenerating = false;
       }
     });
-  }
-
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
   }
 
   onSendFollowUp(text: string): void {
