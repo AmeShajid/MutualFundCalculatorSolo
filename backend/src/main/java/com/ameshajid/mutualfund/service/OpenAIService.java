@@ -1,5 +1,5 @@
 /**
- OpenAIService calls the OpenAI GPT-4 API to get portfolio allocation recommendations.
+ OpenAIService calls the Google Gemini API to get portfolio allocation recommendations.
  It builds a structured prompt with actual CAPM prediction data and parses the AI's JSON response.
  */
 package com.ameshajid.mutualfund.service;
@@ -29,27 +29,24 @@ public class OpenAIService {
 
     private static final Logger log = LoggerFactory.getLogger(OpenAIService.class);
 
-    //RestTemplate with longer timeout for GPT-4 API calls
+    //RestTemplate with longer timeout for Gemini API calls
     private final RestTemplate restTemplate;
 
-    //OpenAI API key loaded from application.properties
+    //Gemini API key loaded from application.properties
     private final String apiKey;
 
     //Jackson ObjectMapper for parsing JSON responses
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    //OpenAI API endpoint
-    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-
     public OpenAIService(
             @Qualifier("openAiRestTemplate") RestTemplate restTemplate,
-            @Value("${openai.api.key}") String apiKey) {
+            @Value("${gemini.api.key}") String apiKey) {
         this.restTemplate = restTemplate;
         this.apiKey = apiKey;
     }
 
     /**
-     Gets a portfolio allocation recommendation from GPT-4 based on prediction data.
+     Gets a portfolio allocation recommendation from Gemini based on prediction data.
      Takes the actual CAPM predictions for each fund and returns an optimized allocation.
      */
     public PortfolioRecommendation getRecommendation(
@@ -61,34 +58,48 @@ public class OpenAIService {
         //Build the prompt with actual prediction data
         String prompt = buildPrompt(predictions, riskTolerance, principal, years);
 
-        log.info("Sending portfolio optimization request to OpenAI for {} funds", predictions.size());
+        log.info("Sending portfolio optimization request to Gemini for {} funds", predictions.size());
 
         try {
-            //Set up HTTP headers with API key and content type
+            //Gemini API endpoint with API key as query parameter
+            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
+
+            //Set up HTTP headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(apiKey);
 
-            //Build the request body for the OpenAI API
+            //Build the request body for the Gemini API
+            //Gemini uses a different format: contents -> parts -> text
+            String systemInstruction = "You are a financial portfolio optimizer. You analyze mutual fund data and suggest optimal allocations. Always respond with valid JSON only, no markdown formatting, no code fences.";
+
             Map<String, Object> requestBody = Map.of(
-                    "model", "gpt-4",
-                    "temperature", 0.3,
-                    "messages", List.of(
-                            Map.of("role", "system", "content",
-                                    "You are a financial portfolio optimizer. You analyze mutual fund data and suggest optimal allocations. Always respond with valid JSON only, no markdown formatting."),
-                            Map.of("role", "user", "content", prompt)
+                    "contents", List.of(
+                            Map.of("parts", List.of(
+                                    Map.of("text", prompt)
+                            ))
+                    ),
+                    "systemInstruction", Map.of(
+                            "parts", List.of(
+                                    Map.of("text", systemInstruction)
+                            )
+                    ),
+                    "generationConfig", Map.of(
+                            "temperature", 0.3
                     )
             );
 
-            //Send the request to OpenAI
+            //Send the request to Gemini
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-            String responseJson = restTemplate.postForObject(OPENAI_API_URL, request, String.class);
+            String responseJson = restTemplate.postForObject(url, request, String.class);
 
-            //Parse the OpenAI response to get the content
+            //Parse the Gemini response to get the content
+            //Gemini response format: candidates[0].content.parts[0].text
             JsonNode root = objectMapper.readTree(responseJson);
-            String content = root.path("choices").get(0).path("message").path("content").asText();
+            String content = root.path("candidates").get(0)
+                    .path("content").path("parts").get(0)
+                    .path("text").asText();
 
-            log.info("Received OpenAI response, parsing allocation data");
+            log.info("Received Gemini response, parsing allocation data");
 
             //Strip markdown code fences if the AI wrapped the JSON in them
             content = stripCodeFences(content);
@@ -97,8 +108,8 @@ public class OpenAIService {
             return parseRecommendation(content, predictions, riskTolerance, principal, years);
 
         } catch (Exception e) {
-            log.error("OpenAI API call failed", e);
-            throw new RuntimeException("AI portfolio optimization failed. Please check your API key and try again.");
+            log.error("Gemini API call failed: {}", e.getMessage(), e);
+            throw new RuntimeException("AI portfolio optimization failed: " + e.getMessage());
         }
     }
 
