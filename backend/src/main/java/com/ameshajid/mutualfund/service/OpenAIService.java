@@ -251,6 +251,7 @@ public class OpenAIService {
         recommendation.setRiskTolerance(riskTolerance);
         recommendation.setPrincipal(principal);
         recommendation.setYears(years);
+        recommendation.setDisclaimer("This is an AI-generated suggestion for educational purposes only. It is not financial advice. Always consult a qualified financial advisor before making investment decisions.");
 
         return recommendation;
     }

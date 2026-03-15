@@ -9,6 +9,17 @@ frontend/dist/
 frontend/.angular/
 frontend/.cache/
 
+# Build artifacts
+backend/target/
+
+# Secrets / config with credentials
+backend/src/main/resources/application.properties
+.env
+.env.*
+
+# VS Code
+.vscode/
+
 # OS
 .DS_Store
 Thumbs.db

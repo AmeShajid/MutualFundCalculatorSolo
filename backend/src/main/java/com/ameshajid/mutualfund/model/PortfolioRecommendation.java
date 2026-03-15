@@ -26,6 +26,9 @@ public class PortfolioRecommendation {
     //The investment time horizon in years
     private double years;
 
+    //Legal disclaimer that this is not financial advice
+    private String disclaimer;
+
     public List<FundAllocation> getAllocations() {
         return allocations;
     }
@@ -72,5 +75,13 @@ public class PortfolioRecommendation {
 
     public void setYears(double years) {
         this.years = years;
+    }
+
+    public String getDisclaimer() {
+        return disclaimer;
+    }
+
+    public void setDisclaimer(String disclaimer) {
+        this.disclaimer = disclaimer;
     }
 }

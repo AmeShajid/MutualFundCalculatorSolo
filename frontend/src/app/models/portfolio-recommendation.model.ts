@@ -8,4 +8,5 @@ export interface PortfolioRecommendation {
   riskTolerance: string;
   principal: number;
   years: number;
+  disclaimer: string;
 }
