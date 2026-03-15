@@ -33,11 +33,11 @@ export class PortfolioChartComponent implements OnChanges {
   @Input() principal: number = 0;
   @Input() years: number = 0;
 
-  // Plot area bounds
-  readonly xMin = 60;
-  readonly xMax = 780;
-  readonly yMin = 20;
-  readonly yMax = 350;
+  // Plot area bounds — extra right margin so labels don't clip
+  readonly xMin = 70;
+  readonly xMax = 730;
+  readonly yMin = 30;
+  readonly yMax = 340;
 
   fundLines: ChartLine[] = [];
   totalLine: string = '';
@@ -137,7 +137,7 @@ export class PortfolioChartComponent implements OnChanges {
     this.breakEvenY = scaleY(this.principal);
     this.breakEvenLabel = this.formatDollar(this.principal);
 
-    // Endpoint
+    // Endpoint — position label to the left if near right edge
     const finalTotal = totalValues[years];
     this.endpointX = scaleX(years);
     this.endpointY = scaleY(finalTotal);

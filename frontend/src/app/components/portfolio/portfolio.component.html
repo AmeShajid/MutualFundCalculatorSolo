@@ -1,4 +1,4 @@
-<div class="portfolio-page" [class.sidebar-collapsed]="!sidebarOpen">
+<div class="portfolio-page">
 
   <app-portfolio-sidebar
     [funds]="funds"
@@ -45,12 +45,4 @@
       ></app-portfolio-holdings>
     </div>
   </div>
-
-  <button
-    *ngIf="!sidebarOpen"
-    class="edit-portfolio-btn"
-    (click)="toggleSidebar()"
-  >
-    Edit Portfolio
-  </button>
 </div>
