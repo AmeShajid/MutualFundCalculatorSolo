@@ -1,42 +1,56 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FundSelectComponent } from '../shared/fund-select/fund-select.component';
+import { PortfolioSidebarComponent, SelectedFund } from './portfolio-sidebar/portfolio-sidebar.component';
+import { PortfolioSummaryComponent } from './portfolio-summary/portfolio-summary.component';
+import { PortfolioChartComponent } from './portfolio-chart/portfolio-chart.component';
+import { PortfolioHoldingsComponent } from './portfolio-holdings/portfolio-holdings.component';
+import { PortfolioReasoningComponent } from './portfolio-reasoning/portfolio-reasoning.component';
+
 import { FundService } from '../../services/fund.service';
 import { PortfolioService } from '../../services/portfolio.service';
 import { Fund } from '../../models/fund.model';
 import { ChatMessage } from '../../models/chat-message.model';
 import { PortfolioRecommendation } from '../../models/portfolio-recommendation.model';
 
+const FUND_COLORS = ['#1a6fba', '#e85d3a', '#2ecc71', '#9b59b6', '#f39c12'];
+
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule, FormsModule, FundSelectComponent],
+  imports: [
+    CommonModule,
+    PortfolioSidebarComponent,
+    PortfolioSummaryComponent,
+    PortfolioChartComponent,
+    PortfolioHoldingsComponent,
+    PortfolioReasoningComponent
+  ],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.css']
 })
-export class PortfolioComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PortfolioComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
-  private shouldScroll = false;
-
-  @ViewChild('chatMessages') chatMessagesEl!: ElementRef;
+  private colorIndex = 0;
 
   funds: Fund[] = [];
-  selectedTickers: string[] = [];
+  selectedFunds: SelectedFund[] = [];
+  fundColors: Map<string, string> = new Map();
+
   riskTolerance: string = 'moderate';
-  years: number = 0;
-  principal: number = 0;
-  maxSelections: number = 5;
+  principal: number = 10000;
+  years: number = 10;
+
+  pageState: 'empty' | 'generated' = 'empty';
+  sidebarOpen: boolean = true;
+  recommendation: PortfolioRecommendation | null = null;
 
   messages: ChatMessage[] = [];
-  followUpText: string = '';
   isGenerating: boolean = false;
   isSending: boolean = false;
-  errorMessage: string = '';
 
   constructor(
     private fundService: FundService,
@@ -47,9 +61,6 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.fundService.getFunds().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: Fund[]) => {
         this.funds = data;
-      },
-      error: () => {
-        this.errorMessage = 'Could not load funds. Make sure the backend is running.';
       }
     });
   }
@@ -59,101 +70,105 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.destroy$.complete();
   }
 
-  ngAfterViewChecked(): void {
-    if (this.shouldScroll) {
-      this.scrollToBottom();
-      this.shouldScroll = false;
+  onFundAdded(fund: Fund): void {
+    if (this.selectedFunds.length >= 5) return;
+    if (this.selectedFunds.some(f => f.symbol === fund.symbol)) return;
+
+    const color = FUND_COLORS[this.colorIndex % FUND_COLORS.length];
+    this.colorIndex++;
+
+    this.selectedFunds = [...this.selectedFunds, {
+      symbol: fund.symbol,
+      name: fund.name,
+      color
+    }];
+    this.rebuildColorMap();
+  }
+
+  onFundRemoved(symbol: string): void {
+    this.selectedFunds = this.selectedFunds.filter(f => f.symbol !== symbol);
+    this.rebuildColorMap();
+
+    if (this.pageState === 'generated') {
+      this.pageState = 'empty';
+      this.recommendation = null;
+      this.sidebarOpen = true;
+      this.messages = [];
     }
   }
 
-  private scrollToBottom(): void {
-    if (this.chatMessagesEl) {
-      const el = this.chatMessagesEl.nativeElement;
-      el.scrollTop = el.scrollHeight;
-    }
+  onRiskToleranceChange(risk: string): void {
+    this.riskTolerance = risk;
+  }
+
+  onPrincipalChange(value: number): void {
+    this.principal = value;
+  }
+
+  onYearsChange(value: number): void {
+    this.years = value;
   }
 
   onGenerate(): void {
-    this.errorMessage = '';
-
-    if (this.selectedTickers.length === 0) {
-      this.errorMessage = 'Please select at least one fund.';
-      return;
-    }
-    if (this.principal <= 0) {
-      this.errorMessage = 'Please enter an investment amount greater than 0.';
-      return;
-    }
-    if (this.years <= 0) {
-      this.errorMessage = 'Please enter a time horizon greater than 0 years.';
-      return;
-    }
+    if (this.selectedFunds.length < 2 || this.isGenerating) return;
+    if (this.principal <= 0 || this.years <= 0) return;
 
     this.isGenerating = true;
+    this.messages = [];
 
-    // Add synthetic user message
-    const userMsg: ChatMessage = {
-      role: 'user',
-      content: `Generate portfolio for ${this.selectedTickers.join(', ')} with $${this.principal.toLocaleString()} over ${this.years} years, ${this.riskTolerance} risk.`,
-      timestamp: new Date()
-    };
-    this.messages.push(userMsg);
-    this.shouldScroll = true;
+    const tickers = this.selectedFunds.map(f => f.symbol);
 
     this.portfolioService.optimize({
-      tickers: this.selectedTickers,
+      tickers,
       riskTolerance: this.riskTolerance,
       principal: this.principal,
       years: this.years
     }).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: PortfolioRecommendation) => {
-        const assistantMsg: ChatMessage = {
-          role: 'assistant',
-          content: data.reasoning,
-          timestamp: new Date(),
-          portfolioData: data
-        };
-        this.messages.push(assistantMsg);
+        this.recommendation = data;
+        this.pageState = 'generated';
+        this.sidebarOpen = false;
         this.isGenerating = false;
-        this.shouldScroll = true;
       },
-      error: (err) => {
-        const errorMsg: ChatMessage = {
-          role: 'assistant',
-          content: err.error?.message || 'Portfolio optimization failed. Please try again.',
-          timestamp: new Date()
-        };
-        this.messages.push(errorMsg);
+      error: () => {
         this.isGenerating = false;
-        this.shouldScroll = true;
       }
     });
   }
 
-  onSendFollowUp(): void {
-    if (!this.followUpText.trim() || this.isSending) return;
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  onSendFollowUp(text: string): void {
+    if (!text.trim() || this.isSending) return;
 
     const userMsg: ChatMessage = {
       role: 'user',
-      content: this.followUpText.trim(),
+      content: text,
       timestamp: new Date()
     };
-    this.messages.push(userMsg);
-    this.shouldScroll = true;
+    this.messages = [...this.messages, userMsg];
 
     const conversationHistory = this.messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
-      content: m.portfolioData
-        ? m.content + '\n\n[Portfolio data was shown with allocations]'
-        : m.content
+      content: m.content
     }));
 
-    this.followUpText = '';
+    // Prepend reasoning as context
+    if (this.recommendation) {
+      conversationHistory.unshift({
+        role: 'model',
+        content: this.recommendation.reasoning
+      });
+    }
+
     this.isSending = true;
+    const tickers = this.selectedFunds.map(f => f.symbol);
 
     this.portfolioService.chat({
       conversationHistory,
-      tickers: this.selectedTickers,
+      tickers,
       riskTolerance: this.riskTolerance,
       principal: this.principal,
       years: this.years
@@ -164,9 +179,8 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewChecked {
           content: data.reply,
           timestamp: new Date()
         };
-        this.messages.push(assistantMsg);
+        this.messages = [...this.messages, assistantMsg];
         this.isSending = false;
-        this.shouldScroll = true;
       },
       error: () => {
         const errorMsg: ChatMessage = {
@@ -174,17 +188,16 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewChecked {
           content: 'Failed to get a response. Please try again.',
           timestamp: new Date()
         };
-        this.messages.push(errorMsg);
+        this.messages = [...this.messages, errorMsg];
         this.isSending = false;
-        this.shouldScroll = true;
       }
     });
   }
 
-  onFollowUpKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      this.onSendFollowUp();
+  private rebuildColorMap(): void {
+    this.fundColors = new Map();
+    for (const sf of this.selectedFunds) {
+      this.fundColors.set(sf.symbol, sf.color);
     }
   }
 }

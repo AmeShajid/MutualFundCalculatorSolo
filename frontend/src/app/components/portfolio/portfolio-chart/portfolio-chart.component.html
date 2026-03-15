@@ -1,0 +1,85 @@
+<div class="chart-container">
+  <svg viewBox="0 0 800 400" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient [attr.id]="gradientId" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a6fba" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#1a6fba" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+
+    <ng-container *ngIf="!recommendation">
+      <text x="400" y="200" text-anchor="middle" fill="#bbb" font-size="16">
+        Generate a portfolio to see growth projections
+      </text>
+    </ng-container>
+
+    <ng-container *ngIf="recommendation">
+      <!-- Grid lines -->
+      <g *ngFor="let gl of gridLines">
+        <line [attr.x1]="xMin" [attr.y1]="gl.y" [attr.x2]="xMax" [attr.y2]="gl.y"
+              stroke="#e8e8e8" stroke-dasharray="4,4"/>
+        <text [attr.x]="xMin - 8" [attr.y]="gl.y + 4" text-anchor="end"
+              fill="#999" font-size="11" font-family="'SF Mono', 'Fira Code', monospace">
+          {{ gl.label }}
+        </text>
+      </g>
+
+      <!-- X axis ticks -->
+      <g *ngFor="let xt of xTicks">
+        <text [attr.x]="xt.x" [attr.y]="yMax + 20" text-anchor="middle"
+              fill="#999" font-size="11" font-family="'SF Mono', 'Fira Code', monospace">
+          {{ xt.label }}
+        </text>
+      </g>
+      <text [attr.x]="(xMin + xMax) / 2" [attr.y]="yMax + 38" text-anchor="middle"
+            fill="#aaa" font-size="12">Years</text>
+
+      <!-- Break-even line -->
+      <line [attr.x1]="xMin" [attr.y1]="breakEvenY" [attr.x2]="xMax" [attr.y2]="breakEvenY"
+            stroke="#e85d3a" stroke-dasharray="6,4" stroke-opacity="0.6"/>
+      <text [attr.x]="xMax + 4" [attr.y]="breakEvenY + 4"
+            fill="#e85d3a" font-size="10" font-family="'SF Mono', 'Fira Code', monospace">
+        {{ breakEvenLabel }}
+      </text>
+
+      <!-- Area under total line -->
+      <polygon [attr.points]="totalAreaPoints" [attr.fill]="'url(#' + gradientId + ')'"/>
+
+      <!-- Fund lines -->
+      <polyline *ngFor="let fl of fundLines"
+                [attr.points]="fl.points"
+                fill="none"
+                [attr.stroke]="fl.color"
+                stroke-width="2"
+                stroke-opacity="0.5"/>
+
+      <!-- Total line -->
+      <polyline [attr.points]="totalLine"
+                fill="none" stroke="#1a6fba" stroke-width="3"/>
+
+      <!-- Endpoint -->
+      <circle [attr.cx]="endpointX" [attr.cy]="endpointY" r="5" fill="#1a6fba"/>
+      <text [attr.x]="endpointX" [attr.y]="endpointY - 12" text-anchor="middle"
+            fill="#1a6fba" font-size="13" font-weight="700"
+            font-family="'SF Mono', 'Fira Code', monospace">
+        {{ endpointLabel }}
+      </text>
+    </ng-container>
+  </svg>
+
+  <!-- Legend -->
+  <div class="chart-legend" *ngIf="recommendation">
+    <div class="legend-item" *ngFor="let li of legendItems">
+      <span class="legend-dot" [style.background-color]="li.color"></span>
+      <span class="legend-label">{{ li.ticker }}</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background-color: #1a6fba;"></span>
+      <span class="legend-label">Total</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-line" style="border-color: #e85d3a;"></span>
+      <span class="legend-label">Initial Investment</span>
+    </div>
+  </div>
+</div>

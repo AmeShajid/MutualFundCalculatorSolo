@@ -1,150 +1,56 @@
-<div class="portfolio-wrapper">
+<div class="portfolio-page" [class.sidebar-collapsed]="!sidebarOpen">
 
-  <!-- Left Sidebar -->
-  <aside class="sidebar">
-    <h3 class="sidebar-title">Portfolio Configuration</h3>
+  <app-portfolio-sidebar
+    [funds]="funds"
+    [selectedFunds]="selectedFunds"
+    [riskTolerance]="riskTolerance"
+    [principal]="principal"
+    [years]="years"
+    [isGenerating]="isGenerating"
+    (fundAdded)="onFundAdded($event)"
+    (fundRemoved)="onFundRemoved($event)"
+    (riskToleranceChange)="onRiskToleranceChange($event)"
+    (principalChange)="onPrincipalChange($event)"
+    (yearsChange)="onYearsChange($event)"
+    (generate)="onGenerate()"
+  ></app-portfolio-sidebar>
 
-    <div class="error-box" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
+  <div class="main-content">
+    <app-portfolio-summary
+      [recommendation]="recommendation"
+      [principal]="principal"
+      [years]="years"
+    ></app-portfolio-summary>
 
-    <app-fund-select
-      [funds]="funds"
-      [(selectedTickers)]="selectedTickers"
-      [maxSelections]="maxSelections"
-    ></app-fund-select>
+    <div class="content-grid">
+      <div class="chart-area">
+        <app-portfolio-chart
+          [recommendation]="recommendation"
+          [fundColors]="fundColors"
+          [principal]="principal"
+          [years]="years"
+        ></app-portfolio-chart>
 
-    <div class="sidebar-field">
-      <label for="riskSelect">Risk Tolerance</label>
-      <select id="riskSelect" [(ngModel)]="riskTolerance">
-        <option value="conservative">Conservative</option>
-        <option value="moderate">Moderate</option>
-        <option value="aggressive">Aggressive</option>
-      </select>
-    </div>
-
-    <div class="sidebar-field">
-      <label for="horizonInput">Time Horizon (years)</label>
-      <input id="horizonInput" type="number" [(ngModel)]="years" placeholder="Years" min="0" />
-    </div>
-
-    <div class="sidebar-field">
-      <label for="amountInput">Investment Amount</label>
-      <input id="amountInput" type="number" [(ngModel)]="principal" placeholder="$" min="0" />
-    </div>
-
-    <button
-      class="generate-btn"
-      (click)="onGenerate()"
-      [disabled]="isGenerating"
-    >
-      {{ isGenerating ? 'Generating...' : 'Generate Portfolio' }}
-    </button>
-  </aside>
-
-  <!-- Right Chat Panel -->
-  <main class="chat-panel">
-
-    <div class="chat-header">
-      <h3>AI Assistant</h3>
-    </div>
-
-    <div class="chat-messages" #chatMessages>
-
-      <!-- Welcome message when no messages -->
-      <div class="welcome-message" *ngIf="messages.length === 0">
-        <p>Select funds and click <strong>Generate Portfolio</strong> to get AI portfolio recommendations.</p>
+        <app-portfolio-reasoning
+          [recommendation]="recommendation"
+          [messages]="messages"
+          [isSending]="isSending"
+          (sendFollowUp)="onSendFollowUp($event)"
+        ></app-portfolio-reasoning>
       </div>
 
-      <!-- Chat messages -->
-      <div
-        *ngFor="let msg of messages"
-        class="message"
-        [class.user-message]="msg.role === 'user'"
-        [class.assistant-message]="msg.role === 'assistant'"
-      >
-        <div class="message-bubble">
-          <p class="message-text">{{ msg.content }}</p>
-
-          <!-- Portfolio data table (inline in assistant message) -->
-          <div class="portfolio-data" *ngIf="msg.portfolioData">
-            <div class="table-wrapper">
-              <table class="comparison-table">
-                <thead>
-                  <tr>
-                    <th>Fund</th>
-                    <th>Allocation</th>
-                    <th>Amount</th>
-                    <th>Projected Value</th>
-                    <th>Beta</th>
-                    <th>Expected Return</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alloc of msg.portfolioData.allocations">
-                    <td class="fund-name-cell">
-                      <span class="fund-name">{{ alloc.fundName }}</span>
-                      <span class="fund-ticker">{{ alloc.ticker }}</span>
-                    </td>
-                    <td class="value-cell allocation-cell">
-                      <span class="allocation-bar" [style.width.%]="alloc.allocationPercentage"></span>
-                      {{ alloc.allocationPercentage | number:'1.1-1' }}%
-                    </td>
-                    <td class="value-cell">${{ alloc.allocatedAmount | number:'1.2-2' }}</td>
-                    <td class="value-cell">${{ alloc.projectedValue | number:'1.2-2' }}</td>
-                    <td class="value-cell">{{ alloc.beta | number:'1.4-4' }}</td>
-                    <td class="value-cell">{{ alloc.expectedReturn * 100 | number:'1.2-2' }}%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="reasoning-box">
-              <h4>AI Reasoning</h4>
-              <p>{{ msg.portfolioData.reasoning }}</p>
-            </div>
-
-            <div class="risk-box">
-              <h4>Risk Assessment</h4>
-              <p>{{ msg.portfolioData.riskAssessment }}</p>
-            </div>
-
-            <div class="disclaimer-box">
-              <p>{{ msg.portfolioData.disclaimer }}</p>
-            </div>
-          </div>
-        </div>
-        <span class="message-time">{{ msg.timestamp | date:'shortTime' }}</span>
-      </div>
-
-      <!-- Loading indicator -->
-      <div class="message assistant-message" *ngIf="isGenerating || isSending">
-        <div class="message-bubble typing-indicator">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
-
+      <app-portfolio-holdings
+        [recommendation]="recommendation"
+        [fundColors]="fundColors"
+      ></app-portfolio-holdings>
     </div>
+  </div>
 
-    <!-- Bottom input bar -->
-    <div class="chat-input-bar">
-      <input
-        type="text"
-        class="chat-input"
-        [(ngModel)]="followUpText"
-        placeholder="Ask a follow-up question..."
-        (keydown)="onFollowUpKeydown($event)"
-        [disabled]="isSending || isGenerating"
-      />
-      <button
-        class="send-btn"
-        (click)="onSendFollowUp()"
-        [disabled]="!followUpText.trim() || isSending || isGenerating"
-      >
-        Send
-      </button>
-    </div>
-
-  </main>
-
+  <button
+    *ngIf="!sidebarOpen"
+    class="edit-portfolio-btn"
+    (click)="toggleSidebar()"
+  >
+    Edit Portfolio
+  </button>
 </div>

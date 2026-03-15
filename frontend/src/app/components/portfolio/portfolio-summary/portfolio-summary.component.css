@@ -1,0 +1,116 @@
+.summary-bar {
+  padding: 20px 28px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.summary-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.empty-value {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ccc;
+}
+
+.empty-hint {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.summary-main {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.primary-value {
+  display: flex;
+  flex-direction: column;
+}
+
+.value-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.value-amount {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.gain-info {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.gain-amount {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: #999;
+}
+
+.gain-amount.positive {
+  color: var(--color-green);
+}
+
+.gain-percent {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  color: #999;
+}
+
+.gain-percent.positive {
+  color: var(--color-green);
+}
+
+.stat-chips {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #f5f7fa;
+  padding: 8px 16px;
+  border-radius: 8px;
+  min-width: 80px;
+}
+
+.chip-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chip-value {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.chip-value.positive {
+  color: var(--color-green);
+}
+
+.risk-value {
+  text-transform: capitalize;
+}
