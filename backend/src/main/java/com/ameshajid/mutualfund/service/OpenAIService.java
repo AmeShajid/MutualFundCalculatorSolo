@@ -70,7 +70,7 @@ public class OpenAIService {
 
             //Build the request body for the Gemini API
             //Gemini uses a different format: contents -> parts -> text
-            String systemInstruction = "You are a financial portfolio optimizer. You analyze mutual fund data and suggest optimal allocations. Always respond with valid JSON only, no markdown formatting, no code fences.";
+            String systemInstruction = "You are a CAPM-based portfolio optimizer. You analyze mutual fund beta values and expected returns to suggest optimal allocations. You must include every fund that has valid data. You always respond with valid JSON only, no markdown formatting, no code fences.";
 
             Map<String, Object> requestBody = Map.of(
                     "contents", List.of(
@@ -161,9 +161,11 @@ public class OpenAIService {
         sb.append("Rules:\n");
         sb.append("- Allocation percentages must sum to exactly 100\n");
         sb.append("- Only include funds that had successful predictions (no errors)\n");
-        sb.append("- For conservative: favor lower beta funds\n");
-        sb.append("- For aggressive: favor higher return funds\n");
-        sb.append("- For moderate: balance between risk and return\n");
+        sb.append("- You MUST include EVERY fund that had a successful prediction. Do not exclude any fund. Even if a fund is less optimal, give it at least 5% allocation.\n");
+        sb.append("- For CONSERVATIVE risk tolerance: Heavily favor funds with the LOWEST beta values. The lowest beta fund should get the highest allocation (up to 40%). Spread across all funds. Prioritize capital preservation and lower volatility.\n");
+        sb.append("- For MODERATE risk tolerance: Balance between beta and expected return. Spread allocations fairly evenly across all funds with a slight tilt toward funds with the best risk-adjusted return (highest return relative to beta).\n");
+        sb.append("- For AGGRESSIVE risk tolerance: Heavily favor funds with the HIGHEST beta and HIGHEST expected return. The highest beta fund should get the largest allocation (up to 50%). Prioritize maximum growth potential.\n");
+        sb.append("- The allocations MUST be noticeably different between conservative, moderate, and aggressive. Do not give similar allocations for different risk levels.\n");
 
         return sb.toString();
     }
