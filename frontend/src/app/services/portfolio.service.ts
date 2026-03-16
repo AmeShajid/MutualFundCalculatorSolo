@@ -6,13 +6,14 @@ import { PortfolioRequest } from '../models/portfolio-request.model';
 import { PortfolioRecommendation } from '../models/portfolio-recommendation.model';
 import { PortfolioChatRequest } from '../models/portfolio-chat-request.model';
 import { PortfolioChatResponse } from '../models/portfolio-chat-response.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfolioService {
 
-  private baseUrl = 'http://localhost:8080/api/portfolio';
+  private baseUrl = `${environment.apiUrl}/portfolio`;
 
   constructor(private http: HttpClient) {}
 

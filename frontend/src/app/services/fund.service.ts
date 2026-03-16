@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 
 //so we can type response correcrly
 import { Fund } from '../models/fund.model';
+import { environment } from '../../environments/environment';
 
 //so it can be used in app
 @Injectable({
@@ -17,7 +18,7 @@ import { Fund } from '../models/fund.model';
 export class FundService {
 
   //base url all api calls start with this
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
 
   // Angular injects HttpClient here when service is created
   constructor(private http: HttpClient) { }
