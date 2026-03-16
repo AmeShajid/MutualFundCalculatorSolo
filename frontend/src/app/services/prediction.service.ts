@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 // Import response models
 import { PredictionResponse } from '../models/prediction-response.model';
 import { ComparisonResponse } from '../models/comparison-response.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { ComparisonResponse } from '../models/comparison-response.model';
 export class PredictionService {
 
   //This is the base URL of our Spring Boot backend
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   //Sends GET request to /api/predict with query parameters for a single fund
