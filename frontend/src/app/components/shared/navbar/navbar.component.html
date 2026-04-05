@@ -9,16 +9,10 @@
 
   <!-- Right: Navigation links -->
   <div class="nav-links">
-
-    <!-- Section scroll links (home page only) -->
-    <ng-container *ngIf="isHomePage">
-      <a class="nav-pill" [class.active]="activeSection === 'hero'" (click)="scrollTo('hero')">Home</a>
-      <a class="nav-pill" [class.active]="activeSection === 'features'" (click)="scrollTo('features')">How it works</a>
-      <a class="nav-pill" [class.active]="activeSection === 'formula'" (click)="scrollTo('formula')">Formula</a>
-      <a class="nav-pill" [class.active]="activeSection === 'tech'" (click)="scrollTo('tech')">Tech stack</a>
-    </ng-container>
-
-    <!-- Page links (always visible) -->
+    <a class="nav-pill" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a class="nav-pill" routerLink="/how-it-works" routerLinkActive="active">How it works</a>
+    <a class="nav-pill" routerLink="/formula" routerLinkActive="active">Formula</a>
+    <a class="nav-pill" routerLink="/tech-stack" routerLinkActive="active">Tech stack</a>
     <a class="nav-pill" routerLink="/calculator" routerLinkActive="active">Calculator</a>
     <a class="nav-pill" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
   </div>
