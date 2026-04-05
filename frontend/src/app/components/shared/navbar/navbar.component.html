@@ -1,10 +1,26 @@
+<!-- Fixed navbar with frosted glass effect -->
 <nav class="navbar">
-  <a class="nav-link" routerLink="/calculator" routerLinkActive="active">Calculator</a>
 
-  <a class="nav-brand" routerLink="/">
-    <span class="nav-title">Investment Calculator</span>
-    <span class="nav-subtitle">Goldman Sachs Engineering Program</span>
-  </a>
+  <!-- Left: Logo with pulsing dot -->
+  <div class="nav-logo">
+    <span class="pulse-dot"></span>
+    <a class="logo-text" routerLink="/">MUTUAL FUND CALC</a>
+  </div>
 
-  <a class="nav-link" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
+  <!-- Right: Navigation links -->
+  <div class="nav-links">
+
+    <!-- Section scroll links (home page only) -->
+    <ng-container *ngIf="isHomePage">
+      <a class="nav-pill" [class.active]="activeSection === 'hero'" (click)="scrollTo('hero')">Home</a>
+      <a class="nav-pill" [class.active]="activeSection === 'features'" (click)="scrollTo('features')">How it works</a>
+      <a class="nav-pill" [class.active]="activeSection === 'formula'" (click)="scrollTo('formula')">Formula</a>
+      <a class="nav-pill" [class.active]="activeSection === 'tech'" (click)="scrollTo('tech')">Tech stack</a>
+    </ng-container>
+
+    <!-- Page links (always visible) -->
+    <a class="nav-pill" routerLink="/calculator" routerLinkActive="active">Calculator</a>
+    <a class="nav-pill" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
+  </div>
+
 </nav>

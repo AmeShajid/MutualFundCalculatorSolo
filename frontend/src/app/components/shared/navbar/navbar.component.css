@@ -1,57 +1,84 @@
+/* Fixed navbar with frosted glass effect */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  z-index: 100;
   height: 64px;
-  background-color: var(--color-navy);
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
-  z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: rgba(0, 21, 48, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(115, 153, 198, 0.1);
 }
 
-.nav-brand {
+/* Left side: logo area */
+.nav-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  gap: 2px;
+  gap: 12px;
 }
 
-.nav-title {
-  color: white;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+/* Animated pulsing dot */
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7399C6;
+  animation: pulse-dot 3s ease-in-out infinite;
 }
 
-.nav-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(115, 153, 198, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 6px rgba(115, 153, 198, 0);
+  }
 }
 
-.nav-link {
-  color: rgba(255, 255, 255, 0.75);
-  text-decoration: none;
+/* Logo text */
+.logo-text {
   font-size: 14px;
   font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: color 0.2s, background-color 0.2s;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-decoration: none;
 }
 
-.nav-link:hover {
-  color: white;
-  background-color: rgba(255, 255, 255, 0.1);
+/* Right side: navigation links */
+.nav-links {
+  display: flex;
+  gap: 6px;
 }
 
-.nav-link.active {
-  color: white;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-bottom: 2px solid white;
+/* Pill-shaped nav links */
+.nav-pill {
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.nav-pill:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(115, 153, 198, 0.1);
+}
+
+/* Active state for both scroll links and route links */
+.nav-pill.active {
+  background: rgba(115, 153, 198, 0.15);
+  color: #7399C6;
+  border: 1px solid rgba(115, 153, 198, 0.25);
 }
