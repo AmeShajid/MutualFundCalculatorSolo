@@ -1,23 +1,67 @@
-<section class="info-cards">
-  <div class="info-card">
-    <h3>Mutual Fund</h3>
-    <p>
-      A pooled investment vehicle that collects money from many investors to purchase a diversified
-      portfolio of stocks, bonds, or other securities — professionally managed on your behalf.
-    </p>
+<!-- Bento feature grid section -->
+<section class="features" id="features">
+
+  <!-- Section header -->
+  <div class="section-header reveal">
+    <span class="section-label">HOW IT WORKS</span>
+    <h2 class="section-title">Three steps to smarter investing</h2>
   </div>
-  <div class="info-card">
-    <h3>Beta</h3>
-    <p>
-      Measures a fund's systematic risk relative to the overall market. A beta greater than 1
-      means more volatile than the market; less than 1 means less volatile.
-    </p>
+
+  <!-- Bento grid: 2 columns, card 1 spans 2 rows -->
+  <div class="bento-grid reveal">
+
+    <!-- Card 1: Dark card spanning 2 rows -->
+    <div class="bento-card bento-dark">
+      <span class="card-number">01</span>
+      <div class="card-icon icon-dollar">$</div>
+      <h3 class="card-title-light">Select a fund</h3>
+      <p class="card-desc-light">
+        Choose from 25+ mutual funds and ETFs including Vanguard, Fidelity, Schwab, and Goldman Sachs funds.
+        Enter your initial investment amount and time horizon to get started.
+      </p>
+      <!-- Mini UI preview -->
+      <div class="mini-preview">
+        <div class="preview-row">
+          <span class="preview-label">FUND</span>
+          <span class="preview-value">VFIAX</span>
+        </div>
+        <div class="preview-row preview-row-border">
+          <span class="preview-label">INVESTMENT</span>
+          <span class="preview-value">$10,000</span>
+        </div>
+        <div class="preview-row preview-row-border">
+          <span class="preview-label">HORIZON</span>
+          <span class="preview-value">5 years</span>
+        </div>
+        <!-- Animated progress bar -->
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Light card (top-right) -->
+    <div class="bento-card bento-light">
+      <span class="card-number card-number-light">02</span>
+      <div class="card-icon icon-beta">&beta;</div>
+      <h3 class="card-title-dark">CAPM analysis</h3>
+      <p class="card-desc-dark">
+        We pull live beta values from Newton Analytics and historical returns from Yahoo Finance,
+        then run them through the Capital Asset Pricing Model to calculate your expected rate of return.
+      </p>
+    </div>
+
+    <!-- Card 3: Light card (bottom-right) -->
+    <div class="bento-card bento-light">
+      <span class="card-number card-number-light">03</span>
+      <div class="card-icon icon-percent">%</div>
+      <h3 class="card-title-dark">Get projections</h3>
+      <p class="card-desc-dark">
+        See your predicted future value with continuous compounding. Or let ChatGPT analyze your selections
+        and suggest an optimized portfolio based on your risk tolerance.
+      </p>
+    </div>
+
   </div>
-  <div class="info-card">
-    <h3>Return Rate</h3>
-    <p>
-      The expected annual return calculated using the CAPM model, which factors in the risk-free
-      rate, the fund's beta, and the expected market return.
-    </p>
-  </div>
+
 </section>
