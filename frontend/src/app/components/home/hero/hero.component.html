@@ -1,11 +1,58 @@
-<section class="hero">
-  <h1 class="hero-title">Smart Investment Analysis</h1>
-  <p class="hero-description">
-    Analyze mutual funds and ETFs using the Capital Asset Pricing Model.
-    Compare predicted returns, optimize your portfolio with AI, and make informed investment decisions.
-  </p>
-  <div class="hero-buttons">
-    <a class="btn btn-primary" routerLink="/calculator">Start Calculating</a>
-    <a class="btn btn-secondary" routerLink="/portfolio">AI Portfolio</a>
+<!-- Hero section: full viewport height, white background -->
+<section class="hero" id="hero">
+
+  <!-- Decorative background elements -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+  <div class="grid-pattern"></div>
+
+  <!-- Hero content sits above decorations -->
+  <div class="hero-content">
+
+    <!-- Badge pill -->
+    <div class="badge anim-1">
+      <span class="badge-dot"></span>
+      <span class="badge-text">GOLDMAN SACHS ENGINEERING PROGRAM</span>
+    </div>
+
+    <!-- Main title with gradient text -->
+    <h1 class="title anim-2">
+      Smart investment<br/>
+      <span class="title-gradient">analysis.</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="subtitle anim-3">
+      Predict mutual fund returns with the Capital Asset Pricing Model.
+      Real-time beta, historical market data, and AI-powered portfolio optimization.
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="btn-row anim-4">
+      <a class="btn-primary" routerLink="/calculator">Start calculating</a>
+      <a class="btn-secondary" routerLink="/portfolio">AI portfolio</a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row anim-5">
+      <div class="stat">
+        <span class="stat-number" #statFunds>0+</span>
+        <span class="stat-label">Funds tracked</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Live API feeds</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number mono">ChatGPT</span>
+        <span class="stat-label">Powered by Gemini</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number mono">CAPM</span>
+        <span class="stat-label">Pricing model</span>
+      </div>
+    </div>
+
   </div>
+
 </section>

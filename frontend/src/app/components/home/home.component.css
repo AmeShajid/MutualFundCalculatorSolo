@@ -1,8 +1,6 @@
+/* Home page wrapper — sections stack vertically, centered */
 .home-wrapper {
-  min-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
-  gap: 40px;
 }

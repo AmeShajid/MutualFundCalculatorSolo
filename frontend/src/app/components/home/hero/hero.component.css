@@ -1,54 +1,258 @@
+/* Hero section: full viewport, white background */
 .hero {
-  text-align: center;
-  max-width: 700px;
-  padding: 40px 20px;
-}
-
-.hero-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--color-navy);
-  margin: 0 0 16px 0;
-}
-
-.hero-description {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.7;
-  margin: 0 0 32px 0;
-}
-
-.hero-buttons {
+  min-height: 100vh;
   display: flex;
-  gap: 16px;
+  flex-direction: column;
   justify-content: center;
-  flex-wrap: wrap;
+  padding: 120px 60px 80px;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
 }
 
-.btn {
-  display: inline-block;
-  padding: 12px 32px;
-  border-radius: 6px;
+/* ==================== Background Decorations ==================== */
+
+/* Floating glow orb (top-right) */
+.glow-orb-1 {
+  position: absolute;
+  top: -150px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(115, 153, 198, 0.12) 0%, transparent 65%);
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+/* Floating glow orb (bottom-left) */
+.glow-orb-2 {
+  position: absolute;
+  bottom: -200px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(24, 95, 165, 0.08) 0%, transparent 65%);
+  animation: float-slow 10s ease-in-out infinite reverse;
+}
+
+/* Subtle 60px square grid overlay */
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 21, 48, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 21, 48, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+/* ==================== Hero Content ==================== */
+
+/* Content layer above decorations — centered on page */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ==================== Badge Pill ==================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 21, 48, 0.04);
+  border: 1px solid rgba(0, 21, 48, 0.08);
+  border-radius: 24px;
+  padding: 7px 18px;
+  margin-bottom: 32px;
+}
+
+/* Small pulsing green dot inside badge */
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3B6D11;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(59, 109, 17, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 6px rgba(59, 109, 17, 0);
+  }
+}
+
+/* Badge text */
+.badge-text {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #185FA5;
+  font-weight: 500;
+}
+
+/* ==================== Title ==================== */
+
+.title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: #001530;
+  margin-bottom: 24px;
+}
+
+/* Gradient text for "analysis." */
+.title-gradient {
+  background: linear-gradient(135deg, #185FA5 0%, #7399C6 40%, #185FA5 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ==================== Subtitle ==================== */
+
+.subtitle {
+  font-size: 17px;
+  color: #5a6a7a;
+  line-height: 1.8;
+  max-width: 500px;
+  margin: 0 auto 40px;
+}
+
+/* ==================== Buttons ==================== */
+
+.btn-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Primary CTA: dark navy pill */
+.btn-primary {
+  background: #001530;
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 32px;
   font-size: 15px;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.btn-primary {
-  background-color: var(--color-blue);
-  color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--color-blue-hover);
+  background: #0c2a4d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 21, 48, 0.2);
 }
 
+/* Secondary CTA: outlined pill */
 .btn-secondary {
-  background-color: var(--color-green);
-  color: white;
+  border: 1.5px solid #c8d5e2;
+  color: #001530;
+  padding: 14px 32px;
+  border-radius: 32px;
+  font-size: 15px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-green-hover);
+  border-color: #7399C6;
+  background: rgba(115, 153, 198, 0.06);
+  transform: translateY(-2px);
+}
+
+/* ==================== Stats Row ==================== */
+
+.stats-row {
+  display: flex;
+  gap: 48px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid #e8edf2;
+  justify-content: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Large stat number */
+.stat-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
+  color: #001530;
+}
+
+/* Smaller stat number for text values */
+.stat-number.mono {
+  font-size: 26px;
+}
+
+/* Muted stat label */
+.stat-label {
+  font-size: 13px;
+  color: #8a98a8;
+  margin-top: 4px;
+}
+
+/* ==================== Staggered fadeInUp Animations ==================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-1 { animation: fadeInUp 0.8s ease both; }
+.anim-2 { animation: fadeInUp 0.8s ease 0.1s both; }
+.anim-3 { animation: fadeInUp 0.8s ease 0.2s both; }
+.anim-4 { animation: fadeInUp 0.8s ease 0.3s both; }
+.anim-5 { animation: fadeInUp 0.8s ease 0.5s both; }
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 24px 60px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .stats-row {
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .btn-row {
+    flex-wrap: wrap;
+  }
 }
