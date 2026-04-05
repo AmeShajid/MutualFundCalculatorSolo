@@ -6,19 +6,20 @@
 /* Search input that serves as the dropdown trigger */
 .dropdown-search-input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 12px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  font-size: 15px;
   color: #333;
   background-color: white;
-  height: 40px;
   box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
 .dropdown-search-input:focus {
   outline: none;
-  border-color: var(--color-blue);
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
 }
 
 /* Dropdown panel */
@@ -27,14 +28,14 @@
   top: 100%;
   left: 0;
   right: 0;
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
   background-color: white;
-  border: 1px solid #ccc;
+  border: 1px solid #d0d5dd;
   border-top: none;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 6px 6px;
   z-index: 100;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .dropdown-no-results {
@@ -47,15 +48,16 @@
 .dropdown-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 14px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
-  gap: 8px;
+  gap: 10px;
+  transition: background-color 0.15s;
 }
 
 .dropdown-item:hover:not(.disabled) {
-  background-color: #f0f7ff;
+  background-color: #f3f6fb;
 }
 
 .dropdown-item.selected {
@@ -63,7 +65,7 @@
 }
 
 .dropdown-item.disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
@@ -76,6 +78,7 @@
 .dropdown-item input[type="checkbox"] {
   flex-shrink: 0;
   cursor: pointer;
+  accent-color: #4a90d9;
 }
 
 .dropdown-item.disabled input[type="checkbox"] {
@@ -87,30 +90,30 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  background-color: var(--color-blue-light);
-  border: 1px solid var(--color-blue-border);
+  padding: 4px 12px;
+  background-color: #eef4fc;
+  border: 1px solid #c4d9f0;
   border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-navy);
+  color: #2563eb;
 }
 
 .chip-remove {
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
-  color: #666;
+  color: #888;
   line-height: 1;
 }
 
 .chip-remove:hover {
-  color: var(--color-error);
+  color: #dc2626;
 }
