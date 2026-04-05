@@ -1,32 +1,210 @@
-.info-cards {
-  display: flex;
-  gap: 24px;
-  max-width: 1100px;
+/* Features section with light gray background */
+.features {
+  padding: 80px 60px;
+  background: #f7f9fb;
   width: 100%;
-  flex-wrap: wrap;
-  padding: 0 60px;
-  margin-bottom: 40px;
 }
 
-.info-card {
-  flex: 1;
-  min-width: 280px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 28px 24px;
+/* Section header pattern */
+.section-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #185FA5;
+  font-weight: 500;
+  margin-bottom: 12px;
 }
 
-.info-card h3 {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--color-navy);
-  margin: 0 0 12px 0;
+.section-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #001530;
+  margin: 0 0 48px 0;
 }
 
-.info-card p {
+/* Bento grid: 2 columns */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+  max-width: 1100px;
+}
+
+/* Shared card styles */
+.bento-card {
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Background step number */
+.card-number {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 56px;
+  font-weight: 500;
+  color: rgba(115, 153, 198, 0.07);
+}
+
+.card-number-light {
+  color: rgba(0, 21, 48, 0.04);
+}
+
+/* Icon circles */
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.icon-dollar {
+  background: rgba(115, 153, 198, 0.15);
+  color: #7399C6;
+}
+
+.icon-beta {
+  background: rgba(24, 95, 165, 0.1);
+  color: #185FA5;
+}
+
+.icon-percent {
+  background: rgba(59, 109, 17, 0.1);
+  color: #3B6D11;
+}
+
+/* ==================== Dark Card (Card 1) ==================== */
+
+.bento-dark {
+  background: #001530;
+  border: 1px solid rgba(115, 153, 198, 0.1);
+  grid-row: span 2;
+}
+
+.bento-dark:hover {
+  box-shadow: 0 16px 48px rgba(0, 21, 48, 0.2);
+}
+
+.card-title-light {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+
+.card-desc-light {
   font-size: 14px;
-  color: #555;
   line-height: 1.7;
+  color: rgba(255, 255, 255, 0.45);
   margin: 0;
+}
+
+/* Mini UI preview inside dark card */
+.mini-preview {
+  margin-top: 28px;
+  background: rgba(115, 153, 198, 0.06);
+  border-radius: 14px;
+  padding: 16px 20px;
+  border: 1px solid rgba(115, 153, 198, 0.1);
+}
+
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.preview-row-border {
+  border-top: 1px solid rgba(115, 153, 198, 0.06);
+}
+
+.preview-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 500;
+}
+
+.preview-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: #7399C6;
+}
+
+/* Animated progress bar */
+.progress-track {
+  margin-top: 16px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(115, 153, 198, 0.1);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #7399C6, #185FA5);
+  animation: barGrow 2s ease 1s both;
+}
+
+@keyframes barGrow {
+  from { width: 0%; }
+  to { width: 68%; }
+}
+
+/* ==================== Light Cards (Cards 2 & 3) ==================== */
+
+.bento-light {
+  background: #ffffff;
+  border: 1px solid #e4eaf0;
+}
+
+.bento-light:hover {
+  border-color: #c8d5e2;
+  box-shadow: 0 12px 36px rgba(0, 21, 48, 0.07);
+}
+
+.card-title-dark {
+  font-size: 20px;
+  font-weight: 600;
+  color: #001530;
+  margin: 0 0 8px 0;
+}
+
+.card-desc-dark {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5a6a7a;
+  margin: 0;
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+  .features {
+    padding: 60px 24px;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-dark {
+    grid-row: span 1;
+  }
 }

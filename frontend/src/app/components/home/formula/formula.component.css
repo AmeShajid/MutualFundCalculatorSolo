@@ -1,34 +1,142 @@
+/* Formula section: white background */
 .formula-section {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 32px;
-  max-width: 700px;
+  padding: 80px 60px;
+  background: #ffffff;
   width: 100%;
+}
+
+/* Section header */
+.section-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #185FA5;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #001530;
+  margin: 0 0 48px 0;
+}
+
+/* Dark formula card */
+.formula-card {
+  background: #001530;
+  border-radius: 24px;
+  padding: 56px 48px;
   text-align: center;
-  margin-bottom: 60px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1100px;
 }
 
-.formula-section h3 {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--color-navy);
-  margin: 0 0 20px 0;
+/* Left accent gradient bar */
+.formula-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #7399C6, #185FA5, transparent);
 }
 
-.formula {
+/* "CONTINUOUS COMPOUNDING · CAPM" label */
+.formula-label {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #7399C6;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 24px;
+}
+
+/* Main formula: FV = P × e^rt */
+.formula-main {
+  font-family: 'DM Mono', monospace;
+  font-size: 48px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.formula-main sup {
   font-size: 28px;
-  font-weight: 600;
-  color: var(--color-blue);
-  margin-bottom: 20px;
-  font-family: 'Georgia', serif;
 }
 
-.formula-legend {
+/* Expanded formula */
+.formula-expanded {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 40px;
+}
+
+/* Highlighted variables in expanded formula */
+.hl {
+  color: #7399C6;
+}
+
+/* Variable chips row */
+.chips {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
   justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Individual chip */
+.chip {
+  background: rgba(115, 153, 198, 0.08);
+  border: 1px solid rgba(115, 153, 198, 0.12);
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  background: rgba(115, 153, 198, 0.14);
+  border-color: rgba(115, 153, 198, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Chip symbol (FV, P, e, etc.) */
+.chip-symbol {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: #7399C6;
+}
+
+/* Chip name */
+.chip-name {
   font-size: 13px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formula-section {
+    padding: 60px 24px;
+  }
+
+  .formula-card {
+    padding: 40px 24px;
+  }
+
+  .formula-main {
+    font-size: 32px;
+  }
+
+  .formula-main sup {
+    font-size: 20px;
+  }
 }

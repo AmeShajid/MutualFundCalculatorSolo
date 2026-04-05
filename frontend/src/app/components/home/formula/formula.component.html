@@ -1,10 +1,54 @@
-<section class="formula-section">
-  <h3>How We Calculate Future Value</h3>
-  <div class="formula">FV = P &times; e<sup>rt</sup></div>
-  <div class="formula-legend">
-    <span><strong>FV</strong> = Future Value</span>
-    <span><strong>P</strong> = Principal (initial investment)</span>
-    <span><strong>r</strong> = Expected annual return (from CAPM)</span>
-    <span><strong>t</strong> = Time in years</span>
+<!-- Formula section -->
+<section class="formula-section" id="formula">
+
+  <!-- Section header -->
+  <div class="section-header reveal">
+    <span class="section-label">THE MATH</span>
+    <h2 class="section-title">Powered by real finance</h2>
   </div>
+
+  <!-- Dark formula card -->
+  <div class="formula-card reveal">
+
+    <!-- Label -->
+    <span class="formula-label">CONTINUOUS COMPOUNDING &middot; CAPM</span>
+
+    <!-- Main formula -->
+    <div class="formula-main">FV &nbsp;= &nbsp;P &nbsp;&times; &nbsp;e<sup>rt</sup></div>
+
+    <!-- Expanded formula -->
+    <div class="formula-expanded">
+      where <span class="hl">r</span> = riskFreeRate + <span class="hl">&beta;</span> &times; (expectedReturn &minus; riskFreeRate)
+    </div>
+
+    <!-- Variable chips -->
+    <div class="chips">
+      <div class="chip">
+        <span class="chip-symbol">FV</span>
+        <span class="chip-name">Future value</span>
+      </div>
+      <div class="chip">
+        <span class="chip-symbol">P</span>
+        <span class="chip-name">Principal</span>
+      </div>
+      <div class="chip">
+        <span class="chip-symbol">e</span>
+        <span class="chip-name">Euler's number</span>
+      </div>
+      <div class="chip">
+        <span class="chip-symbol">r</span>
+        <span class="chip-name">CAPM rate</span>
+      </div>
+      <div class="chip">
+        <span class="chip-symbol">t</span>
+        <span class="chip-name">Time in years</span>
+      </div>
+      <div class="chip">
+        <span class="chip-symbol">&beta;</span>
+        <span class="chip-name">Beta (Newton API)</span>
+      </div>
+    </div>
+
+  </div>
+
 </section>
