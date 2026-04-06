@@ -1,13 +1,13 @@
-/* Hero section: full viewport, white background */
+/* Hero section: fits within viewport with room for footer below */
 .hero {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 120px 60px 80px;
+  padding: 40px 60px 20px;
   position: relative;
   overflow: hidden;
   background: #ffffff;
+  flex: 1;
 }
 
 /* ==================== Background Decorations ==================== */
@@ -34,16 +34,6 @@
   border-radius: 50%;
   background: radial-gradient(circle, rgba(24, 95, 165, 0.08) 0%, transparent 65%);
   animation: float-slow 10s ease-in-out infinite reverse;
-}
-
-/* Subtle 60px square grid overlay */
-.grid-pattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 21, 48, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 21, 48, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
 }
 
 @keyframes float-slow {
@@ -186,8 +176,8 @@
 .stats-row {
   display: flex;
   gap: 48px;
-  margin-top: 64px;
-  padding-top: 40px;
+  margin-top: 40px;
+  padding-top: 28px;
   border-top: 1px solid #e8edf2;
   justify-content: center;
 }
