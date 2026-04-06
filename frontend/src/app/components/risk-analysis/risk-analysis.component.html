@@ -10,10 +10,12 @@
   <!-- Two-column grid: controls left, results right -->
   <div class="main-grid">
 
-    <!-- Left column: controls placeholder -->
-    <div class="controls-placeholder">
-      <p>Controls will go here (Milestone 2)</p>
-    </div>
+    <!-- Left column: controls -->
+    <app-simulation-controls
+      [funds]="funds"
+      [isRunning]="isRunning"
+      (runSimulation)="onRunSimulation($event)"
+    ></app-simulation-controls>
 
     <!-- Right column: results placeholder -->
     <div class="results-placeholder">

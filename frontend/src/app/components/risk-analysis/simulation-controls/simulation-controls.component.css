@@ -1,0 +1,168 @@
+/* Controls card */
+.ctrl-card {
+  background: #ffffff;
+  border: 1px solid #e4eaf0;
+  border-radius: 20px;
+  padding: 32px;
+  align-self: start;
+  position: sticky;
+  top: 88px;
+}
+
+/* Card title */
+.ctrl-title {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #185FA5;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* Form group spacing */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Field labels */
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #001530;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Shared input/select styling */
+.form-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid #e4eaf0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: #001530;
+  background: #ffffff;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.form-input:hover {
+  border-color: #c8d5e2;
+}
+
+.form-input:focus {
+  border-color: #7399C6;
+  box-shadow: 0 0 0 4px rgba(115, 153, 198, 0.12);
+}
+
+/* Custom dropdown arrow */
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a98a8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+/* Dollar prefix container */
+.form-prefix {
+  position: relative;
+}
+
+.pfx {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #8a98a8;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.form-prefix .form-input {
+  padding-left: 32px;
+}
+
+/* Range slider */
+.sim-slider {
+  width: 100%;
+  padding: 8px 0;
+  border: none;
+  cursor: pointer;
+  accent-color: #185FA5;
+}
+
+/* Slider range labels */
+.sim-range-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.sim-range-labels span {
+  font-size: 11px;
+  color: #8a98a8;
+}
+
+.sim-current {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px !important;
+  color: #185FA5 !important;
+  font-weight: 500;
+}
+
+/* Run button */
+.btn-run {
+  width: 100%;
+  padding: 14px;
+  border-radius: 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  font-family: inherit;
+  background: #001530;
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+.btn-run:hover:not(:disabled) {
+  background: #0c2a4d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 21, 48, 0.2);
+}
+
+.btn-run:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-run.running,
+.btn-run:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Info box */
+.info-box {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f7f9fb;
+  border-radius: 12px;
+}
+
+.info-box p {
+  font-size: 12px;
+  color: #8a98a8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-box em {
+  color: #185FA5;
+  font-style: normal;
+  font-weight: 500;
+}
