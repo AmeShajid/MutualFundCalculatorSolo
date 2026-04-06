@@ -1,0 +1,30 @@
+<!-- Three outcome stat cards -->
+<div class="stats-grid">
+
+  <!-- Pessimistic (10th percentile) -->
+  <div class="stat-card pessimistic">
+    <div class="stat-emoji">&#x1F4C9;</div>
+    <div class="stat-val">${{ results.pessimisticValue | number:'1.0-0' }}</div>
+    <div class="stat-pct" [class.negative]="percentGain(results.pessimisticValue) < 0">
+      {{ formatPercent(results.pessimisticValue) }}
+    </div>
+    <div class="stat-label">PESSIMISTIC (10th %ile)</div>
+  </div>
+
+  <!-- Expected (50th percentile / median) -->
+  <div class="stat-card expected">
+    <div class="stat-emoji">&#x1F4CA;</div>
+    <div class="stat-val">${{ results.expectedValue | number:'1.0-0' }}</div>
+    <div class="stat-pct blue">{{ formatPercent(results.expectedValue) }}</div>
+    <div class="stat-label">EXPECTED (50th %ile)</div>
+  </div>
+
+  <!-- Optimistic (90th percentile) -->
+  <div class="stat-card optimistic">
+    <div class="stat-emoji">&#x1F4C8;</div>
+    <div class="stat-val">${{ results.optimisticValue | number:'1.0-0' }}</div>
+    <div class="stat-pct positive">{{ formatPercent(results.optimisticValue) }}</div>
+    <div class="stat-label">OPTIMISTIC (90th %ile)</div>
+  </div>
+
+</div>

@@ -30,8 +30,13 @@
 
   <!-- Chart area -->
   <div class="chart-container">
+    <!-- Loading state -->
+    <div class="chart-empty" *ngIf="isRunning">
+      <div class="chart-empty-ico">&#x23F3;</div>
+      <div class="chart-empty-text">Running simulation, please wait...</div>
+    </div>
     <!-- Empty state -->
-    <div class="chart-empty" *ngIf="!results">
+    <div class="chart-empty" *ngIf="!results && !isRunning">
       <div class="chart-empty-ico">&#x1F4CA;</div>
       <div class="chart-empty-text">Configure parameters and run simulation<br/>to see the risk cone</div>
     </div>

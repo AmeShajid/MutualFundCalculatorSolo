@@ -1,0 +1,62 @@
+/* Three-column stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Individual stat card */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e4eaf0;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 21, 48, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Colored top borders */
+.stat-card.pessimistic { border-top: 3px solid #c0392b; }
+.stat-card.expected { border-top: 3px solid #7399C6; }
+.stat-card.optimistic { border-top: 3px solid #3B6D11; }
+
+.stat-emoji {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.stat-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 24px;
+  font-weight: 500;
+  color: #001530;
+  margin-bottom: 2px;
+}
+
+.stat-pct {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #3B6D11;
+}
+
+.stat-pct.negative { color: #c0392b; }
+.stat-pct.blue { color: #7399C6; }
+.stat-pct.positive { color: #3B6D11; }
+
+.stat-label {
+  font-size: 11px;
+  color: #8a98a8;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

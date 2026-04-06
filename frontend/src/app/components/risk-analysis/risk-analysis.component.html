@@ -20,10 +20,14 @@
     <!-- Right column: results -->
     <div class="results-area">
 
-      <!-- Chart card (always visible — shows empty state or chart) -->
-      <app-simulation-chart [results]="results"></app-simulation-chart>
+      <!-- Chart card (always visible — shows empty/loading/chart) -->
+      <app-simulation-chart [results]="results" [isRunning]="isRunning"></app-simulation-chart>
 
-      <!-- Stats and details will be added in Milestone 5 -->
+      <!-- Stats cards (hidden until simulation runs) -->
+      <app-simulation-stats *ngIf="results" [results]="results"></app-simulation-stats>
+
+      <!-- Details card (hidden until simulation runs) -->
+      <app-simulation-details *ngIf="results" [results]="results"></app-simulation-details>
 
     </div>
 
