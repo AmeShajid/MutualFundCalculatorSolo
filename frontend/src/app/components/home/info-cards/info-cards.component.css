@@ -1,11 +1,17 @@
 /* Features section with light gray background */
 .features {
-  padding: 80px 60px;
-  background: #f7f9fb;
+  padding: 40px 60px 80px;
+  background: #ffffff;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 /* Section header pattern */
+.section-header {
+  text-align: center;
+}
+
 .section-label {
   display: block;
   font-size: 11px;

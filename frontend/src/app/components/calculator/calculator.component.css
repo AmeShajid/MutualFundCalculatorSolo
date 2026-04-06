@@ -8,6 +8,10 @@
 }
 
 /* Page header */
+.page-header {
+  text-align: center;
+}
+
 .page-header h1 {
   font-size: 28px;
   font-weight: 600;
