@@ -1,0 +1,42 @@
+<!-- Dark navy chart card -->
+<div class="chart-card">
+
+  <!-- Chart header -->
+  <div class="chart-header">
+    <div class="chart-header-left">
+      <span class="chart-label">MONTE CARLO PROJECTION</span>
+      <span class="chart-sublabel">{{ subtitle }}</span>
+    </div>
+    <!-- Legend (visible only when results exist) -->
+    <div class="chart-legend" *ngIf="results">
+      <div class="legend-item">
+        <span class="legend-dot dot-outer"></span>
+        <span>10th–90th %ile</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot dot-inner"></span>
+        <span>25th–75th %ile</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot dot-median"></span>
+        <span>Median</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot dot-capm"></span>
+        <span>CAPM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart area -->
+  <div class="chart-container">
+    <!-- Empty state -->
+    <div class="chart-empty" *ngIf="!results">
+      <div class="chart-empty-ico">&#x1F4CA;</div>
+      <div class="chart-empty-text">Configure parameters and run simulation<br/>to see the risk cone</div>
+    </div>
+    <!-- Canvas (always in DOM, hidden when no results) -->
+    <canvas #mcChart [style.display]="results ? 'block' : 'none'"></canvas>
+  </div>
+
+</div>
