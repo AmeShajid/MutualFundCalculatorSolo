@@ -1,18 +1,22 @@
 <!-- Fixed navbar with frosted glass effect -->
 <nav class="navbar">
 
-  <!-- Left: Logo with pulsing dot -->
-  <div class="nav-logo">
-    <span class="pulse-dot"></span>
-    <a class="logo-text" routerLink="/">MUTUAL FUND CALC</a>
-  </div>
-
-  <!-- Right: Navigation links -->
+  <!-- Left: info pages -->
   <div class="nav-links">
-    <a class="nav-pill" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
     <a class="nav-pill" routerLink="/how-it-works" routerLinkActive="active">How it works</a>
     <a class="nav-pill" routerLink="/formula" routerLinkActive="active">Formula</a>
     <a class="nav-pill" routerLink="/tech-stack" routerLinkActive="active">Tech stack</a>
+  </div>
+
+  <!-- Center: logo/title links to home -->
+  <a class="nav-brand" routerLink="/">
+    <span class="pulse-dot"></span>
+    <span class="brand-text">Portfolio Calculator</span>
+    <span class="pulse-dot"></span>
+  </a>
+
+  <!-- Right: tool pages -->
+  <div class="nav-links">
     <a class="nav-pill" routerLink="/risk-analysis" routerLinkActive="active">Risk Analysis</a>
     <a class="nav-pill" routerLink="/calculator" routerLinkActive="active">Calculator</a>
     <a class="nav-pill" routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
