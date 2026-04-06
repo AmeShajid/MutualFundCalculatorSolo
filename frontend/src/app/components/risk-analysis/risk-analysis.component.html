@@ -17,9 +17,29 @@
       (runSimulation)="onRunSimulation($event)"
     ></app-simulation-controls>
 
-    <!-- Right column: results placeholder -->
-    <div class="results-placeholder">
-      <p>Chart and stats will go here (Milestones 4 & 5)</p>
+    <!-- Right column: results -->
+    <div class="results-area">
+
+      <!-- Placeholder when no results yet -->
+      <div class="results-placeholder" *ngIf="!results && !isRunning">
+        <p>Chart and stats will appear here after running a simulation</p>
+      </div>
+
+      <!-- Loading state -->
+      <div class="results-placeholder" *ngIf="isRunning">
+        <p>Running {{ results ? '' : '' }}simulation...</p>
+      </div>
+
+      <!-- Debug output (temporary — will be replaced by chart/stats components in M4/M5) -->
+      <div class="debug-output" *ngIf="results && !isRunning">
+        <p><strong>Simulation complete:</strong> {{ results.ticker }} · ${{ results.principal | number:'1.0-0' }} · {{ results.years }} years · {{ results.simulations }} sims</p>
+        <p>Pessimistic (10th): ${{ results.pessimisticValue | number:'1.0-0' }}</p>
+        <p>Expected (50th): ${{ results.expectedValue | number:'1.0-0' }}</p>
+        <p>Optimistic (90th): ${{ results.optimisticValue | number:'1.0-0' }}</p>
+        <p>Beta: {{ results.beta | number:'1.4-4' }} · Volatility: {{ results.volatility * 100 | number:'1.1-1' }}%</p>
+        <p>CAPM FV: ${{ results.capmFutureValue | number:'1.0-0' }} · Worst: ${{ results.worstSim | number:'1.0-0' }} · Best: ${{ results.bestSim | number:'1.0-0' }}</p>
+      </div>
+
     </div>
 
   </div>
