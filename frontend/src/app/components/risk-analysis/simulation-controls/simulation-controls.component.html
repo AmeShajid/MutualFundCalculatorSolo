@@ -8,7 +8,7 @@
   <div class="form-group">
     <label class="form-label">FUND</label>
     <select class="form-input" [(ngModel)]="selectedTicker">
-      <option value="" disabled>Select a fund...</option>
+      <option value="" disabled>Select a fund</option>
       <option *ngFor="let fund of funds" [value]="fund.symbol">
         {{ fund.symbol }} — {{ fund.name }}
       </option>

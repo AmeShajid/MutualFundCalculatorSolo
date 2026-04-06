@@ -12,6 +12,8 @@ import { SimulationResults } from '../risk-analysis.component';
 export class SimulationChartComponent implements OnChanges, AfterViewInit {
   // Simulation results from parent
   @Input() results: SimulationResults | null = null;
+  // Whether simulation is currently running
+  @Input() isRunning = false;
   // Canvas element reference
   @ViewChild('mcChart') canvasRef!: ElementRef<HTMLCanvasElement>;
 

@@ -1,0 +1,33 @@
+<!-- Simulation details card -->
+<div class="details-card">
+
+  <div class="details-title">SIMULATION DETAILS</div>
+
+  <div class="details-grid">
+    <div class="detail-item">
+      <div class="detail-value">{{ results.beta | number:'1.2-2' }}</div>
+      <div class="detail-label">Fund beta (&beta;)</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-value">{{ results.volatility * 100 | number:'1.1-1' }}%</div>
+      <div class="detail-label">Annual volatility</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-value">${{ results.capmFutureValue | number:'1.0-0' }}</div>
+      <div class="detail-label">CAPM future value</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-value">{{ results.expectedReturn * 100 | number:'1.1-1' }}%</div>
+      <div class="detail-label">Expected return</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-value">${{ results.worstSim | number:'1.0-0' }}</div>
+      <div class="detail-label">Worst simulation</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-value">${{ results.bestSim | number:'1.0-0' }}</div>
+      <div class="detail-label">Best simulation</div>
+    </div>
+  </div>
+
+</div>

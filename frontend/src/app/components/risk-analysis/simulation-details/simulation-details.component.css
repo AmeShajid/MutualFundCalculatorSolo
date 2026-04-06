@@ -1,0 +1,41 @@
+/* Details card */
+.details-card {
+  background: #ffffff;
+  border: 1px solid #e4eaf0;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.details-title {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #185FA5;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* 2x3 grid */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-item {
+  background: #f7f9fb;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.detail-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: #001530;
+  margin-bottom: 2px;
+}
+
+.detail-label {
+  font-size: 11px;
+  color: #8a98a8;
+}
