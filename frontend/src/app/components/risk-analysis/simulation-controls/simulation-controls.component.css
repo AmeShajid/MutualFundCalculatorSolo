@@ -56,10 +56,11 @@
   box-shadow: 0 0 0 4px rgba(115, 153, 198, 0.12);
 }
 
-/* Custom dropdown arrow */
+/* Custom dropdown arrow — override global select height */
 select.form-input {
   appearance: none;
   cursor: pointer;
+  height: auto;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a98a8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;

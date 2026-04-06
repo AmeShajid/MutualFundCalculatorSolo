@@ -5,6 +5,7 @@ import { Fund } from '../../models/fund.model';
 import { FundService } from '../../services/fund.service';
 import { PredictionService } from '../../services/prediction.service';
 import { SimulationControlsComponent, SimulationParams } from './simulation-controls/simulation-controls.component';
+import { SimulationChartComponent } from './simulation-chart/simulation-chart.component';
 
 // Shape of the percentile bands per year
 export interface PercentileBands {
@@ -39,7 +40,7 @@ export interface SimulationResults {
 @Component({
   selector: 'app-risk-analysis',
   standalone: true,
-  imports: [CommonModule, SimulationControlsComponent],
+  imports: [CommonModule, SimulationControlsComponent, SimulationChartComponent],
   templateUrl: './risk-analysis.component.html',
   styleUrls: ['./risk-analysis.component.css']
 })
