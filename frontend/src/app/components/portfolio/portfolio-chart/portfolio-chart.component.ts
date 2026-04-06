@@ -69,7 +69,8 @@ export class PortfolioChartComponent implements OnChanges {
   }
 
   private computeChart(): void {
-    const allocs = this.recommendation!.allocations;
+    if (!this.recommendation) return;
+    const allocs = this.recommendation.allocations;
     const years = this.years;
 
     // Compute fund values over time using FV = allocatedAmount * e^(expectedReturn * t)

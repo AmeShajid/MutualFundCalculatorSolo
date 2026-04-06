@@ -53,6 +53,8 @@ export class RiskAnalysisComponent implements OnInit, OnDestroy {
   isRunning = false;
   // Simulation results (null until first run)
   results: SimulationResults | null = null;
+  // Error message shown to user
+  errorMessage = '';
   // Cleanup subject
   private destroy$ = new Subject<void>();
 
@@ -71,6 +73,7 @@ export class RiskAnalysisComponent implements OnInit, OnDestroy {
   // Called when user clicks "Run Simulation" in controls
   onRunSimulation(params: SimulationParams): void {
     this.isRunning = true;
+    this.errorMessage = '';
 
     // Call backend to get beta and expected return for the selected fund
     this.predictionService.predict(params.ticker, params.principal, params.years)
@@ -94,6 +97,7 @@ export class RiskAnalysisComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Failed to get prediction data:', err);
+          this.errorMessage = 'Failed to get fund data. Make sure the backend is running and the fund ticker is valid.';
           this.isRunning = false;
         }
       });

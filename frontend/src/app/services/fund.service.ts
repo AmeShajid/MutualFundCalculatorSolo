@@ -1,34 +1,29 @@
-//makes the class injectible
+//Makes this class injectable as a singleton service
 import { Injectable } from '@angular/core';
 
-//so we can make http req
+//HttpClient for making HTTP requests to the backend
 import { HttpClient } from '@angular/common/http';
 
-//for data that comes in teh future
+//Observable for handling async data streams
 import { Observable } from 'rxjs';
 
-//so we can type response correcrly
+//Fund interface so we can type the response correctly
 import { Fund } from '../models/fund.model';
 import { environment } from '../../environments/environment';
 
-//so it can be used in app
 @Injectable({
   providedIn: 'root'
 })
 export class FundService {
 
-  //base url all api calls start with this
+  //Base URL for all API calls
   private baseUrl = environment.apiUrl;
 
-  // Angular injects HttpClient here when service is created
+  // Angular injects HttpClient here when the service is created
   constructor(private http: HttpClient) { }
 
-  //Method called: GET /api/funds and returns list of Fund objects
-  // Observable<Fund[]> means "this will eventually give us an array of Fund objects"
+  //Sends GET /api/funds and returns the list of available funds
   getFunds(): Observable<Fund[]> {
-
-    // http.get sends GET request to our backend funds
-    // Fund[] tells TypeScript what shape the response data will be
     return this.http.get<Fund[]>(`${this.baseUrl}/funds`);
   }
 }

@@ -95,9 +95,15 @@ public class GeminiService {
             //Parse the Gemini response to get the content
             //Gemini response format: candidates[0].content.parts[0].text
             JsonNode root = objectMapper.readTree(responseJson);
-            String content = root.path("candidates").get(0)
-                    .path("content").path("parts").get(0)
-                    .path("text").asText();
+            JsonNode candidates = root.path("candidates");
+            if (!candidates.isArray() || candidates.isEmpty()) {
+                throw new RuntimeException("Gemini returned no candidates in response");
+            }
+            JsonNode parts = candidates.get(0).path("content").path("parts");
+            if (!parts.isArray() || parts.isEmpty()) {
+                throw new RuntimeException("Gemini response has no content parts");
+            }
+            String content = parts.get(0).path("text").asText();
 
             log.info("Received Gemini response, parsing allocation data");
 
@@ -152,9 +158,15 @@ public class GeminiService {
             String responseJson = restTemplate.postForObject(url, request, String.class);
 
             JsonNode root = objectMapper.readTree(responseJson);
-            String content = root.path("candidates").get(0)
-                    .path("content").path("parts").get(0)
-                    .path("text").asText();
+            JsonNode candidates = root.path("candidates");
+            if (!candidates.isArray() || candidates.isEmpty()) {
+                throw new RuntimeException("Gemini returned no candidates in chat response");
+            }
+            JsonNode parts = candidates.get(0).path("content").path("parts");
+            if (!parts.isArray() || parts.isEmpty()) {
+                throw new RuntimeException("Gemini chat response has no content parts");
+            }
+            String content = parts.get(0).path("text").asText();
 
             log.info("Received chat response from Gemini");
             return content.trim();

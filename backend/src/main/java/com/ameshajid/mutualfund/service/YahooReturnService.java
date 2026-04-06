@@ -59,8 +59,8 @@ public class YahooReturnService {
 
         log.info("Fetching 1-year return from Yahoo Finance for {}", symbol);
 
-        //Make yahoo URL for 1 year with monthly intervals
-        String url = BASE_URL + symbol.trim() + "?range=1y&interval=1mo";
+        //Make yahoo URL for 1 year with monthly intervals (URL-encode the symbol)
+        String url = BASE_URL + java.net.URLEncoder.encode(symbol.trim(), java.nio.charset.StandardCharsets.UTF_8) + "?range=1y&interval=1mo";
 
         try {
             // Create a new headers object so we can add request headers
@@ -89,9 +89,18 @@ public class YahooReturnService {
             //Convert json string to json node tree
             JsonNode root = objectMapper.readTree(json);
 
-            //get the close price
-            JsonNode closeArray =
-                    root.path("chart").path("result").get(0).path("indicators").path("quote").get(0).path("close");
+            //Validate the response has result data
+            JsonNode resultArray = root.path("chart").path("result");
+            if (!resultArray.isArray() || resultArray.isEmpty()) {
+                throw new RuntimeException("Yahoo Finance returned no data for " + symbol);
+            }
+
+            //get the close price array
+            JsonNode quoteArray = resultArray.get(0).path("indicators").path("quote");
+            if (!quoteArray.isArray() || quoteArray.isEmpty()) {
+                throw new RuntimeException("Yahoo Finance returned no quote data for " + symbol);
+            }
+            JsonNode closeArray = quoteArray.get(0).path("close");
 
             //stores the first and last closing price
             Double firstClose = null;
@@ -103,10 +112,10 @@ public class YahooReturnService {
                 //if curr closing price is not null
                 if (!closeArray.get(i).isNull()) {
 
-                    ///convert json value to double and store
+                    //convert json value to double and store
                     firstClose = closeArray.get(i).asDouble();
 
-                    //stop when we find first vaild closing price
+                    //stop when we find first valid closing price
                     break;
                 }
             }
@@ -120,7 +129,7 @@ public class YahooReturnService {
                     //convert json value to double and store
                     lastClose = closeArray.get(i).asDouble();
 
-                    //stop when we find last vaild closing price
+                    //stop when we find last valid closing price
                     break;
                 }
             }
