@@ -33,8 +33,14 @@
   gap: 24px;
 }
 
-/* Placeholder styles (will be replaced) */
-.controls-placeholder,
+/* Results area */
+.results-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Placeholder / empty state */
 .results-placeholder {
   background: #f7f9fb;
   border: 2px dashed #e4eaf0;
@@ -43,17 +49,21 @@
   text-align: center;
   color: #8a98a8;
   font-size: 14px;
-}
-
-.controls-placeholder {
-  align-self: start;
-}
-
-.results-placeholder {
   min-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Debug output (temporary) */
+.debug-output {
+  background: #f7f9fb;
+  border: 1px solid #e4eaf0;
+  border-radius: 16px;
+  padding: 24px;
+  font-size: 14px;
+  color: #001530;
+  line-height: 1.8;
 }
 
 /* Responsive */
