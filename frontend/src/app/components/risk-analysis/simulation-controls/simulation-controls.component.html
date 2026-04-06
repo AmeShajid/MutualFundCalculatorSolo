@@ -1,0 +1,67 @@
+<!-- Controls card -->
+<div class="ctrl-card">
+
+  <!-- Card title -->
+  <div class="ctrl-title">SIMULATION PARAMETERS</div>
+
+  <!-- Fund dropdown -->
+  <div class="form-group">
+    <label class="form-label">FUND</label>
+    <select class="form-input" [(ngModel)]="selectedTicker">
+      <option value="" disabled>Select a fund...</option>
+      <option *ngFor="let fund of funds" [value]="fund.symbol">
+        {{ fund.symbol }} — {{ fund.name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Investment amount with $ prefix -->
+  <div class="form-group">
+    <label class="form-label">INVESTMENT AMOUNT</label>
+    <div class="form-prefix">
+      <span class="pfx">$</span>
+      <input class="form-input" type="number" [(ngModel)]="principal" min="100" step="100" />
+    </div>
+  </div>
+
+  <!-- Time horizon -->
+  <div class="form-group">
+    <label class="form-label">TIME HORIZON (YEARS)</label>
+    <input class="form-input" type="number" [(ngModel)]="years" min="1" max="30" />
+  </div>
+
+  <!-- Simulation count slider -->
+  <div class="form-group">
+    <label class="form-label">SIMULATIONS</label>
+    <input
+      class="sim-slider"
+      type="range"
+      [(ngModel)]="simulations"
+      min="100" max="1000" step="100"
+    />
+    <div class="sim-range-labels">
+      <span>100</span>
+      <span class="sim-current">{{ simulations }}</span>
+      <span>1000</span>
+    </div>
+  </div>
+
+  <!-- Run button -->
+  <button
+    class="btn-run"
+    [class.running]="isRunning"
+    [disabled]="isRunning || !selectedTicker"
+    (click)="onRun()"
+  >
+    {{ isRunning ? 'Simulating...' : 'Run Simulation' }}
+  </button>
+
+  <!-- Info box -->
+  <div class="info-box">
+    <p>
+      Uses the fund's <em>beta</em> to model volatility. Higher beta = wider cone = more uncertainty.
+      Market volatility assumed at <em>15%</em> annually.
+    </p>
+  </div>
+
+</div>
