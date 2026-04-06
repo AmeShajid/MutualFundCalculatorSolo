@@ -16,11 +16,18 @@
   border-bottom: 1px solid rgba(115, 153, 198, 0.1);
 }
 
-/* Left side: logo area */
-.nav-logo {
+/* Nav link groups (left and right) */
+.nav-links {
+  display: flex;
+  gap: 6px;
+}
+
+/* Center brand/logo */
+.nav-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  text-decoration: none;
 }
 
 /* Animated pulsing dot */
@@ -43,19 +50,12 @@
   }
 }
 
-/* Logo text */
-.logo-text {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+/* Brand text — larger than nav links */
+.brand-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   color: #fff;
-  text-decoration: none;
-}
-
-/* Right side: navigation links */
-.nav-links {
-  display: flex;
-  gap: 6px;
 }
 
 /* Pill-shaped nav links */
@@ -76,7 +76,7 @@
   background: rgba(115, 153, 198, 0.1);
 }
 
-/* Active state for both scroll links and route links */
+/* Active state */
 .nav-pill.active {
   background: rgba(115, 153, 198, 0.15);
   color: #7399C6;
