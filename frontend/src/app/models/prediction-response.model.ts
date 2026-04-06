@@ -1,18 +1,18 @@
-//Data we recive POST calculation
+//Response from the backend after CAPM calculation
 export interface PredictionResponse {
 
-  //future value of calc
+  //Calculated future value of the investment
   futureValue: number;
 
-  //beta value that was sued
+  //Beta value used in the CAPM formula
   beta: number;
 
-  //expected return rate
+  //Expected annual return rate
   expectedReturn: number;
 
-  //risk free rate
+  //Risk-free rate used in the calculation
   riskFreeRate: number;
 
-  //optional warning message when CAPM may not be reliable
+  //Optional warning when CAPM may not be reliable (e.g., money market funds)
   warning?: string;
 }

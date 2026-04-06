@@ -20,6 +20,9 @@
     <!-- Right column: results -->
     <div class="results-area">
 
+      <!-- Error message -->
+      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
       <!-- Chart card (always visible — shows empty/loading/chart) -->
       <app-simulation-chart [results]="results" [isRunning]="isRunning"></app-simulation-chart>
 

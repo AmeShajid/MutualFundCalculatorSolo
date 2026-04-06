@@ -29,7 +29,7 @@ public class PredictionService {
         this.yahooReturnService = yahooReturnService;
     }
 
-    //Method for preforming full predicting calculation
+    //Method for performing the full prediction calculation
     public PredictionResponse predict(String ticker, double principal, double years) {
         //calling newton api to get beta
         double beta = newtonBetaService.getBeta(ticker, "^GSPC", "1mo", 12);
