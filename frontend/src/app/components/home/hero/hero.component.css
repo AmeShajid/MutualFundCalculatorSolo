@@ -1,4 +1,4 @@
-/* Hero section: fits within viewport with room for footer below */
+/* Hero section */
 .hero {
   display: flex;
   flex-direction: column;
@@ -10,46 +10,21 @@
   flex: 1;
 }
 
-/* ==================== Background Decorations ==================== */
+/* ==================== Two-Column Layout ==================== */
 
-/* Floating glow orb (top-right) */
-.glow-orb-1 {
-  position: absolute;
-  top: -150px;
-  right: -100px;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(115, 153, 198, 0.12) 0%, transparent 65%);
-  animation: float-slow 8s ease-in-out infinite;
-}
-
-/* Floating glow orb (bottom-left) */
-.glow-orb-2 {
-  position: absolute;
-  bottom: -200px;
-  left: -100px;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(24, 95, 165, 0.08) 0%, transparent 65%);
-  animation: float-slow 10s ease-in-out infinite reverse;
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-30px) scale(1.05); }
-}
-
-/* ==================== Hero Content ==================== */
-
-/* Content layer above decorations — centered on page */
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 720px;
+.hero-layout {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1100px;
   margin: 0 auto;
-  text-align: center;
+  width: 100%;
+}
+
+/* Left column: text */
+.hero-text {
+  flex: 1;
+  min-width: 0;
 }
 
 /* ==================== Badge Pill ==================== */
@@ -62,10 +37,9 @@
   border: 1px solid rgba(0, 21, 48, 0.08);
   border-radius: 24px;
   padding: 7px 18px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
-/* Small pulsing green dot inside badge */
 .badge-dot {
   width: 6px;
   height: 6px;
@@ -75,17 +49,10 @@
 }
 
 @keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(59, 109, 17, 0.4);
-  }
-  50% {
-    opacity: 0.8;
-    box-shadow: 0 0 0 6px rgba(59, 109, 17, 0);
-  }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(59,109,17,0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(59,109,17,0); }
 }
 
-/* Badge text */
 .badge-text {
   font-size: 11px;
   letter-spacing: 2px;
@@ -97,14 +64,13 @@
 
 .title {
   font-family: 'Libre Baskerville', serif;
-  font-size: 56px;
+  font-size: 52px;
   font-weight: 400;
   line-height: 1.15;
   color: #001530;
-  margin-bottom: 24px;
+  margin: 0 0 20px 0;
 }
 
-/* Gradient text for "analysis." */
 .title-gradient {
   background: linear-gradient(135deg, #185FA5 0%, #7399C6 40%, #185FA5 80%);
   -webkit-background-clip: text;
@@ -115,11 +81,11 @@
 /* ==================== Subtitle ==================== */
 
 .subtitle {
-  font-size: 17px;
+  font-size: 16px;
   color: #5a6a7a;
   line-height: 1.8;
-  max-width: 500px;
-  margin: 0 auto 40px;
+  max-width: 440px;
+  margin: 0 0 32px 0;
 }
 
 /* ==================== Buttons ==================== */
@@ -128,10 +94,8 @@
   display: flex;
   gap: 14px;
   align-items: center;
-  justify-content: center;
 }
 
-/* Primary CTA: dark navy pill */
 .btn-primary {
   background: #001530;
   color: #fff;
@@ -139,19 +103,16 @@
   border-radius: 32px;
   font-size: 15px;
   font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
   background: #0c2a4d;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 21, 48, 0.2);
+  box-shadow: 0 8px 30px rgba(0,21,48,0.2);
 }
 
-/* Secondary CTA: outlined pill */
 .btn-secondary {
   border: 1.5px solid #c8d5e2;
   color: #001530;
@@ -160,15 +121,156 @@
   font-size: 15px;
   font-weight: 500;
   background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
   border-color: #7399C6;
-  background: rgba(115, 153, 198, 0.06);
+  background: rgba(115,153,198,0.06);
   transform: translateY(-2px);
+}
+
+/* ==================== Chart Card ==================== */
+
+.chart-card {
+  flex: 0 0 420px;
+  background: #001530;
+  border-radius: 20px;
+  padding: 28px 28px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(115,153,198,0.15);
+  box-shadow: 0 20px 60px rgba(0,21,48,0.25);
+}
+
+/* Subtle gradient border glow on top-left */
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(115,153,198,0.5), transparent);
+}
+
+.chart-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(115,153,198,0.5), transparent);
+}
+
+/* Chart header row */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.chart-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+}
+
+.chart-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  background: rgba(115,153,198,0.1);
+  border: 1px solid rgba(115,153,198,0.15);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* Big dollar amount */
+.chart-value {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.chart-amount {
+  font-family: 'DM Mono', monospace;
+  font-size: 40px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.chart-percent {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  color: #3B6D11;
+  font-weight: 500;
+}
+
+/* SVG chart area */
+.chart-area {
+  width: 100%;
+  height: 140px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Line draws itself left to right */
+.chart-line {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawLine 2s ease-out 0.5s forwards;
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Fill fades in after line draws */
+.chart-fill {
+  opacity: 0;
+  animation: fadeIn 1s ease 2s forwards;
+}
+
+/* Dot appears at end of line draw */
+.chart-dot, .chart-dot-glow {
+  opacity: 0;
+  animation: fadeIn 0.5s ease 2.3s forwards;
+}
+
+.chart-dot-glow {
+  animation: fadeIn 0.5s ease 2.3s forwards, pulseGlow 2s ease-in-out 2.8s infinite;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; r: 8; }
+  50% { opacity: 0.1; r: 14; }
+}
+
+/* Year labels */
+.chart-years {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 0 4px;
+}
+
+.chart-years span {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
 }
 
 /* ==================== Stats Row ==================== */
@@ -176,10 +278,14 @@
 .stats-row {
   display: flex;
   gap: 48px;
-  margin-top: 40px;
-  padding-top: 28px;
+  margin-top: 32px;
+  padding-top: 24px;
   border-top: 1px solid #e8edf2;
   justify-content: center;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .stat {
@@ -187,50 +293,74 @@
   flex-direction: column;
 }
 
-/* Large stat number */
 .stat-number {
   font-family: 'DM Mono', monospace;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   color: #001530;
 }
 
-/* Smaller stat number for text values */
 .stat-number.mono {
-  font-size: 26px;
+  font-size: 22px;
 }
 
-/* Muted stat label */
 .stat-label {
   font-size: 13px;
   color: #8a98a8;
   margin-top: 4px;
 }
 
-/* ==================== Staggered fadeInUp Animations ==================== */
+/* CTA section at bottom */
+.hero-cta {
+  text-align: center;
+  padding: 24px 0 8px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cta-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px;
+  color: #001530;
+  margin: 0 0 16px 0;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ==================== Staggered Animations ==================== */
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .anim-1 { animation: fadeInUp 0.8s ease both; }
 .anim-2 { animation: fadeInUp 0.8s ease 0.1s both; }
 .anim-3 { animation: fadeInUp 0.8s ease 0.2s both; }
 .anim-4 { animation: fadeInUp 0.8s ease 0.3s both; }
-.anim-5 { animation: fadeInUp 0.8s ease 0.5s both; }
+.anim-5 { animation: fadeInUp 0.8s ease 0.4s both; }
+.anim-6 { animation: fadeInUp 0.8s ease 0.5s both; }
 
 /* ==================== Responsive ==================== */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hero {
-    padding: 100px 24px 60px;
+    padding: 30px 24px 20px;
+  }
+
+  .hero-layout {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .chart-card {
+    flex: none;
+    width: 100%;
   }
 
   .title {
@@ -239,7 +369,7 @@
 
   .stats-row {
     flex-wrap: wrap;
-    gap: 32px;
+    gap: 24px;
   }
 
   .btn-row {

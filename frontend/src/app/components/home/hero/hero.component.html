@@ -1,53 +1,120 @@
-<!-- Hero section: full viewport height, white background -->
+<!-- Hero section: two-column layout -->
 <section class="hero" id="hero">
 
-  <!-- Hero content -->
-  <div class="hero-content">
+  <div class="hero-layout">
 
-    <!-- Badge pill -->
-    <div class="badge anim-1">
-      <span class="badge-dot"></span>
-      <span class="badge-text">GOLDMAN SACHS ENGINEERING PROGRAM</span>
+    <!-- Left column: text content -->
+    <div class="hero-text">
+
+      <!-- Badge pill -->
+      <div class="badge anim-1">
+        <span class="badge-dot"></span>
+        <span class="badge-text">GOLDMAN SACHS ENGINEERING PROGRAM</span>
+      </div>
+
+      <!-- Main title with gradient text -->
+      <h1 class="title anim-2">
+        Smart<br/>investment<br/>
+        <span class="title-gradient">analysis.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="subtitle anim-3">
+        Predict mutual fund returns with the Capital Asset Pricing Model.
+        Real-time beta, historical market data, and AI-powered portfolio optimization.
+      </p>
+
+      <!-- CTA buttons -->
+      <div class="btn-row anim-4">
+        <a class="btn-primary" routerLink="/how-it-works">How it works</a>
+        <a class="btn-secondary" routerLink="/formula">Formula</a>
+      </div>
+
     </div>
 
-    <!-- Main title with gradient text -->
-    <h1 class="title anim-2">
-      Smart investment<br/>
-      <span class="title-gradient">analysis.</span>
-    </h1>
+    <!-- Right column: animated chart card -->
+    <div class="chart-card anim-5">
 
-    <!-- Subtitle -->
-    <p class="subtitle anim-3">
-      Predict mutual fund returns with the Capital Asset Pricing Model.
-      Real-time beta, historical market data, and AI-powered portfolio optimization.
-    </p>
+      <!-- Card header -->
+      <div class="chart-header">
+        <span class="chart-label">PROJECTED GROWTH</span>
+        <span class="chart-tag">VFIAX · 5yr</span>
+      </div>
 
-    <!-- CTA buttons -->
-    <div class="btn-row anim-4">
-      <a class="btn-primary" routerLink="/calculator">Start calculating</a>
-      <a class="btn-secondary" routerLink="/portfolio">AI portfolio</a>
+      <!-- Big number -->
+      <div class="chart-value">
+        <span class="chart-amount" #chartAmount>$0</span>
+        <span class="chart-percent">+64.7%</span>
+      </div>
+
+      <!-- SVG chart -->
+      <div class="chart-area">
+        <svg viewBox="0 0 340 160" preserveAspectRatio="none" class="chart-svg">
+          <!-- Gradient fill under the line -->
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7399C6" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#7399C6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Area fill (fades in after line draws) -->
+          <path class="chart-fill"
+            d="M0,140 C20,138 40,135 60,130 C80,125 100,118 120,108 C140,98 160,88 180,75 C200,62 220,50 240,40 C260,30 280,22 300,16 C320,10 330,8 340,6 L340,160 L0,160 Z"
+            fill="url(#chartGrad)"/>
+
+          <!-- Line (animates left to right) -->
+          <path class="chart-line"
+            d="M0,140 C20,138 40,135 60,130 C80,125 100,118 120,108 C140,98 160,88 180,75 C200,62 220,50 240,40 C260,30 280,22 300,16 C320,10 330,8 340,6"
+            fill="none" stroke="#7399C6" stroke-width="2.5"/>
+
+          <!-- Glowing endpoint dot -->
+          <circle class="chart-dot" cx="340" cy="6" r="4" fill="#7399C6"/>
+          <circle class="chart-dot-glow" cx="340" cy="6" r="8" fill="#7399C6" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <!-- Year labels -->
+      <div class="chart-years">
+        <span>2026</span>
+        <span>2027</span>
+        <span>2028</span>
+        <span>2029</span>
+        <span>2030</span>
+        <span>2031</span>
+      </div>
+
     </div>
 
-    <!-- Stats row -->
-    <div class="stats-row anim-5">
-      <div class="stat">
-        <span class="stat-number" #statFunds>0+</span>
-        <span class="stat-label">Funds tracked</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number">3</span>
-        <span class="stat-label">Live API feeds</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number mono">ChatGPT</span>
-        <span class="stat-label">Powered by Gemini</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number mono">CAPM</span>
-        <span class="stat-label">Pricing model</span>
-      </div>
-    </div>
+  </div>
 
+  <!-- Stats row -->
+  <div class="stats-row anim-6">
+    <div class="stat">
+      <span class="stat-number" #statFunds>0+</span>
+      <span class="stat-label">Funds tracked</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">3</span>
+      <span class="stat-label">Live API feeds</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number mono">ChatGPT</span>
+      <span class="stat-label">Powered by Gemini</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number mono">CAPM</span>
+      <span class="stat-label">Pricing model</span>
+    </div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="hero-cta anim-6">
+    <p class="cta-text">Ready to analyze?</p>
+    <div class="cta-buttons">
+      <a class="btn-primary" routerLink="/calculator">Open calculator</a>
+      <a class="btn-secondary" routerLink="/portfolio">AI Portfolio</a>
+    </div>
   </div>
 
 </section>
