@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Data for each round of the game
@@ -26,7 +26,7 @@ export interface RoundSnapshot {
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent {
+export class GameComponent implements OnDestroy {
   // Expose Math to template
   Math = Math;
 
@@ -42,6 +42,10 @@ export class GameComponent {
   // Transition state
   isTransitioning = false;
   lastReturnAmount = 0;
+
+  // Timer state
+  timeLeft = 10;
+  timerInterval: any = null;
 
   // Buy-and-hold tracking
   buyAndHoldValues: number[] = [];
@@ -73,7 +77,36 @@ export class GameComponent {
     this.lastReturnAmount = 0;
     this.precomputeBuyAndHold();
     this.gamePhase = 'playing';
-    setTimeout(() => this.drawChart(), 50);
+    setTimeout(() => {
+      this.drawChart();
+      this.startTimer();
+    }, 50);
+  }
+
+  // Timer methods
+  startTimer(): void {
+    this.stopTimer();
+    this.timeLeft = 10;
+    this.timerInterval = setInterval(() => {
+      this.timeLeft--;
+      if (this.timeLeft <= 0) {
+        this.stopTimer();
+        if (!this.isTransitioning) {
+          this.takeAction('stay');
+        }
+      }
+    }, 1000);
+  }
+
+  stopTimer(): void {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.stopTimer();
   }
 
   // Precompute buy-and-hold values for all 10 years
@@ -175,6 +208,7 @@ export class GameComponent {
   // Take an action for the current round
   takeAction(action: 'stay' | 'sell' | 'allin'): void {
     if (this.isTransitioning) return;
+    this.stopTimer();
 
     const round = this.rounds[this.currentRound];
     const valueBefore = this.invested + this.cash;
@@ -220,7 +254,9 @@ export class GameComponent {
       this.isTransitioning = false;
       if (this.currentRound < this.rounds.length - 1) {
         this.currentRound++;
+        this.startTimer();
       } else {
+        this.stopTimer();
         this.gamePhase = 'results';
       }
     }, 600);
