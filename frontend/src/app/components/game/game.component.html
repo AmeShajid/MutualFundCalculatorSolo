@@ -40,6 +40,21 @@
   <div class="playing-screen" *ngIf="gamePhase === 'playing'">
     <div class="game-card" [class.transitioning]="isTransitioning">
 
+      <!-- Countdown timer -->
+      <div class="timer-section">
+        <div class="timer-header">
+          <span class="timer-label">TIME TO DECIDE</span>
+          <span class="timer-text" [class.timer-urgent]="timeLeft <= 3">{{ timeLeft }}s</span>
+        </div>
+        <div class="timer-track">
+          <div class="timer-fill"
+            [style.width.%]="timeLeft * 10"
+            [class.timer-warning]="timeLeft <= 5 && timeLeft > 3"
+            [class.timer-danger]="timeLeft <= 3">
+          </div>
+        </div>
+      </div>
+
       <!-- Mini chart -->
       <div class="chart-section">
         <canvas #chartCanvas class="game-chart"></canvas>
