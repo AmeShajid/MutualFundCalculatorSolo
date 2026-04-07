@@ -74,8 +74,20 @@
       <div class="event-section">
         <h2 class="event-headline">{{ currentRoundData.headline }}</h2>
         <p class="event-context">{{ currentRoundData.context }}</p>
-        <div class="event-return" [class.positive]="currentRoundData.returnPercent >= 0" [class.negative]="currentRoundData.returnPercent < 0">
-          S&amp;P 500: {{ currentRoundData.returnPercent >= 0 ? '+' : '' }}{{ (currentRoundData.returnPercent * 100).toFixed(1) }}%
+        <div class="event-badges">
+          <div class="event-return hidden-return" *ngIf="!showReturn">
+            S&amp;P 500: ???
+          </div>
+          <div class="event-return" *ngIf="showReturn" [class.positive]="currentRoundData.returnPercent >= 0" [class.negative]="currentRoundData.returnPercent < 0">
+            S&amp;P 500: {{ currentRoundData.returnPercent >= 0 ? '+' : '' }}{{ (currentRoundData.returnPercent * 100).toFixed(1) }}%
+          </div>
+          <div class="sentiment-badge"
+            [class.sentiment-fearful]="currentRoundData.sentiment === 'Fearful'"
+            [class.sentiment-uncertain]="currentRoundData.sentiment === 'Uncertain'"
+            [class.sentiment-bullish]="currentRoundData.sentiment === 'Bullish'">
+            <span class="sentiment-icon">{{ currentRoundData.sentiment === 'Fearful' ? '&#x1F628;' : currentRoundData.sentiment === 'Uncertain' ? '&#x1F914;' : '&#x1F4C8;' }}</span>
+            {{ currentRoundData.sentiment }}
+          </div>
         </div>
       </div>
 

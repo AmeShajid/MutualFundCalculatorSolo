@@ -7,6 +7,7 @@ export interface GameRound {
   headline: string;
   context: string;
   returnPercent: number;
+  sentiment: 'Fearful' | 'Uncertain' | 'Bullish';
 }
 
 // Snapshot after each round
@@ -47,6 +48,9 @@ export class GameComponent implements OnDestroy {
   timeLeft = 10;
   timerInterval: any = null;
 
+  // Return reveal state — hidden until player decides
+  showReturn = false;
+
   // Buy-and-hold tracking
   buyAndHoldValues: number[] = [];
 
@@ -55,16 +59,16 @@ export class GameComponent implements OnDestroy {
 
   // 10 rounds of real S&P 500 data
   rounds: GameRound[] = [
-    { year: 2014, headline: 'Bull market roars, oil prices crash', context: 'Markets climb despite global concerns', returnPercent: 0.114 },
-    { year: 2015, headline: 'China fears spark global selloff', context: 'First rate hike in nearly a decade', returnPercent: 0.007 },
-    { year: 2016, headline: 'Brexit vote shocks the world', context: 'Markets tumble then recover sharply', returnPercent: 0.095 },
-    { year: 2017, headline: 'Tech stocks explode, crypto mania', context: 'Longest bull run in history continues', returnPercent: 0.194 },
-    { year: 2018, headline: 'Trade war and rate hike panic', context: 'Worst December since the Great Depression', returnPercent: -0.062 },
-    { year: 2019, headline: 'Fed reverses, markets soar', context: 'Rate cuts fuel a massive rally', returnPercent: 0.289 },
-    { year: 2020, headline: 'Pandemic crashes markets 34%', context: 'Fastest crash and recovery in history', returnPercent: 0.163 },
-    { year: 2021, headline: 'Stimulus rally, meme stock frenzy', context: 'Everything goes up, inflation brewing', returnPercent: 0.269 },
-    { year: 2022, headline: 'Inflation spikes, markets plunge', context: 'Most aggressive rate hikes in 40 years', returnPercent: -0.194 },
-    { year: 2023, headline: 'AI boom, Magnificent 7 rally', context: 'Tech giants drive recovery', returnPercent: 0.242 }
+    { year: 2014, headline: 'Bull market roars, oil prices crash', context: 'Markets climb despite global concerns', returnPercent: 0.114, sentiment: 'Uncertain' },
+    { year: 2015, headline: 'China fears spark global selloff', context: 'First rate hike in nearly a decade', returnPercent: 0.007, sentiment: 'Bullish' },
+    { year: 2016, headline: 'Brexit vote shocks the world', context: 'Markets tumble then recover sharply', returnPercent: 0.095, sentiment: 'Fearful' },
+    { year: 2017, headline: 'Tech stocks explode, crypto mania', context: 'Longest bull run in history continues', returnPercent: 0.194, sentiment: 'Bullish' },
+    { year: 2018, headline: 'Trade war and rate hike panic', context: 'Worst December since the Great Depression', returnPercent: -0.062, sentiment: 'Uncertain' },
+    { year: 2019, headline: 'Fed reverses, markets soar', context: 'Rate cuts fuel a massive rally', returnPercent: 0.289, sentiment: 'Uncertain' },
+    { year: 2020, headline: 'Pandemic crashes markets 34%', context: 'Fastest crash and recovery in history', returnPercent: 0.163, sentiment: 'Fearful' },
+    { year: 2021, headline: 'Stimulus rally, meme stock frenzy', context: 'Everything goes up, inflation brewing', returnPercent: 0.269, sentiment: 'Uncertain' },
+    { year: 2022, headline: 'Inflation spikes, markets plunge', context: 'Most aggressive rate hikes in 40 years', returnPercent: -0.194, sentiment: 'Bullish' },
+    { year: 2023, headline: 'AI boom, Magnificent 7 rally', context: 'Tech giants drive recovery', returnPercent: 0.242, sentiment: 'Uncertain' }
   ];
 
   // Start the game
@@ -76,6 +80,7 @@ export class GameComponent implements OnDestroy {
     this.isTransitioning = false;
     this.lastReturnAmount = 0;
     this.precomputeBuyAndHold();
+    this.showReturn = false;
     this.gamePhase = 'playing';
     setTimeout(() => {
       this.drawChart();
@@ -245,13 +250,17 @@ export class GameComponent implements OnDestroy {
       returnPercent: round.returnPercent
     });
 
-    // Step 4: Update chart
+    // Step 4: Reveal the actual return
+    this.showReturn = true;
+
+    // Step 5: Update chart
     this.drawChart();
 
-    // Step 5: Transition to next round or results
+    // Step 6: Transition to next round or results
     this.isTransitioning = true;
     setTimeout(() => {
       this.isTransitioning = false;
+      this.showReturn = false;
       if (this.currentRound < this.rounds.length - 1) {
         this.currentRound++;
         this.startTimer();
