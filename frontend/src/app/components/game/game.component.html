@@ -40,6 +40,15 @@
   <div class="playing-screen" *ngIf="gamePhase === 'playing'">
     <div class="game-card" [class.transitioning]="isTransitioning">
 
+      <!-- Mini chart -->
+      <div class="chart-section">
+        <canvas #chartCanvas class="game-chart"></canvas>
+        <div class="chart-legend">
+          <span class="legend-item legend-player"><span class="legend-line solid"></span> You</span>
+          <span class="legend-item legend-bah"><span class="legend-line dashed"></span> Buy &amp; Hold</span>
+        </div>
+      </div>
+
       <!-- Round header -->
       <div class="round-header">
         <span class="round-counter">Round {{ currentRound + 1 }} of 10</span>
