@@ -36,15 +36,76 @@
     </div>
   </div>
 
-  <!-- PLAYING SCREEN (placeholder for Milestone 3) -->
+  <!-- PLAYING SCREEN -->
   <div class="playing-screen" *ngIf="gamePhase === 'playing'">
-    <p>Round {{ currentRound + 1 }} of 10 — {{ currentRoundData.year }}</p>
-    <p>{{ currentRoundData.headline }}</p>
+    <div class="game-card" [class.transitioning]="isTransitioning">
+
+      <!-- Round header -->
+      <div class="round-header">
+        <span class="round-counter">Round {{ currentRound + 1 }} of 10</span>
+        <span class="round-year">{{ currentRoundData.year }}</span>
+      </div>
+
+      <!-- Market event -->
+      <div class="event-section">
+        <h2 class="event-headline">{{ currentRoundData.headline }}</h2>
+        <p class="event-context">{{ currentRoundData.context }}</p>
+        <div class="event-return" [class.positive]="currentRoundData.returnPercent >= 0" [class.negative]="currentRoundData.returnPercent < 0">
+          S&amp;P 500: {{ currentRoundData.returnPercent >= 0 ? '+' : '' }}{{ (currentRoundData.returnPercent * 100).toFixed(1) }}%
+        </div>
+      </div>
+
+      <!-- Portfolio value -->
+      <div class="portfolio-section">
+        <div class="portfolio-total">
+          <span class="portfolio-label">YOUR PORTFOLIO</span>
+          <span class="portfolio-value">${{ totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+        </div>
+        <div class="portfolio-breakdown">
+          <div class="breakdown-item">
+            <span class="breakdown-label">Invested</span>
+            <span class="breakdown-value">${{ invested.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          </div>
+          <div class="breakdown-divider"></div>
+          <div class="breakdown-item">
+            <span class="breakdown-label">Cash</span>
+            <span class="breakdown-value">${{ cash.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          </div>
+        </div>
+
+        <!-- Return flash after action -->
+        <div class="return-flash" *ngIf="isTransitioning" [class.positive]="lastReturnAmount >= 0" [class.negative]="lastReturnAmount < 0">
+          {{ lastReturnAmount >= 0 ? '+' : '' }}${{ Math.abs(lastReturnAmount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="actions-section">
+        <button class="action-btn action-hold" (click)="takeAction('stay')" [disabled]="isTransitioning">
+          <span class="action-icon">&#x1F6E1;</span>
+          <span class="action-name">Stay Invested</span>
+          <span class="action-desc">Keep your position</span>
+        </button>
+
+        <button class="action-btn action-sell" (click)="takeAction('sell')" [disabled]="isTransitioning || !canSellHalf">
+          <span class="action-icon">&#x1F4B0;</span>
+          <span class="action-name">Sell Half</span>
+          <span class="action-desc">Move 50% to cash</span>
+        </button>
+
+        <button class="action-btn action-allin" (click)="takeAction('allin')" [disabled]="isTransitioning">
+          <span class="action-icon">&#x1F680;</span>
+          <span class="action-name">Go All In</span>
+          <span class="action-desc">Invest cash + $1K</span>
+        </button>
+      </div>
+
+    </div>
   </div>
 
   <!-- RESULTS SCREEN (placeholder for Milestone 5) -->
   <div class="results-screen" *ngIf="gamePhase === 'results'">
-    <p>Results coming soon...</p>
+    <p>Results coming soon... Total: ${{ totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</p>
   </div>
 
 </div>
