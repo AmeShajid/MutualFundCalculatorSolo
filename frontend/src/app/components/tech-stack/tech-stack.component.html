@@ -6,45 +6,53 @@
     </div>
 
     <div class="tech-grid">
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Spring Boot'" (click)="toggleCard('Spring Boot')">
         <div class="tech-icon">&#9881;</div>
         <div class="tech-name">Spring Boot</div>
         <div class="tech-desc">Java 17 backend</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Spring Boot'">{{ descriptions['Spring Boot'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Angular 19'" (click)="toggleCard('Angular 19')">
         <div class="tech-icon">&#9650;</div>
         <div class="tech-name">Angular 19</div>
         <div class="tech-desc">TypeScript frontend</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Angular 19'">{{ descriptions['Angular 19'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Gemini'" (click)="toggleCard('Gemini')">
         <div class="tech-icon">&#9733;</div>
-        <div class="tech-name">ChatGPT</div>
+        <div class="tech-name">Gemini</div>
         <div class="tech-desc">Portfolio AI</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Gemini'">{{ descriptions['Gemini'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Newton Analytics'" (click)="toggleCard('Newton Analytics')">
         <div class="tech-icon">&beta;</div>
         <div class="tech-name">Newton Analytics</div>
         <div class="tech-desc">Live beta values</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Newton Analytics'">{{ descriptions['Newton Analytics'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Yahoo Finance'" (click)="toggleCard('Yahoo Finance')">
         <div class="tech-icon">&#x2197;</div>
         <div class="tech-name">Yahoo Finance</div>
         <div class="tech-desc">Historical returns</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Yahoo Finance'">{{ descriptions['Yahoo Finance'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'REST APIs'" (click)="toggleCard('REST APIs')">
         <div class="tech-icon">&#x1F512;</div>
         <div class="tech-name">REST APIs</div>
         <div class="tech-desc">Backend services</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'REST APIs'">{{ descriptions['REST APIs'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Maven'" (click)="toggleCard('Maven')">
         <div class="tech-icon">&#x2699;</div>
         <div class="tech-name">Maven</div>
         <div class="tech-desc">Build system</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Maven'">{{ descriptions['Maven'] }}</div>
       </div>
-      <div class="tech-card">
+      <div class="tech-card" [class.active]="expandedCard === 'Gemini API'" (click)="toggleCard('Gemini API')">
         <div class="tech-icon">&#x26A1;</div>
         <div class="tech-name">Gemini API</div>
         <div class="tech-desc">AI engine</div>
+        <div class="tech-detail" *ngIf="expandedCard === 'Gemini API'">{{ descriptions['Gemini API'] }}</div>
       </div>
     </div>
   </section>
