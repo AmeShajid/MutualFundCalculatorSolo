@@ -1,0 +1,9 @@
+.game-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  font-size: 18px;
+  color: #5a6a7a;
+}
