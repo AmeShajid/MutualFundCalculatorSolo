@@ -43,7 +43,7 @@ export class GameComponent {
   isTransitioning = false;
   lastReturnAmount = 0;
 
-  // Buy-and-hold tracking (precomputed for all 10 years)
+  // Buy-and-hold tracking
   buyAndHoldValues: number[] = [];
 
   // Canvas reference
@@ -73,7 +73,6 @@ export class GameComponent {
     this.lastReturnAmount = 0;
     this.precomputeBuyAndHold();
     this.gamePhase = 'playing';
-    // Draw initial chart after view updates
     setTimeout(() => this.drawChart(), 50);
   }
 
@@ -102,13 +101,75 @@ export class GameComponent {
     return this.invested > 0;
   }
 
-  // Get player value history for chart (starting value + each completed round)
+  // Get player value history for chart
   get playerValues(): number[] {
     const values = [10000];
     for (const snap of this.history) {
       values.push(snap.total);
     }
     return values;
+  }
+
+  // Buy-and-hold final value
+  get buyAndHoldFinal(): number {
+    return this.buyAndHoldValues[this.buyAndHoldValues.length - 1] || 10000;
+  }
+
+  // Did the player beat buy-and-hold?
+  get didBeatMarket(): boolean {
+    return this.totalValue > this.buyAndHoldFinal;
+  }
+
+  // Player's total return percentage
+  get playerReturnPercent(): number {
+    return ((this.totalValue - 10000) / 10000) * 100;
+  }
+
+  // Buy-and-hold return percentage
+  get bahReturnPercent(): number {
+    return ((this.buyAndHoldFinal - 10000) / 10000) * 100;
+  }
+
+  // Grade based on performance vs buy-and-hold
+  get grade(): string {
+    const diff = ((this.totalValue - this.buyAndHoldFinal) / this.buyAndHoldFinal) * 100;
+    if (diff >= 20) return 'A+';
+    if (diff >= 10) return 'A';
+    if (diff >= -5) return 'B';
+    if (diff >= -15) return 'C';
+    if (diff >= -25) return 'D';
+    return 'F';
+  }
+
+  // Grade color class
+  get gradeColor(): string {
+    const g = this.grade;
+    if (g === 'A+' || g === 'A') return 'grade-green';
+    if (g === 'B') return 'grade-blue';
+    if (g === 'C') return 'grade-yellow';
+    return 'grade-red';
+  }
+
+  // Fun title based on play style
+  get investorTitle(): string {
+    const holds = this.history.filter(h => h.action === 'Stay Invested').length;
+    const sells = this.history.filter(h => h.action === 'Sell Half').length;
+    const allins = this.history.filter(h => h.action === 'Go All In').length;
+
+    if (holds >= 7) return 'The Patient Investor';
+    if (sells >= 5) return 'The Panic Seller';
+    if (allins >= 5) return 'The Bold Trader';
+    if (holds >= 4 && allins >= 3) return 'The Calculated Risk-Taker';
+    if (sells >= 3 && allins >= 3) return 'The Market Timer';
+    return 'The Balanced Strategist';
+  }
+
+  // Lesson message
+  get lessonMessage(): string {
+    if (this.didBeatMarket) {
+      return 'Impressive — you outperformed buy-and-hold! But remember, past results don\'t guarantee future performance. Consistency usually wins long-term.';
+    }
+    return 'Staying invested through volatility usually wins. The market rewards patience — not timing.';
   }
 
   // Take an action for the current round
@@ -185,25 +246,22 @@ export class GameComponent {
     const chartW = w - pad.left - pad.right;
     const chartH = h - pad.top - pad.bottom;
 
-    // Clear
     ctx.clearRect(0, 0, w, h);
 
-    // Data
     const playerVals = this.playerValues;
     const bahVals = this.buyAndHoldValues;
 
-    // Dynamic Y scaling across both lines
     const allVals = [...playerVals, ...bahVals.slice(0, playerVals.length)];
     const yMin = Math.min(...allVals) * 0.9;
     const yMax = Math.max(...allVals) * 1.1;
 
-    const totalPoints = 11; // 0 through 10
+    const totalPoints = 11;
     const pointsToShow = playerVals.length;
 
     const xScale = (i: number) => pad.left + (i / (totalPoints - 1)) * chartW;
     const yScale = (v: number) => pad.top + chartH - ((v - yMin) / (yMax - yMin)) * chartH;
 
-    // Draw grid lines (subtle)
+    // Grid lines
     ctx.strokeStyle = 'rgba(115, 153, 198, 0.08)';
     ctx.lineWidth = 1;
     for (let i = 0; i < 4; i++) {
@@ -214,7 +272,7 @@ export class GameComponent {
       ctx.stroke();
     }
 
-    // Draw buy-and-hold line (dashed, full extent up to current point)
+    // Buy-and-hold line (dashed)
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     ctx.lineWidth = 1.5;
     ctx.setLineDash([4, 4]);
@@ -228,7 +286,7 @@ export class GameComponent {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Draw player line (solid blue)
+    // Player line (solid)
     ctx.strokeStyle = '#7399C6';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -244,25 +302,20 @@ export class GameComponent {
     if (pointsToShow > 1) {
       const lastX = xScale(pointsToShow - 1);
       const lastY = yScale(playerVals[pointsToShow - 1]);
-
-      // Glow
       ctx.beginPath();
       ctx.arc(lastX, lastY, 6, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(115, 153, 198, 0.3)';
       ctx.fill();
-
-      // Dot
       ctx.beginPath();
       ctx.arc(lastX, lastY, 3, 0, Math.PI * 2);
       ctx.fillStyle = '#7399C6';
       ctx.fill();
     }
 
-    // Year labels along bottom
+    // Year labels
     ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
     ctx.font = '10px "DM Mono", monospace';
     ctx.textAlign = 'center';
-    // Show start year and each completed round year
     ctx.fillText('Start', xScale(0), h - 4);
     for (let i = 0; i < this.history.length; i++) {
       ctx.fillText(String(this.history[i].year), xScale(i + 1), h - 4);

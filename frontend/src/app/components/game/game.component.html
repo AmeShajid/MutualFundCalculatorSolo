@@ -112,9 +112,61 @@
     </div>
   </div>
 
-  <!-- RESULTS SCREEN (placeholder for Milestone 5) -->
+  <!-- RESULTS SCREEN -->
   <div class="results-screen" *ngIf="gamePhase === 'results'">
-    <p>Results coming soon... Total: ${{ totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</p>
+    <div class="results-card">
+
+      <!-- Grade badge -->
+      <div class="grade-badge" [ngClass]="gradeColor">{{ grade }}</div>
+
+      <!-- Investor title -->
+      <h1 class="results-title">{{ investorTitle }}</h1>
+
+      <!-- Comparison cards -->
+      <div class="comparison">
+        <div class="compare-card compare-you">
+          <span class="compare-label">YOUR PORTFOLIO</span>
+          <span class="compare-value">${{ totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          <span class="compare-return" [class.positive]="playerReturnPercent >= 0" [class.negative]="playerReturnPercent < 0">
+            {{ playerReturnPercent >= 0 ? '+' : '' }}{{ playerReturnPercent.toFixed(1) }}%
+          </span>
+        </div>
+        <div class="compare-vs">vs</div>
+        <div class="compare-card compare-bah">
+          <span class="compare-label">BUY &amp; HOLD</span>
+          <span class="compare-value">${{ buyAndHoldFinal.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          <span class="compare-return positive">+{{ bahReturnPercent.toFixed(1) }}%</span>
+        </div>
+      </div>
+
+      <!-- Win/lose verdict -->
+      <div class="verdict" [class.win]="didBeatMarket" [class.lose]="!didBeatMarket">
+        {{ didBeatMarket ? 'You beat the market!' : 'The market won this time.' }}
+      </div>
+
+      <!-- Lesson -->
+      <p class="lesson">{{ lessonMessage }}</p>
+
+      <!-- Decision history -->
+      <div class="history-section">
+        <span class="history-title">YOUR DECISIONS</span>
+        <div class="history-timeline">
+          <div class="history-item" *ngFor="let snap of history">
+            <span class="history-year">{{ snap.year }}</span>
+            <span class="history-action" [ngClass]="{
+              'action-tag-hold': snap.action === 'Stay Invested',
+              'action-tag-sell': snap.action === 'Sell Half',
+              'action-tag-allin': snap.action === 'Go All In'
+            }">{{ snap.action }}</span>
+            <span class="history-value">${{ snap.total.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Play again -->
+      <button class="start-btn" (click)="startGame()">Play Again</button>
+
+    </div>
   </div>
 
 </div>
