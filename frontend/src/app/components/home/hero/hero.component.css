@@ -346,6 +346,38 @@
 .anim-5 { animation: fadeInUp 0.8s ease 0.4s both; }
 .anim-6 { animation: fadeInUp 0.8s ease 0.5s both; }
 
+/* ==================== Floating Game Button ==================== */
+
+.game-fab {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #001530;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 21, 48, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: fabPulse 3s ease-in-out infinite;
+}
+
+.game-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(0, 21, 48, 0.45);
+  background: #0c2a4d;
+}
+
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(0, 21, 48, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(24, 95, 165, 0.5); }
+}
+
 /* ==================== Responsive ==================== */
 
 @media (max-width: 900px) {

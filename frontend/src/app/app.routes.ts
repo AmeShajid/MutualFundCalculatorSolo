@@ -6,6 +6,7 @@ import { HowItWorksComponent } from './components/how-it-works/how-it-works.comp
 import { FormulaPageComponent } from './components/formula-page/formula-page.component';
 import { TechStackComponent } from './components/tech-stack/tech-stack.component';
 import { RiskAnalysisComponent } from './components/risk-analysis/risk-analysis.component';
+import { GameComponent } from './components/game/game.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'risk-analysis', component: RiskAnalysisComponent },
   { path: 'calculator', component: CalculatorComponent },
   { path: 'portfolio', component: PortfolioComponent },
+  { path: 'game', component: GameComponent },
   { path: '**', redirectTo: '' }
 ];
