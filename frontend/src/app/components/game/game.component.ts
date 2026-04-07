@@ -16,6 +16,7 @@ export interface RoundSnapshot {
   cash: number;
   invested: number;
   total: number;
+  returnPercent: number;
 }
 
 @Component({
@@ -26,6 +27,8 @@ export interface RoundSnapshot {
   styleUrls: ['./game.component.css']
 })
 export class GameComponent {
+  // Expose Math to template
+  Math = Math;
   // Game phases
   gamePhase: 'start' | 'playing' | 'results' = 'start';
 
@@ -34,6 +37,10 @@ export class GameComponent {
   cash = 0;
   currentRound = 0;
   history: RoundSnapshot[] = [];
+
+  // Transition state
+  isTransitioning = false;
+  lastReturnAmount = 0;
 
   // 10 rounds of real S&P 500 data
   rounds: GameRound[] = [
@@ -55,6 +62,8 @@ export class GameComponent {
     this.cash = 0;
     this.currentRound = 0;
     this.history = [];
+    this.isTransitioning = false;
+    this.lastReturnAmount = 0;
     this.gamePhase = 'playing';
   }
 
@@ -66,5 +75,64 @@ export class GameComponent {
   // Get total portfolio value
   get totalValue(): number {
     return this.invested + this.cash;
+  }
+
+  // Check if sell half should be disabled
+  get canSellHalf(): boolean {
+    return this.invested > 0;
+  }
+
+  // Take an action for the current round
+  takeAction(action: 'stay' | 'sell' | 'allin'): void {
+    if (this.isTransitioning) return;
+
+    const round = this.rounds[this.currentRound];
+    const valueBefore = this.invested + this.cash;
+
+    // Step 1: Apply action FIRST
+    switch (action) {
+      case 'stay':
+        // No change to cash/invested split
+        break;
+      case 'sell':
+        // Move 50% of invested to cash
+        const halfInvested = this.invested * 0.5;
+        this.cash += halfInvested;
+        this.invested -= halfInvested;
+        break;
+      case 'allin':
+        // Move all cash back to invested + $1,000 contribution
+        this.invested += this.cash + 1000;
+        this.cash = 0;
+        break;
+    }
+
+    // Step 2: Apply market return to invested only
+    this.invested *= (1 + round.returnPercent);
+
+    // Calculate how much the portfolio changed
+    this.lastReturnAmount = (this.invested + this.cash) - valueBefore;
+
+    // Step 3: Record snapshot
+    const actionLabel = action === 'stay' ? 'Stay Invested' : action === 'sell' ? 'Sell Half' : 'Go All In';
+    this.history.push({
+      year: round.year,
+      action: actionLabel,
+      cash: this.cash,
+      invested: this.invested,
+      total: this.invested + this.cash,
+      returnPercent: round.returnPercent
+    });
+
+    // Step 4: Transition to next round or results
+    this.isTransitioning = true;
+    setTimeout(() => {
+      this.isTransitioning = false;
+      if (this.currentRound < this.rounds.length - 1) {
+        this.currentRound++;
+      } else {
+        this.gamePhase = 'results';
+      }
+    }, 600);
   }
 }
