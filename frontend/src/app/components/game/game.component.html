@@ -109,6 +109,21 @@
           </div>
         </div>
 
+        <!-- Live comparison tracker -->
+        <div class="live-tracker" *ngIf="history.length > 0" [class.tracker-ahead]="isAheadOfBah" [class.tracker-behind]="!isAheadOfBah">
+          <div class="tracker-item">
+            <span class="tracker-label">You</span>
+            <span class="tracker-value">${{ totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          </div>
+          <div class="tracker-vs" [class.ahead]="isAheadOfBah" [class.behind]="!isAheadOfBah">
+            {{ isAheadOfBah ? '&#x25B2;' : '&#x25BC;' }}
+          </div>
+          <div class="tracker-item">
+            <span class="tracker-label">Buy &amp; Hold</span>
+            <span class="tracker-value">${{ buyAndHoldAtCurrentRound.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}</span>
+          </div>
+        </div>
+
         <!-- Return flash after action -->
         <div class="return-flash" *ngIf="isTransitioning" [class.positive]="lastReturnAmount >= 0" [class.negative]="lastReturnAmount < 0">
           {{ lastReturnAmount >= 0 ? '+' : '' }}${{ Math.abs(lastReturnAmount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) }}

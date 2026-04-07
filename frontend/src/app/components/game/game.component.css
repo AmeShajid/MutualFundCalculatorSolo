@@ -453,6 +453,59 @@
   background: rgba(115, 153, 198, 0.15);
 }
 
+/* Live comparison tracker */
+.live-tracker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(115, 153, 198, 0.05);
+  border: 1px solid rgba(115, 153, 198, 0.08);
+}
+
+.tracker-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+
+.tracker-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 500;
+}
+
+.tracker-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tracker-vs {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.tracker-vs.ahead {
+  color: #4ade80;
+}
+
+.tracker-vs.behind {
+  color: #f87171;
+}
+
+.tracker-ahead {
+  border-color: rgba(74, 222, 128, 0.12);
+}
+
+.tracker-behind {
+  border-color: rgba(248, 113, 113, 0.12);
+}
+
 /* Return flash */
 .return-flash {
   position: absolute;

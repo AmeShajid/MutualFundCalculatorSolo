@@ -148,6 +148,21 @@ export class GameComponent implements OnDestroy {
     return values;
   }
 
+  // Buy-and-hold value at current point in the game
+  get buyAndHoldAtCurrentRound(): number {
+    return this.buyAndHoldValues[this.history.length] || 10000;
+  }
+
+  // Difference vs buy-and-hold
+  get differenceVsBah(): number {
+    return this.totalValue - this.buyAndHoldAtCurrentRound;
+  }
+
+  // Is player ahead of buy-and-hold?
+  get isAheadOfBah(): boolean {
+    return this.totalValue >= this.buyAndHoldAtCurrentRound;
+  }
+
   // Buy-and-hold final value
   get buyAndHoldFinal(): number {
     return this.buyAndHoldValues[this.buyAndHoldValues.length - 1] || 10000;
