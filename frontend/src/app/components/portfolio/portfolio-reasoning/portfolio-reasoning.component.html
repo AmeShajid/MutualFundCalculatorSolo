@@ -1,45 +1,35 @@
-<div class="reasoning-container" *ngIf="recommendation">
-  <div class="reasoning-header">
-    <span class="ai-badge">AI</span>
-    <span class="reasoning-title">Portfolio Reasoning</span>
-  </div>
-
-  <p class="reasoning-text">{{ recommendation.reasoning }}</p>
-
-  <div class="risk-assessment" *ngIf="recommendation.riskAssessment">
-    <span class="risk-label">Risk Assessment</span>
-    <p class="risk-text">{{ recommendation.riskAssessment }}</p>
-  </div>
-
-  <!-- Follow-up messages -->
-  <div class="follow-up-messages" *ngIf="messages.length > 0">
-    <div *ngFor="let msg of messages" class="follow-msg" [class.user-msg]="msg.role === 'user'" [class.ai-msg]="msg.role === 'assistant'">
-      <span class="msg-role">{{ msg.role === 'user' ? 'You' : 'AI' }}</span>
-      <p class="msg-content">{{ msg.content }}</p>
+<div class="reasoning-card" *ngIf="recommendation">
+  <!-- Card header -->
+  <div class="card-header">
+    <div class="header-left">
+      <span class="ai-badge">AI</span>
+      <span class="card-title">Portfolio Analysis</span>
     </div>
   </div>
 
-  <!-- Typing indicator -->
-  <div class="follow-msg ai-msg" *ngIf="isSending">
-    <span class="msg-role">AI</span>
-    <div class="typing-indicator">
-      <span></span><span></span><span></span>
-    </div>
-  </div>
+  <!-- Reasoning body -->
+  <div class="reasoning-body">
+    <p class="reasoning-text">{{ recommendation.reasoning }}</p>
 
-  <!-- Input -->
-  <div class="follow-up-input">
-    <input
-      type="text"
-      [(ngModel)]="followUpText"
-      placeholder="Ask a follow-up question..."
-      (keydown)="onKeydown($event)"
-      [disabled]="isSending"
-    />
-    <button
-      class="send-btn"
-      (click)="onSend()"
-      [disabled]="!followUpText.trim() || isSending"
-    >Send</button>
+    <div class="risk-assessment" *ngIf="recommendation.riskAssessment">
+      <span class="risk-label">Risk Assessment</span>
+      <p class="risk-text">{{ recommendation.riskAssessment }}</p>
+    </div>
+
+    <!-- Follow-up messages -->
+    <div class="follow-up-messages" *ngIf="messages.length > 0">
+      <div *ngFor="let msg of messages" class="follow-msg" [class.user-msg]="msg.role === 'user'" [class.ai-msg]="msg.role === 'assistant'">
+        <span class="msg-role">{{ msg.role === 'user' ? 'You' : 'AI' }}</span>
+        <p class="msg-content">{{ msg.content }}</p>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="follow-msg ai-msg" *ngIf="isSending">
+      <span class="msg-role">AI</span>
+      <div class="typing-indicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,18 +1,12 @@
-<div class="holdings-panel">
-  <ng-container *ngIf="!recommendation">
-    <div class="holdings-empty">
-      <svg class="briefcase-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="2" y="7" width="20" height="14" rx="2"/>
-        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-        <path d="M2 12h20"/>
-      </svg>
-      <span>Your holdings will appear after generating a portfolio</span>
-    </div>
-  </ng-container>
+<div class="holdings-card">
+  <!-- Card header -->
+  <div class="card-header">
+    <span class="card-title">Holdings</span>
+    <span class="card-count" *ngIf="recommendation">{{ recommendation.allocations.length }} funds</span>
+  </div>
 
-  <ng-container *ngIf="recommendation">
-    <span class="section-label">HOLDINGS</span>
-
+  <!-- Holdings list -->
+  <div class="holdings-body" *ngIf="recommendation">
     <div class="holdings-list">
       <div class="holding-row" *ngFor="let alloc of recommendation.allocations">
         <div class="color-bar" [style.background-color]="getColor(alloc.ticker)"></div>
@@ -37,5 +31,5 @@
         <span class="total-projected">${{ totalProjected | number:'1.2-2' }}</span>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>

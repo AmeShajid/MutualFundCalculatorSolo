@@ -1,17 +1,21 @@
-.reasoning-container {
-  padding: 20px 24px;
-  border-top: 1px solid #e8e8e8;
+/* Card header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: var(--color-navy);
+  color: white;
 }
 
-.reasoning-header {
+.header-left {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
 }
 
 .ai-badge {
-  background: var(--color-navy);
+  background: rgba(255, 255, 255, 0.15);
   color: white;
   font-size: 10px;
   font-weight: 700;
@@ -20,10 +24,18 @@
   letter-spacing: 0.5px;
 }
 
-.reasoning-title {
-  font-size: 14px;
+.card-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
   font-weight: 600;
-  color: #333;
+  letter-spacing: 0.5px;
+}
+
+/* Reasoning body */
+.reasoning-body {
+  padding: 20px 24px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .reasoning-text {
@@ -116,48 +128,4 @@
 @keyframes typing {
   0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
   40% { transform: scale(1); opacity: 1; }
-}
-
-/* Input */
-.follow-up-input {
-  display: flex;
-  gap: 8px;
-}
-
-.follow-up-input input {
-  flex: 1;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #333;
-  outline: none;
-}
-
-.follow-up-input input:focus {
-  border-color: var(--color-blue);
-}
-
-.follow-up-input input:disabled {
-  background: #f5f5f5;
-}
-
-.send-btn {
-  padding: 10px 20px;
-  background: var(--color-blue);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.send-btn:hover:not(:disabled) {
-  background: var(--color-blue-hover);
-}
-
-.send-btn:disabled {
-  background: #bbb;
-  cursor: not-allowed;
 }

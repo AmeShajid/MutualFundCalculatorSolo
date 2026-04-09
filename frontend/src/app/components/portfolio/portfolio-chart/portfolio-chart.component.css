@@ -1,43 +1,60 @@
-.chart-container {
-  padding: 20px 24px;
+/* Card header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: var(--color-navy);
+  color: white;
 }
 
-.chart-svg {
-  width: 100%;
-  height: auto;
-  display: block;
+.card-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
+/* Legend in header */
 .chart-legend {
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  padding: 12px 0 4px;
-  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .legend-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .legend-line {
-  width: 16px;
+  width: 14px;
   height: 0;
   border-top: 2px dashed;
   flex-shrink: 0;
 }
 
 .legend-label {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 12px;
-  color: #666;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Chart body */
+.chart-body {
+  padding: 16px 24px 20px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
 }
