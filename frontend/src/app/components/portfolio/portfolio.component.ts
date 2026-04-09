@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -22,6 +23,7 @@ const FUND_COLORS = ['#1a6fba', '#e85d3a', '#2ecc71', '#9b59b6', '#f39c12'];
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     PortfolioSidebarComponent,
     PortfolioSummaryComponent,
     PortfolioChartComponent,
@@ -49,6 +51,13 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   messages: ChatMessage[] = [];
   isGenerating: boolean = false;
   isSending: boolean = false;
+
+  chatInput: string = '';
+  suggestedQuestions: string[] = [
+    'What is my expected annual return?',
+    'How would this change with higher risk?',
+    'Which fund contributes most to growth?'
+  ];
 
   constructor(
     private fundService: FundService,
@@ -129,6 +138,12 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.isGenerating = false;
       }
     });
+  }
+
+  onSendFromBar(): void {
+    if (!this.chatInput.trim()) return;
+    this.onSendFollowUp(this.chatInput.trim());
+    this.chatInput = '';
   }
 
   onSendFollowUp(text: string): void {
