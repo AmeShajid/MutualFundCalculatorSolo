@@ -1,43 +1,57 @@
+/* Phase 1: Vertical layout */
 .portfolio-page {
   display: flex;
-  height: calc(100vh - 64px);
-  background-color: var(--color-bg);
-}
-
-/* Sidebar host element */
-app-portfolio-sidebar {
-  width: 300px;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: white;
-  border-right: 1px solid #e0e0e0;
-}
-
-/* Main content */
-.main-content {
-  flex: 1;
-  display: flex;
   flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* Content grid: chart area + holdings side panel */
-.content-grid {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
-
-.chart-area {
-  flex: 1;
+  min-height: calc(100vh - 64px);
+  background-color: var(--color-bg);
   overflow-y: auto;
-  min-width: 0;
 }
 
-app-portfolio-holdings {
-  width: 320px;
+/* Config bar (was sidebar) — now full-width at top */
+app-portfolio-sidebar {
+  width: 100%;
   flex-shrink: 0;
-  border-left: 1px solid #e0e0e0;
   background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Summary hero */
+app-portfolio-summary {
+  flex-shrink: 0;
+}
+
+/* Dashboard content area */
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  grid-template-rows: auto auto;
+  gap: 24px;
+  padding: 24px 40px 40px;
+}
+
+.chart-section {
+  grid-column: 1;
+  grid-row: 1;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.holdings-section {
+  grid-column: 2;
+  grid-row: 1;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.reasoning-section {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
 }

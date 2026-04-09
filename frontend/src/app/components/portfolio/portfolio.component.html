@@ -1,5 +1,6 @@
 <div class="portfolio-page">
 
+  <!-- Config bar (was sidebar, now full-width at top) -->
   <app-portfolio-sidebar
     [funds]="funds"
     [selectedFunds]="selectedFunds"
@@ -15,34 +16,39 @@
     (generate)="onGenerate()"
   ></app-portfolio-sidebar>
 
-  <div class="main-content">
-    <app-portfolio-summary
-      [recommendation]="recommendation"
-      [principal]="principal"
-      [years]="years"
-    ></app-portfolio-summary>
+  <!-- Hero summary -->
+  <app-portfolio-summary
+    [recommendation]="recommendation"
+    [principal]="principal"
+    [years]="years"
+  ></app-portfolio-summary>
 
-    <div class="content-grid">
-      <div class="chart-area">
-        <app-portfolio-chart
-          [recommendation]="recommendation"
-          [fundColors]="fundColors"
-          [principal]="principal"
-          [years]="years"
-        ></app-portfolio-chart>
+  <!-- Dashboard content -->
+  <div class="dashboard-content" *ngIf="recommendation">
+    <div class="chart-section">
+      <app-portfolio-chart
+        [recommendation]="recommendation"
+        [fundColors]="fundColors"
+        [principal]="principal"
+        [years]="years"
+      ></app-portfolio-chart>
+    </div>
 
-        <app-portfolio-reasoning
-          [recommendation]="recommendation"
-          [messages]="messages"
-          [isSending]="isSending"
-          (sendFollowUp)="onSendFollowUp($event)"
-        ></app-portfolio-reasoning>
-      </div>
-
+    <div class="holdings-section">
       <app-portfolio-holdings
         [recommendation]="recommendation"
         [fundColors]="fundColors"
       ></app-portfolio-holdings>
     </div>
+
+    <div class="reasoning-section">
+      <app-portfolio-reasoning
+        [recommendation]="recommendation"
+        [messages]="messages"
+        [isSending]="isSending"
+        (sendFollowUp)="onSendFollowUp($event)"
+      ></app-portfolio-reasoning>
+    </div>
   </div>
+
 </div>
