@@ -23,6 +23,15 @@
     [years]="years"
   ></app-portfolio-summary>
 
+  <!-- Error message -->
+  <div class="error-banner" *ngIf="errorMessage">
+    <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <span>{{ errorMessage }}</span>
+    <button class="error-dismiss" (click)="errorMessage = ''">&times;</button>
+  </div>
+
   <!-- Dashboard content -->
   <div class="dashboard-content" *ngIf="recommendation">
     <div class="chart-section">
@@ -77,7 +86,7 @@
         <button
           class="chat-send-btn"
           (click)="onSendFromBar()"
-          [disabled]="!chatInput?.trim() || isSending"
+          [disabled]="!chatInput.trim() || isSending"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="22" y1="2" x2="11" y2="13"/>

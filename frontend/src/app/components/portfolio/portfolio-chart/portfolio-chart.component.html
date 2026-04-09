@@ -18,9 +18,14 @@
     </div>
   </div>
 
-  <!-- Chart SVG -->
+  <!-- Chart body -->
   <div class="chart-body">
-    <svg viewBox="0 0 800 410" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+    <svg #chartSvg
+         viewBox="0 0 800 410"
+         class="chart-svg"
+         xmlns="http://www.w3.org/2000/svg"
+         (mousemove)="onChartMouseMove($event)"
+         (mouseleave)="onChartMouseLeave()">
       <defs>
         <linearGradient [attr.id]="gradientId" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#1a6fba" stop-opacity="0.25"/>
@@ -79,7 +84,45 @@
               font-family="'DM Mono', monospace">
           {{ endpointLabel }}
         </text>
+
+        <!-- Hover line -->
+        <line *ngIf="hoveredYear !== null"
+              [attr.x1]="hoverLineX" [attr.y1]="yMin"
+              [attr.x2]="hoverLineX" [attr.y2]="yMax"
+              stroke="var(--color-navy)" stroke-width="1" stroke-opacity="0.3"/>
+
+        <!-- Hover dots on each line -->
+        <ng-container *ngIf="tooltipData">
+          <circle *ngFor="let fd of tooltipData.funds"
+                  [attr.cx]="hoverLineX"
+                  [attr.cy]="yMax - ((fd.value / yMaxValue) * (yMax - yMin))"
+                  r="4" [attr.fill]="fd.color" stroke="white" stroke-width="1.5"/>
+          <circle
+            [attr.cx]="hoverLineX"
+            [attr.cy]="yMax - ((tooltipData.total / yMaxValue) * (yMax - yMin))"
+            r="5" fill="#1a6fba" stroke="white" stroke-width="2"/>
+        </ng-container>
       </ng-container>
     </svg>
+
+    <!-- HTML tooltip overlay -->
+    <div class="chart-tooltip"
+         *ngIf="tooltipData"
+         [style.left.px]="tooltipX * (1)"
+         [style.top.px]="tooltipY * (1)"
+         [class.flip-left]="hoverLineX > (xMax - 200)">
+      <div class="tooltip-header">Year {{ tooltipData.year }}</div>
+      <div class="tooltip-row" *ngFor="let fd of tooltipData.funds">
+        <span class="tooltip-dot" [style.background-color]="fd.color"></span>
+        <span class="tooltip-ticker">{{ fd.ticker }}</span>
+        <span class="tooltip-value">{{ formatDollar(fd.value) }}</span>
+      </div>
+      <div class="tooltip-divider"></div>
+      <div class="tooltip-row tooltip-total">
+        <span class="tooltip-dot" style="background-color: #1a6fba;"></span>
+        <span class="tooltip-ticker">Total</span>
+        <span class="tooltip-value">{{ formatDollar(tooltipData.total) }}</span>
+      </div>
+    </div>
   </div>
 </div>

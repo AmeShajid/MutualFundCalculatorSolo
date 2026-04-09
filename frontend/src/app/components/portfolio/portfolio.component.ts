@@ -51,6 +51,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   messages: ChatMessage[] = [];
   isGenerating: boolean = false;
   isSending: boolean = false;
+  errorMessage: string = '';
 
   chatInput: string = '';
   suggestedQuestions: string[] = [
@@ -120,6 +121,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     if (this.principal <= 0 || this.years <= 0) return;
 
     this.isGenerating = true;
+    this.errorMessage = '';
     this.messages = [];
 
     const tickers = this.selectedFunds.map(f => f.symbol);
@@ -134,8 +136,16 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.recommendation = data;
         this.isGenerating = false;
       },
-      error: () => {
+      error: (err) => {
         this.isGenerating = false;
+        const msg = err?.error?.message || '';
+        if (msg.includes('503') || msg.includes('overloaded') || msg.includes('unavailable')) {
+          this.errorMessage = 'AI service is temporarily unavailable. Please try again in a moment.';
+        } else if (msg.includes('timeout') || msg.includes('timed out')) {
+          this.errorMessage = 'Request timed out. The AI service may be slow — please try again.';
+        } else {
+          this.errorMessage = msg || 'Portfolio generation failed. Please try again.';
+        }
       }
     });
   }

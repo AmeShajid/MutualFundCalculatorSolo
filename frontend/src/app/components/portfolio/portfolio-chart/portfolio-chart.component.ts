@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioRecommendation } from '../../../models/portfolio-recommendation.model';
 import { FundAllocation } from '../../../models/fund-allocation.model';
@@ -19,6 +19,12 @@ interface XTick {
   label: string;
 }
 
+interface YearData {
+  year: number;
+  funds: { ticker: string; color: string; value: number }[];
+  total: number;
+}
+
 @Component({
   selector: 'app-portfolio-chart',
   standalone: true,
@@ -33,7 +39,9 @@ export class PortfolioChartComponent implements OnChanges {
   @Input() principal: number = 0;
   @Input() years: number = 0;
 
-  // Plot area bounds — extra right margin so labels don't clip
+  @ViewChild('chartSvg', { static: false }) chartSvgRef!: ElementRef<SVGSVGElement>;
+
+  // Plot area bounds
   readonly xMin = 70;
   readonly xMax = 730;
   readonly yMin = 30;
@@ -54,6 +62,14 @@ export class PortfolioChartComponent implements OnChanges {
 
   legendItems: { ticker: string; color: string }[] = [];
 
+  // Tooltip state
+  yearlyData: YearData[] = [];
+  hoveredYear: number | null = null;
+  hoverLineX: number = 0;
+  tooltipX: number = 0;
+  tooltipY: number = 0;
+  tooltipData: YearData | null = null;
+
   ngOnChanges(): void {
     if (!this.recommendation || !this.recommendation.allocations.length || this.years <= 0) {
       this.fundLines = [];
@@ -62,10 +78,48 @@ export class PortfolioChartComponent implements OnChanges {
       this.gridLines = [];
       this.xTicks = [];
       this.legendItems = [];
+      this.yearlyData = [];
       return;
     }
 
     this.computeChart();
+  }
+
+  onChartMouseMove(event: MouseEvent): void {
+    if (!this.chartSvgRef || !this.yearlyData.length) return;
+
+    const svg = this.chartSvgRef.nativeElement;
+    const rect = svg.getBoundingClientRect();
+
+    // Map mouse X to SVG coordinate space
+    const svgWidth = 800; // viewBox width
+    const mouseX = ((event.clientX - rect.left) / rect.width) * svgWidth;
+
+    // Find the nearest year
+    const yearFrac = ((mouseX - this.xMin) / (this.xMax - this.xMin)) * this.years;
+    const nearestYear = Math.round(Math.max(0, Math.min(this.years, yearFrac)));
+
+    if (nearestYear === this.hoveredYear) return;
+
+    this.hoveredYear = nearestYear;
+    this.tooltipData = this.yearlyData[nearestYear] || null;
+
+    // Position the hover line
+    this.hoverLineX = this.xMin + (nearestYear / this.years) * (this.xMax - this.xMin);
+
+    // Position tooltip — offset to the right of the line, flip if near right edge
+    const tooltipWidth = 180; // approximate
+    if (this.hoverLineX > (this.xMax - tooltipWidth - 20)) {
+      this.tooltipX = this.hoverLineX - tooltipWidth - 12;
+    } else {
+      this.tooltipX = this.hoverLineX + 12;
+    }
+    this.tooltipY = this.yMin + 10;
+  }
+
+  onChartMouseLeave(): void {
+    this.hoveredYear = null;
+    this.tooltipData = null;
   }
 
   private computeChart(): void {
@@ -86,6 +140,20 @@ export class PortfolioChartComponent implements OnChanges {
         totalValues[t] += fv;
       }
       fundData.push({ ticker: alloc.ticker, color, values });
+    }
+
+    // Build yearly data for tooltips
+    this.yearlyData = [];
+    for (let t = 0; t <= years; t++) {
+      this.yearlyData.push({
+        year: t,
+        funds: fundData.map(fd => ({
+          ticker: fd.ticker,
+          color: fd.color,
+          value: fd.values[t]
+        })),
+        total: totalValues[t]
+      });
     }
 
     // Determine y scale
@@ -149,9 +217,13 @@ export class PortfolioChartComponent implements OnChanges {
       ticker: fd.ticker,
       color: fd.color
     }));
+
+    // Reset hover
+    this.hoveredYear = null;
+    this.tooltipData = null;
   }
 
-  private formatDollar(value: number): string {
+  formatDollar(value: number): string {
     if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
     if (value >= 1000) return `$${(value / 1000).toFixed(0)}k`;
     return `$${value.toFixed(0)}`;
