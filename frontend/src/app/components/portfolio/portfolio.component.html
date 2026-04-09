@@ -32,6 +32,42 @@
     <button class="error-dismiss" (click)="errorMessage = ''">&times;</button>
   </div>
 
+  <!-- Empty state -->
+  <div class="empty-dashboard" *ngIf="!recommendation && !isGenerating">
+    <div class="empty-illustration">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="40" width="20" height="60" rx="4" fill="#e0e5ec"/>
+        <rect x="38" y="25" width="20" height="75" rx="4" fill="#c8d0da"/>
+        <rect x="66" y="50" width="20" height="50" rx="4" fill="#e0e5ec"/>
+        <rect x="94" y="15" width="20" height="85" rx="4" fill="#c8d0da"/>
+        <line x1="5" y1="105" x2="119" y2="105" stroke="#d0d5dc" stroke-width="2"/>
+        <path d="M10 70 Q38 20 66 55 Q94 10 118 30" stroke="var(--color-navy)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+    </div>
+    <h2 class="empty-title">Build Your Portfolio</h2>
+    <p class="empty-subtitle">Select mutual funds, set your preferences, and let AI optimize your allocation</p>
+    <div class="empty-steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-text">Search and add 2–5 funds</span>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <span class="step-text">Set risk tolerance &amp; investment amount</span>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <span class="step-text">Click Generate to get AI recommendations</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="generating-state" *ngIf="isGenerating">
+    <div class="generating-spinner"></div>
+    <span class="generating-text">Analyzing your portfolio with AI...</span>
+  </div>
+
   <!-- Dashboard content -->
   <div class="dashboard-content" *ngIf="recommendation">
     <div class="chart-section">
